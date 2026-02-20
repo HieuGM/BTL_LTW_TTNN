@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Khóa Học</title>
+    <link rel="stylesheet" href="courses.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="container">
+        <div class="logo">Anh Ngữ ABC</div>
+        <nav class="nav-menu">
+            <a href="Home.html">Trang chủ</a>
+            <a href="Courses.html">Khóa học</a>
+            <a href="Home.html#giangvien">Giảng viên</a>
+            <a href="Home.html#gioithieu">Giới thiệu</a>
+            <a href="Home.html#lienhe">Liên hệ</a>
+        </nav>
+    </div>
+</header>
+
+<section class="courses-page">
+    <div class="container courses-layout">
+
+        <!-- SIDEBAR FILTER -->
+        <aside class="sidebar">
+            <h3>Bộ Lọc</h3>
+
+            <div class="filter-group">
+                <h4>Mục tiêu</h4>
+                <label><input type="checkbox"> IELTS</label>
+                <label><input type="checkbox"> TOEIC</label>
+                <label><input type="checkbox"> Giao tiếp</label>
+            </div>
+
+            <div class="filter-group">
+                <h4>Trình độ</h4>
+                <label><input type="checkbox"> Mất gốc</label>
+                <label><input type="checkbox"> Cơ bản</label>
+                <label><input type="checkbox"> Nâng cao</label>
+            </div>
+
+            <div class="filter-group">
+                <h4>Độ tuổi</h4>
+                <label><input type="checkbox"> Thiếu nhi</label>
+                <label><input type="checkbox"> Học sinh</label>
+                <label><input type="checkbox"> Sinh viên</label>
+                <label><input type="checkbox"> Người đi làm</label>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <div class="courses-content">
+
+            <!-- Search + Sort -->
+            <div class="courses-topbar">
+                <input type="text" placeholder="Tìm kiếm khóa học...">
+
+                <select>
+                    <option>Sắp xếp theo</option>
+                    <option>Phổ biến</option>
+                    <option>Học phí tăng dần</option>
+                    <option>Học phí giảm dần</option>
+                    <option>Khai giảng sớm</option>
+                </select>
+            </div>
+
+            <!-- Course Cards -->
+            <div class="courses-grid" id="coursesContainer">
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    © 2026 Trung Tâm Anh Ngữ ABC | Hotline: 0909 123 456
+</footer>
+
+<!--loc theo url-->
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const category = params.get("category");
+
+    if (category) {
+        const courses = document.querySelectorAll(".course-card");
+
+        courses.forEach(course => {
+            if (course.dataset.category !== category) {
+                course.style.display = "none";
+            }
+        });
+    }
+</script>
+
+<script src="../FakeData/courses-data.js"></script>
+<script>
+    const container = document.getElementById("coursesContainer");
+
+    function renderCourses(list) {
+        container.innerHTML = "";
+
+        list.forEach(course => {
+            const card = `
+            <div class="course-card">
+                <h3>${course.title}</h3>
+                <p><strong>Mục tiêu:</strong> ${course.goal}</p>
+                <p><strong>Học phí:</strong> ${course.fee}</p>
+                <p><strong>Thời lượng:</strong> ${course.duration}</p>
+                <p><strong>Đối tượng:</strong> ${course.target}</p>
+                <a href="Courses_Details.html?id=${course.id}"
+                   class="detail-btn">
+                   Xem chi tiết
+                </a>
+            </div>
+        `;
+            container.innerHTML += card;
+        });
+    }
+
+    renderCourses(courses);
+</script>
+
+</body>
+</html>

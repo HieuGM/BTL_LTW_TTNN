@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Lịch học & Lớp học</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="Schedule.css">
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <h2 class="logo">Anh Ngữ ABC</h2>
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="schedule.html" class="active">Lịch học</a>
+            <a href="results.html">Kết quả</a>
+            <a href="tuition.html">Học phí</a>
+            <a href="profile.html">Hồ sơ cá nhân</a>
+        </nav>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="content">
+
+        <!-- ===== TỔNG QUAN LỚP ===== -->
+        <section>
+            <h1>Lớp đang học</h1>
+            <div id="classGrid" class="class-grid"></div>
+        </section>
+
+        <!-- ===== TIẾT HỌC SẮP TỚI ===== -->
+        <section style="margin-top:40px;">
+            <h1>Tiết học sắp tới</h1>
+            <div id="upcomingList" class="upcoming-list"></div>
+        </section>
+
+    </main>
+
+</div>
+
+<!-- Data trước -->
+<script src="../FakeData/student-data.js"></script>
+
+<!-- Logic render -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const grid = document.getElementById("classGrid");
+
+        // Render class cards
+        student.classes.forEach(cls => {
+
+            const percent =
+                (cls.completedLessons / cls.totalLessons) * 100;
+
+            const card = document.createElement("div");
+            card.classList.add("class-card");
+
+            card.style.cursor = "pointer";
+            card.addEventListener("click", function () {
+                window.location.href =
+                    `Class_Detail.html?id=${cls.code}`;
+            });
+
+            card.innerHTML = `
+            <div class="class-header">
+                <span class="class-code">${cls.code}</span>
+                <span class="next-session">
+                    Sắp tới: ${cls.nextSession}
+                </span>
+            </div>
+
+            <h3>${cls.name}</h3>
+
+            <p>Giảng viên: ${cls.teacher}</p>
+            <p>Tiến trình: ${cls.completedLessons}/${cls.totalLessons}</p>
+
+            <div class="progress-bar">
+                <div class="progress"
+                     style="width:${percent}%"></div>
+            </div>
+        `;
+
+            grid.appendChild(card);
+        });
+
+
+        // ===== Upcoming sessions (tính từ sessions thật) =====
+
+        const upcomingContainer =
+            document.getElementById("upcomingList");
+
+        student.classes.forEach(cls => {
+
+            cls.sessions.forEach(session => {
+
+                const item = document.createElement("div");
+                item.classList.add("upcoming-item");
+
+                item.innerHTML = `
+                <div class="time">
+                    ${session.time.split(" - ")[0]}
+                </div>
+                <div class="info">
+                    <h4>${cls.name}</h4>
+                    <p>${session.date} - ${session.room}</p>
+                    <button class="detail-btn">
+                        Xem chi tiết
+                    </button>
+                </div>
+            `;
+
+                upcomingContainer.appendChild(item);
+
+            });
+
+        });
+
+    });
+</script>
+</body>
+</html>

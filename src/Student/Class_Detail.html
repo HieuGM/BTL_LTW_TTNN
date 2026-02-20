@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Chi tiết lớp học</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="Class_Detail.css">
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <h2 class="logo">Anh Ngữ ABC</h2>
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="schedule.html">Lịch học</a>
+            <a href="results.html">Kết quả</a>
+            <a href="tuition.html">Học phí</a>
+            <a href="profile.html">Hồ sơ cá nhân</a>
+        </nav>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="content">
+
+        <!-- ===== HEADER CLASS ===== -->
+        <section class="class-header">
+            <h1 id="className"></h1>
+            <div class="class-meta" id="classMeta"></div>
+        </section>
+
+        <!-- ===== ATTENDANCE STATS ===== -->
+        <section class="attendance-stats" id="attendanceStats"></section>
+
+        <!-- ===== SESSION TABLE ===== -->
+        <section class="session-section">
+            <h2>Danh sách buổi học</h2>
+            <table class="session-table">
+                <thead>
+                <tr>
+                    <th>TT</th>
+                    <th>Ngày học</th>
+                    <th>Tiết</th>
+                    <th>Phòng</th>
+                    <th>Hình thức</th>
+                    <th>Điểm danh</th>
+                    <th>Giảng viên</th>
+                    <th>Thao tác</th>
+                </tr>
+                </thead>
+                <tbody id="sessionTableBody"></tbody>
+            </table>
+        </section>
+
+    </main>
+
+</div>
+
+<script src="../FakeData/student-data.js"></script>
+<script>
+    <script src="../FakeData/student-data.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const params = new URLSearchParams(window.location.search);
+        const classCode = params.get("id");
+
+        // ✅ Tìm lớp theo code trong student.classes
+        const selectedClass =
+            student.classes.find(c => c.code === classCode);
+
+        if (!selectedClass) {
+            document.querySelector(".content").innerHTML =
+                "<h2>Không tìm thấy lớp học</h2>";
+            return;
+        }
+
+        // ===== HEADER =====
+        document.getElementById("className").innerText =
+            selectedClass.name;
+
+        document.getElementById("classMeta").innerText =
+            `Mã lớp: ${selectedClass.code} | Giảng viên: ${selectedClass.teacher}`;
+
+
+        // ===== ATTENDANCE STATS =====
+
+        const statsContainer =
+            document.getElementById("attendanceStats");
+
+        let present = 0;
+        let absent = 0;
+        let notMarked = 0;
+
+        selectedClass.sessions.forEach(s => {
+            if (s.attendance === "Có mặt") present++;
+            else if (s.attendance === "Chưa điểm danh") notMarked++;
+            else absent++;
+        });
+
+        statsContainer.innerHTML = `
+        <div class="stat-box">
+            <strong>Tổng buổi:</strong> ${selectedClass.sessions.length}
+        </div>
+        <div class="stat-box">
+            <strong>Có mặt:</strong> ${present}
+        </div>
+        <div class="stat-box">
+            <strong>Vắng:</strong> ${absent}
+        </div>
+        <div class="stat-box">
+            <strong>Chưa điểm danh:</strong> ${notMarked}
+        </div>
+    `;
+
+
+        // ===== SESSION TABLE =====
+
+        const tbody =
+            document.getElementById("sessionTableBody");
+
+        selectedClass.sessions.forEach((session, index) => {
+
+            const tr = document.createElement("tr");
+
+            const attendanceClass =
+                session.attendance === "Có mặt"
+                    ? "badge-present"
+                    : session.attendance === "Chưa điểm danh"
+                        ? "badge-pending"
+                        : "badge-absent";
+
+            tr.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${session.date}</td>
+            <td>${session.time}</td>
+            <td>${session.room}</td>
+            <td>${session.mode}</td>
+            <td>
+                <span class="${attendanceClass}">
+                    ${session.attendance}
+                </span>
+            </td>
+            <td>${selectedClass.teacher}</td>
+            <td>
+                <span class="mail-icon" title="Xin nghỉ học">✉</span>
+            </td>
+        `;
+
+            tbody.appendChild(tr);
+        });
+
+    });
+</script>
+</script>
+</body>
+</html>

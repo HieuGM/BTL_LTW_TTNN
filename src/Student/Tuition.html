@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Học phí</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="Tuition.css">
+</head>
+<body>
+
+<div class="layout">
+
+    <aside class="sidebar">
+        <h2 class="logo">Anh Ngữ ABC</h2>
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="schedule.html">Lịch học</a>
+            <a href="results.html">Kết quả</a>
+            <a href="tuition.html" class="active">Học phí</a>
+            <a href="profile.html">Hồ sơ cá nhân</a>
+        </nav>
+    </aside>
+
+    <main class="content">
+
+        <h1>Học phí</h1>
+
+        <!-- Tổng quan -->
+        <div class="tuition-summary">
+            <div class="tuition-card">
+                <span>Tổng học phí</span>
+                <strong id="totalTuition"></strong>
+            </div>
+
+            <div class="tuition-card">
+                <span>Đã đóng</span>
+                <strong id="paidTuition"></strong>
+            </div>
+
+            <div class="tuition-card debt">
+                <span>Còn nợ</span>
+                <strong id="debtTuition"></strong>
+                <small id="dueDate"></small>
+            </div>
+        </div>
+
+        <!-- Thanh tiến độ -->
+        <div class="progress-bar">
+            <div id="tuitionProgress" class="progress"></div>
+        </div>
+
+        <!-- Lịch sử thanh toán -->
+        <section class="payment-history">
+            <h2>Lịch sử phiếu thu</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Ngày</th>
+                    <th>Số tiền</th>
+                    <th>Hình thức</th>
+                    <th>Ghi chú</th>
+                </tr>
+                </thead>
+                <tbody id="paymentTable"></tbody>
+            </table>
+        </section>
+
+        <!-- Upload minh chứng -->
+        <section class="upload-proof">
+            <h2>Upload minh chứng chuyển khoản</h2>
+            <input type="file" id="uploadInput">
+            <button id="uploadBtn">Gửi minh chứng</button>
+            <p id="uploadMessage"></p>
+        </section>
+
+    </main>
+</div>
+
+<script src="../FakeData/student-data.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const total = student.tuition.total;
+        const paid = student.tuition.paid;
+        const debt = total - paid;
+
+        document.getElementById("totalTuition").innerText =
+            total.toLocaleString("vi-VN") + " đ";
+
+        document.getElementById("paidTuition").innerText =
+            paid.toLocaleString("vi-VN") + " đ";
+
+        document.getElementById("debtTuition").innerText =
+            debt.toLocaleString("vi-VN") + " đ";
+
+        document.getElementById("dueDate").innerText =
+            "Hạn đóng: " + student.tuition.dueDate;
+
+        const percent = (paid / total) * 100;
+        document.getElementById("tuitionProgress").style.width =
+            percent + "%";
+
+        // Render lịch sử thanh toán
+        const table = document.getElementById("paymentTable");
+
+        student.tuition.payments.forEach(p => {
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+            <td>${p.date}</td>
+            <td>${p.amount.toLocaleString("vi-VN")} đ</td>
+            <td>${p.method}</td>
+            <td>${p.note}</td>
+        `;
+
+            table.appendChild(row);
+        });
+
+        // Upload minh chứng (fake)
+        document.getElementById("uploadBtn")
+            .addEventListener("click", function () {
+
+                const file =
+                    document.getElementById("uploadInput").files[0];
+
+                if (!file) {
+                    alert("Vui lòng chọn file");
+                    return;
+                }
+
+                document.getElementById("uploadMessage").innerText =
+                    "Đã gửi minh chứng thành công (demo).";
+            });
+
+    });
+</script>
+
+</body>
+</html>

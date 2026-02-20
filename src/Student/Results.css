@@ -1,0 +1,63 @@
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.result-card {
+    background: white;
+    padding: 25px;
+    margin-bottom: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+}
+
+.result-card h2 {
+    margin-top: 0;
+    font-weight: 600;
+}
+
+.teacher {
+    color: #6b7280;
+    margin-bottom: 20px;
+}
+
+.test-item {
+    margin-bottom: 20px;
+}
+
+.test-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+}
+
+.progress-bar {
+    background: #e5e7eb;
+    height: 8px;
+    border-radius: 5px;
+    margin: 8px 0;
+}
+
+.progress {
+    background: #4e73df;
+    height: 8px;
+    border-radius: 5px;
+}
+
+.comment {
+    font-size: 14px;
+    color: #374151;
+}
+
+.report-item {
+    background: #f9fafc;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.evaluation {
+    display: inline-block;
+    margin-top: 5px;
+    font-weight: 600;
+    color: #1cc88a;
+}
