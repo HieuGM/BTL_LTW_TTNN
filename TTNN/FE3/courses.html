@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý khóa học - Quản lý Trung tâm Ngoại ngữ</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>TTNN Admin</h2>
+                <p>Quản lý trung tâm</p>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Admin</div>
+                    <a href="dashboard.html" class="nav-item">
+                        <i class="fas fa-chart-line"></i>
+                        Dashboard
+                    </a>
+                    <a href="courses.html" class="nav-item active">
+                        <i class="fas fa-book"></i>
+                        Quản lý khóa học
+                    </a>
+                    <a href="reports.html" class="nav-item">
+                        <i class="fas fa-chart-bar"></i>
+                        Báo cáo - Thống kê
+                    </a>
+                    <a href="settings.html" class="nav-item">
+                        <i class="fas fa-cog"></i>
+                        Cấu hình & Audit
+                    </a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-section-title">Khác</div>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-bell"></i>
+                        Thông báo
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-user-circle"></i>
+                        Tài khoản
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Đăng xuất
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h1>Quản lý khóa học</h1>
+                    <div class="breadcrumb">
+                        <a href="dashboard.html">Trang chủ</a>
+                        <span>/</span>
+                        <span>Quản lý khóa học</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="header-search">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Tìm kiếm...">
+                    </div>
+                    <div class="header-icons">
+                        <button class="icon-btn">
+                            <i class="fas fa-bell"></i>
+                            <span class="badge">5</span>
+                        </button>
+                        <button class="icon-btn">
+                            <i class="fas fa-envelope"></i>
+                            <span class="badge">3</span>
+                        </button>
+                    </div>
+                    <div class="user-menu">
+                        <div class="user-avatar">AD</div>
+                        <div class="user-info">
+                            <div class="user-name">Admin User</div>
+                            <div class="user-role">Quản trị viên</div>
+                        </div>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <!-- Action Bar -->
+                <div class="d-flex justify-between align-center mb-3">
+                    <div>
+                        <h2 style="font-size: 1.5rem; font-weight: 600;">Danh sách khóa học</h2>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem;">Quản lý tất cả khóa học của trung tâm</p>
+                    </div>
+                    <a href="course-form.html" class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Thêm khóa học mới
+                    </a>
+                </div>
+
+                <!-- Filters -->
+                <div class="filters">
+                    <div class="filter-item">
+                        <label class="form-label">Tìm kiếm</label>
+                        <input type="text" class="form-control" placeholder="Tìm theo tên khóa học...">
+                    </div>
+                    <div class="filter-item">
+                        <label class="form-label">Trình độ</label>
+                        <select class="form-control">
+                            <option value="">Tất cả</option>
+                            <option value="beginner">Cơ bản</option>
+                            <option value="intermediate">Trung cấp</option>
+                            <option value="advanced">Nâng cao</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label class="form-label">Loại khóa học</label>
+                        <select class="form-control">
+                            <option value="">Tất cả</option>
+                            <option value="ielts">IELTS</option>
+                            <option value="toeic">TOEIC</option>
+                            <option value="conversation">Giao tiếp</option>
+                            <option value="kids">Thiếu nhi</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label class="form-label">Trạng thái</label>
+                        <select class="form-control">
+                            <option value="">Tất cả</option>
+                            <option value="active">Đang mở</option>
+                            <option value="inactive">Tạm ngưng</option>
+                        </select>
+                    </div>
+                    <div class="filter-item" style="display: flex; align-items: flex-end;">
+                        <button class="btn btn-primary w-full">
+                            <i class="fas fa-filter"></i>
+                            Lọc
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Courses List -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Mã khóa học</th>
+                                        <th>Tên khóa học</th>
+                                        <th>Trình độ</th>
+                                        <th>Số buổi</th>
+                                        <th>Học phí</th>
+                                        <th>Đối tượng</th>
+                                        <th>Trạng thái</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>#IELTS60</strong></td>
+                                        <td>
+                                            <div style="font-weight: 500;">IELTS 6.0 Foundation</div>
+                                            <div style="font-size: 0.8125rem; color: var(--text-secondary);">Khóa học IELTS cơ bản đạt 6.0</div>
+                                        </td>
+                                        <td><span class="badge badge-info">Trung cấp</span></td>
+                                        <td>36 buổi</td>
+                                        <td><strong>6,500,000đ</strong></td>
+                                        <td>Sinh viên, người đi làm</td>
+                                        <td><span class="badge badge-success">Đang mở</span></td>
+                                        <td>
+                                            <div class="table-actions">
+                                                <a href="course-form.html?id=1" class="btn btn-outline btn-sm">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <button class="btn btn-danger btn-sm" onclick="deleteCourse(1)">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>#IELTS70</strong></td>
+                                        <td>
+                                            <div style="font-weight: 500;">IELTS 7.0 Advanced</div>
+                                            <div style="font-size: 0.8125rem; color: var(--text-secondary);">Khóa học IELTS nâng cao đạt 7.0+</div>
+                                        </td>
+                                        <td><span class="badge badge-warning">Nâng cao</span></td>
+                                        <td>48 buổi</td>
+                                        <td><strong>8,500,000đ</strong></td>
+                                        <td>Đã có IELTS 5.5+</td>
+                                        <td><span class="badge badge-success">Đang mở</span></td>
+                                        <td>
+                                            <div class="table-actions">
+                                                <a href="course-form.html?id=2" class="btn btn-outline btn-sm">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <button class="btn btn-danger btn-sm" onclick="deleteCourse(2)">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>#TOEIC650</strong></td>
+                                        <td>
+                                            <div style="font-weight: 500;">TOEIC 650 Target</div>
+                                            <div style="font-size: 0.8125rem; color: var(--text-secondary);">Khóa học TOEIC mục tiêu 650 điểm</div>
+                                        </td>
+                                        <td><span class="badge badge-info">Trung cấp</span></td>
+                                        <td>30 buổi</td>
+                                        <td><strong>5,500,000đ</strong></td>
+                                        <td>Sinh viên</td>
+                                        <td><span class="badge badge-success">Đang mở</span></td>
+                                        <td>
+                                            <div class="table-actions">
+                                                <a href="course-form.html?id=3" class="btn btn-outline btn-sm">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <button class="btn btn-danger btn-sm" onclick="deleteCourse(3)">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>#GTCB01</strong></td>
+                                        <td>
+                                            <div style="font-weight: 500;">Giao tiếp cơ bản</div>
+                                            <div style="font-size: 0.8125rem; color: var(--text-secondary);">Khóa học giao tiếp tiếng Anh cơ bản</div>
+                                        </td>
+                                        <td><span class="badge badge-primary">Cơ bản</span></td>
+                                        <td>24 buổi</td>
+                                        <td><strong>4,000,000đ</strong></td>
+                                        <td>Người mất gốc</td>
+                                        <td><span class="badge badge-success">Đang mở</span></td>
+                                        <td>
+                                            <div class="table-actions">
+                                                <a href="course-form.html?id=4" class="btn btn-outline btn-sm">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <button class="btn btn-danger btn-sm" onclick="deleteCourse(4)">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>#KIDSB1</strong></td>
+                                        <td>
+                                            <div style="font-weight: 500;">English for Kids - Beginner</div>
+                                            <div style="font-size: 0.8125rem; color: var(--text-secondary);">Tiếng Anh thiếu nhi cơ bản</div>
+                                        </td>
+                                        <td><span class="badge badge-primary">Cơ bản</span></td>
+                                        <td>36 buổi</td>
+                                        <td><strong>5,000,000đ</strong></td>
+                                        <td>7-10 tuổi</td>
+                                        <td><span class="badge badge-success">Đang mở</span></td>
+                                        <td>
+                                            <div class="table-actions">
+                                                <a href="course-form.html?id=5" class="btn btn-outline btn-sm">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <button class="btn btn-danger btn-sm" onclick="deleteCourse(5)">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>#BUSIN01</strong></td>
+                                        <td>
+                                            <div style="font-weight: 500;">Business English Communication</div>
+                                            <div style="font-size: 0.8125rem; color: var(--text-secondary);">Tiếng Anh giao tiếp doanh nghiệp</div>
+                                        </td>
+                                        <td><span class="badge badge-info">Trung cấp</span></td>
+                                        <td>30 buổi</td>
+                                        <td><strong>7,000,000đ</strong></td>
+                                        <td>Người đi làm</td>
+                                        <td><span class="badge badge-secondary">Tạm ngưng</span></td>
+                                        <td>
+                                            <div class="table-actions">
+                                                <a href="course-form.html?id=6" class="btn btn-outline btn-sm">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <button class="btn btn-danger btn-sm" onclick="deleteCourse(6)">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Pagination -->
+                        <div class="pagination">
+                            <div class="pagination-info">
+                                Hiển thị <strong>1-6</strong> trong tổng số <strong>6</strong> khóa học
+                            </div>
+                            <div class="pagination-buttons">
+                                <button disabled>
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <button class="active">1</button>
+                                <button>2</button>
+                                <button>3</button>
+                                <button>
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Delete Confirm Modal -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Xác nhận xóa</h3>
+                <button class="modal-close" onclick="closeDeleteModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có chắc chắn muốn xóa khóa học này không?</p>
+                <p style="color: var(--danger-color); font-size: 0.875rem; margin-top: 0.5rem;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Lưu ý: Hành động này không thể hoàn tác!
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeDeleteModal()">Hủy</button>
+                <button class="btn btn-danger" onclick="confirmDelete()">Xóa khóa học</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let courseToDelete = null;
+
+        function deleteCourse(courseId) {
+            courseToDelete = courseId;
+            document.getElementById('deleteModal').classList.add('active');
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('active');
+            courseToDelete = null;
+        }
+
+        function confirmDelete() {
+            if (courseToDelete) {
+                console.log('Deleting course:', courseToDelete);
+                // Add AJAX call here to delete course
+                alert('Khóa học đã được xóa!');
+                closeDeleteModal();
+            }
+        }
+
+        // Close modal on overlay click
+        document.getElementById('deleteModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDeleteModal();
+            }
+        });
+    </script>
+</body>
+</html>

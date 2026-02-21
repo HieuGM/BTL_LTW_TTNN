@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cấu hình & Audit Log - Quản lý Trung tâm Ngoại ngữ</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>TTNN Admin</h2>
+                <p>Quản lý trung tâm</p>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Admin</div>
+                    <a href="dashboard.html" class="nav-item">
+                        <i class="fas fa-chart-line"></i>
+                        Dashboard
+                    </a>
+                    <a href="courses.html" class="nav-item">
+                        <i class="fas fa-book"></i>
+                        Quản lý khóa học
+                    </a>
+                    <a href="reports.html" class="nav-item">
+                        <i class="fas fa-chart-bar"></i>
+                        Báo cáo - Thống kê
+                    </a>
+                    <a href="settings.html" class="nav-item active">
+                        <i class="fas fa-cog"></i>
+                        Cấu hình & Audit
+                    </a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-section-title">Khác</div>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-bell"></i>
+                        Thông báo
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-user-circle"></i>
+                        Tài khoản
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Đăng xuất
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h1>Cấu hình & Audit Log</h1>
+                    <div class="breadcrumb">
+                        <a href="dashboard.html">Trang chủ</a>
+                        <span>/</span>
+                        <span>Cấu hình & Audit</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="header-search">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Tìm kiếm...">
+                    </div>
+                    <div class="header-icons">
+                        <button class="icon-btn">
+                            <i class="fas fa-bell"></i>
+                            <span class="badge">5</span>
+                        </button>
+                        <button class="icon-btn">
+                            <i class="fas fa-envelope"></i>
+                            <span class="badge">3</span>
+                        </button>
+                    </div>
+                    <div class="user-menu">
+                        <div class="user-avatar">AD</div>
+                        <div class="user-info">
+                            <div class="user-name">Admin User</div>
+                            <div class="user-role">Quản trị viên</div>
+                        </div>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <!-- Tabs -->
+                <div class="tabs">
+                    <button class="tab active" onclick="showTab('permissions')">
+                        <i class="fas fa-shield-alt"></i>
+                        Phân quyền
+                    </button>
+                    <button class="tab" onclick="showTab('audit')">
+                        <i class="fas fa-history"></i>
+                        Nhật ký hoạt động
+                    </button>
+                </div>
+
+                <!-- Permissions Tab -->
+                <div id="permissionsTab" class="tab-content">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i>
+                        <div>
+                            <strong>Lưu ý:</strong> Phân quyền chi tiết theo chức năng. Thay đổi quyền sẽ ảnh hưởng đến tất cả người dùng có vai trò này.
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Quản lý phân quyền theo vai trò</h3>
+                        </div>
+                        <div class="card-body">
+                            <!-- Role Selector -->
+                            <div class="form-group">
+                                <label class="form-label">Chọn vai trò</label>
+                                <select class="form-control" id="roleSelect" onchange="loadPermissions()">
+                                    <option value="admin">Admin (Quản trị viên)</option>
+                                    <option value="giaovu">Giáo vụ</option>
+                                    <option value="ketoan">Kế toán</option>
+                                    <option value="teacher">Giảng viên</option>
+                                    <option value="student">Học viên</option>
+                                </select>
+                            </div>
+
+                            <!-- Permissions Matrix -->
+                            <div style="margin-top: 2rem;">
+                                <h4 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1.5rem;">Quyền truy cập module</h4>
+                                
+                                <!-- Dashboard -->
+                                <div style="margin-bottom: 2rem; padding: 1.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-lg);">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                        <div>
+                                            <h5 style="font-weight: 600; margin-bottom: 0.25rem;">
+                                                <i class="fas fa-chart-line" style="color: var(--primary-color); margin-right: 0.5rem;"></i>
+                                                Dashboard
+                                            </h5>
+                                            <p style="font-size: 0.875rem; color: var(--text-secondary);">Trang tổng quan</p>
+                                        </div>
+                                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                            <input type="checkbox" checked disabled>
+                                            <span style="font-weight: 500;">Xem</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Courses -->
+                                <div style="margin-bottom: 2rem; padding: 1.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-lg);">
+                                    <div style="margin-bottom: 1rem;">
+                                        <h5 style="font-weight: 600; margin-bottom: 0.25rem;">
+                                            <i class="fas fa-book" style="color: var(--secondary-color); margin-right: 0.5rem;"></i>
+                                            Quản lý khóa học
+                                        </h5>
+                                        <p style="font-size: 0.875rem; color: var(--text-secondary);">CRUD khóa học</p>
+                                    </div>
+                                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+                                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                            <input type="checkbox" checked>
+                                            <span>Xem</span>
+                                        </label>
+                                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                            <input type="checkbox" checked>
+                                            <span>Thêm</span>
+                                        </label>
+                                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                            <input type="checkbox" checked>
+                                            <span>Sửa</span>
+                                        </label>
+                                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                            <input type="checkbox" checked>
+                                            <span>Xóa</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Classes -->
+                                <div style="margin-bottom: 2rem; padding: 1.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-lg);">
+                                    <div style="margin-bottom: 1rem;">
+                                        <h5 style="font-weight: 600; margin-bottom: 0.25rem;">
+                                            <i class="fas fa-chalkboard-teacher" style="color: var(--info-color); margin-right: 0.5rem;"></i>
+                                            Quản lý lớp học
+                                        </h5>
+                                        <p style="font-size: 0.875rem; color: var(--text-secondary);">CRUD lớp học</p>
+                                    </div>
+                                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+                                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                            <input type="checkbox" checked>
+                                            <span>Xem</span>
+                                        </label>
+                                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                            <input type="checkbox" checked>
+                                            <span>Thêm</span>
+                                        </label>
+                                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                            <input type="checkbox" checked>
+                                            <span>Sửa</span>
+                                        </label>
+                                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                            <input type="checkbox" checked>
+                                            <span>Xóa</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Students -->
+                                <div style="margin-bottom: 2rem; padding: 1.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-lg);">
+                                    <div style="margin-bottom: 1rem;">
+                                        <h5 style="font-weight: 600; margin-bottom: 0.25rem;">
+                                            <i class="fas fa-user-graduate" style="color: var(--warning-color); margin-right: 0.5rem;"></i>
+                                            Quản lý học viên
+                                        </h5>
+                                        <p style="font-size: 0.875rem; color: var(--text-secondary);">CRUD học viên</p>
+                                    </div>
+                                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+                                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                            <input type="checkbox" checked>
+                                            <span>Xem</span>
+                                        </label>
+                                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                            <input type="checkbox" checked>
+                                            <span>Thêm</span>
+                                        </label>
+                                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                            <input type="checkbox" checked>
+                                            <span>Sửa</span>
+                                        </label>
+                                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                            <input type="checkbox" checked>
+                                            <span>Xóa</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Reports -->
+                                <div style="margin-bottom: 2rem; padding: 1.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-lg);">
+                                    <div style="margin-bottom: 1rem;">
+                                        <h5 style="font-weight: 600; margin-bottom: 0.25rem;">
+                                            <i class="fas fa-chart-bar" style="color: var(--danger-color); margin-right: 0.5rem;"></i>
+                                            Báo cáo & Thống kê
+                                        </h5>
+                                        <p style="font-size: 0.875rem; color: var(--text-secondary);">Xem và xuất báo cáo</p>
+                                    </div>
+                                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+                                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                            <input type="checkbox" checked>
+                                            <span>Xem báo cáo</span>
+                                        </label>
+                                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                            <input type="checkbox" checked>
+                                            <span>Xuất báo cáo</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Settings -->
+                                <div style="margin-bottom: 2rem; padding: 1.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-lg);">
+                                    <div style="margin-bottom: 1rem;">
+                                        <h5 style="font-weight: 600; margin-bottom: 0.25rem;">
+                                            <i class="fas fa-cog" style="color: var(--text-secondary); margin-right: 0.5rem;"></i>
+                                            Cấu hình hệ thống
+                                        </h5>
+                                        <p style="font-size: 0.875rem; color: var(--text-secondary);">Cài đặt và phân quyền</p>
+                                    </div>
+                                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+                                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                            <input type="checkbox" checked>
+                                            <span>Xem</span>
+                                        </label>
+                                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                            <input type="checkbox" checked>
+                                            <span>Cấu hình</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Save Button -->
+                            <div style="border-top: 1px solid var(--border-color); padding-top: 1.5rem; display: flex; justify-content: flex-end; gap: 1rem;">
+                                <button class="btn btn-outline">
+                                    <i class="fas fa-undo"></i>
+                                    Đặt lại
+                                </button>
+                                <button class="btn btn-primary" onclick="savePermissions()">
+                                    <i class="fas fa-save"></i>
+                                    Lưu thay đổi
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audit Log Tab -->
+                <div id="auditTab" class="tab-content" style="display: none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Nhật ký hoạt động hệ thống</h3>
+                            <button class="btn btn-success btn-sm" onclick="exportAuditLog()">
+                                <i class="fas fa-file-excel"></i>
+                                Xuất báo cáo
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <!-- Filters -->
+                            <div class="filters">
+                                <div class="filter-item">
+                                    <label class="form-label">Từ ngày</label>
+                                    <input type="date" class="form-control" value="2024-02-01">
+                                </div>
+                                <div class="filter-item">
+                                    <label class="form-label">Đến ngày</label>
+                                    <input type="date" class="form-control" value="2024-02-21">
+                                </div>
+                                <div class="filter-item">
+                                    <label class="form-label">Người dùng</label>
+                                    <select class="form-control">
+                                        <option value="">Tất cả người dùng</option>
+                                        <option value="admin">Admin User</option>
+                                        <option value="giaovu1">Giáo vụ - Nguyễn Văn A</option>
+                                        <option value="ketoan1">Kế toán - Trần Thị B</option>
+                                    </select>
+                                </div>
+                                <div class="filter-item">
+                                    <label class="form-label">Hành động</label>
+                                    <select class="form-control">
+                                        <option value="">Tất cả hành động</option>
+                                        <option value="create">Tạo mới</option>
+                                        <option value="update">Cập nhật</option>
+                                        <option value="delete">Xóa</option>
+                                        <option value="login">Đăng nhập</option>
+                                        <option value="logout">Đăng xuất</option>
+                                    </select>
+                                </div>
+                                <div class="filter-item">
+                                    <label class="form-label">Module</label>
+                                    <select class="form-control">
+                                        <option value="">Tất cả module</option>
+                                        <option value="courses">Khóa học</option>
+                                        <option value="classes">Lớp học</option>
+                                        <option value="students">Học viên</option>
+                                        <option value="teachers">Giảng viên</option>
+                                    </select>
+                                </div>
+                                <div class="filter-item" style="display: flex; align-items: flex-end;">
+                                    <button class="btn btn-primary w-full">
+                                        <i class="fas fa-search"></i>
+                                        Lọc
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Audit Log Table -->
+                            <div class="table-container" style="margin-top: 1.5rem;">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Thời gian</th>
+                                            <th>Người dùng</th>
+                                            <th>Vai trò</th>
+                                            <th>Hành động</th>
+                                            <th>Module</th>
+                                            <th>Chi tiết</th>
+                                            <th>IP Address</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>21/02/2024 14:35:22</td>
+                                            <td><strong>Admin User</strong></td>
+                                            <td><span class="badge badge-danger">Admin</span></td>
+                                            <td><span class="badge badge-success">Tạo mới</span></td>
+                                            <td>Khóa học</td>
+                                            <td>Tạo khóa học "IELTS 8.0 Advanced"</td>
+                                            <td><code>192.168.1.100</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td>21/02/2024 14:20:15</td>
+                                            <td><strong>Nguyễn Văn A</strong></td>
+                                            <td><span class="badge badge-primary">Giáo vụ</span></td>
+                                            <td><span class="badge badge-warning">Cập nhật</span></td>
+                                            <td>Lớp học</td>
+                                            <td>Cập nhật lịch học lớp "TOEIC 650 - Tối T3-T5-T7"</td>
+                                            <td><code>192.168.1.105</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td>21/02/2024 13:45:32</td>
+                                            <td><strong>Trần Thị B</strong></td>
+                                            <td><span class="badge badge-info">Kế toán</span></td>
+                                            <td><span class="badge badge-success">Tạo mới</span></td>
+                                            <td>Phiếu thu</td>
+                                            <td>Tạo phiếu thu học phí cho học viên "Lê Văn C"</td>
+                                            <td><code>192.168.1.110</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td>21/02/2024 13:10:08</td>
+                                            <td><strong>Admin User</strong></td>
+                                            <td><span class="badge badge-danger">Admin</span></td>
+                                            <td><span class="badge badge-danger">Xóa</span></td>
+                                            <td>Khóa học</td>
+                                            <td>Xóa khóa học "Business English Basic"</td>
+                                            <td><code>192.168.1.100</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td>21/02/2024 12:55:41</td>
+                                            <td><strong>Phạm Văn D</strong></td>
+                                            <td><span class="badge badge-success">Giảng viên</span></td>
+                                            <td><span class="badge badge-warning">Cập nhật</span></td>
+                                            <td>Điểm danh</td>
+                                            <td>Điểm danh buổi học lớp "IELTS 6.0 - Sáng T2-T4-T6"</td>
+                                            <td><code>192.168.1.120</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td>21/02/2024 11:30:18</td>
+                                            <td><strong>Nguyễn Văn A</strong></td>
+                                            <td><span class="badge badge-primary">Giáo vụ</span></td>
+                                            <td><span class="badge badge-success">Tạo mới</span></td>
+                                            <td>Học viên</td>
+                                            <td>Thêm học viên mới "Hoàng Thị E"</td>
+                                            <td><code>192.168.1.105</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td>21/02/2024 10:15:52</td>
+                                            <td><strong>Admin User</strong></td>
+                                            <td><span class="badge badge-danger">Admin</span></td>
+                                            <td><span class="badge badge-secondary">Đăng nhập</span></td>
+                                            <td>Hệ thống</td>
+                                            <td>Đăng nhập vào hệ thống</td>
+                                            <td><code>192.168.1.100</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td>21/02/2024 09:05:33</td>
+                                            <td><strong>Trần Thị B</strong></td>
+                                            <td><span class="badge badge-info">Kế toán</span></td>
+                                            <td><span class="badge badge-warning">Cập nhật</span></td>
+                                            <td>Công nợ</td>
+                                            <td>Cập nhật trạng thái công nợ học viên "Nguyễn Văn F"</td>
+                                            <td><code>192.168.1.110</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td>20/02/2024 18:45:12</td>
+                                            <td><strong>Admin User</strong></td>
+                                            <td><span class="badge badge-danger">Admin</span></td>
+                                            <td><span class="badge badge-warning">Cập nhật</span></td>
+                                            <td>Cấu hình</td>
+                                            <td>Thay đổi phân quyền cho vai trò "Giáo vụ"</td>
+                                            <td><code>192.168.1.100</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td>20/02/2024 17:30:58</td>
+                                            <td><strong>Nguyễn Văn A</strong></td>
+                                            <td><span class="badge badge-primary">Giáo vụ</span></td>
+                                            <td><span class="badge badge-secondary">Đăng xuất</span></td>
+                                            <td>Hệ thống</td>
+                                            <td>Đăng xuất khỏi hệ thống</td>
+                                            <td><code>192.168.1.105</code></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Pagination -->
+                            <div class="pagination">
+                                <div class="pagination-info">
+                                    Hiển thị <strong>1-10</strong> trong tổng số <strong>156</strong> bản ghi
+                                </div>
+                                <div class="pagination-buttons">
+                                    <button disabled>
+                                        <i class="fas fa-chevron-left"></i>
+                                    </button>
+                                    <button class="active">1</button>
+                                    <button>2</button>
+                                    <button>3</button>
+                                    <button>4</button>
+                                    <button>5</button>
+                                    <button>
+                                        <i class="fas fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Activity Summary -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+                        <div class="card">
+                            <div class="card-body">
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <div style="width: 48px; height: 48px; background: rgba(37, 99, 235, 0.1); color: var(--primary-color); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                                        <i class="fas fa-user-lock"></i>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 0.875rem; color: var(--text-secondary);">Hoạt động hôm nay</div>
+                                        <div style="font-size: 1.5rem; font-weight: 700;">156</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <div style="width: 48px; height: 48px; background: rgba(16, 185, 129, 0.1); color: var(--secondary-color); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 0.875rem; color: var(--text-secondary);">Người dùng hoạt động</div>
+                                        <div style="font-size: 1.5rem; font-weight: 700;">12</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <div style="width: 48px; height: 48px; background: rgba(245, 158, 11, 0.1); color: var(--warning-color); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 0.875rem; color: var(--text-secondary);">Thao tác quan trọng</div>
+                                        <div style="font-size: 1.5rem; font-weight: 700;">8</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <div style="width: 48px; height: 48px; background: rgba(239, 68, 68, 0.1); color: var(--danger-color); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                                        <i class="fas fa-ban"></i>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 0.875rem; color: var(--text-secondary);">Thất bại đăng nhập</div>
+                                        <div style="font-size: 1.5rem; font-weight: 700;">3</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.style.display = 'none';
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab
+            const selectedTab = document.getElementById(tabName + 'Tab');
+            if (selectedTab) {
+                selectedTab.style.display = 'block';
+            }
+            
+            // Add active class to clicked tab
+            event.target.closest('.tab').classList.add('active');
+        }
+
+        function loadPermissions() {
+            const role = document.getElementById('roleSelect').value;
+            console.log('Loading permissions for role:', role);
+            // Add logic to load permissions for selected role
+        }
+
+        function savePermissions() {
+            alert('Đang lưu thay đổi phân quyền...');
+            // Add logic to save permissions
+        }
+
+        function exportAuditLog() {
+            alert('Đang xuất nhật ký hoạt động ra file Excel...');
+            // Add export logic
+        }
+    </script>
+</body>
+</html>

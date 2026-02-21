@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo cáo - Thống kê - Quản lý Trung tâm Ngoại ngữ</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>TTNN Admin</h2>
+                <p>Quản lý trung tâm</p>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Admin</div>
+                    <a href="dashboard.html" class="nav-item">
+                        <i class="fas fa-chart-line"></i>
+                        Dashboard
+                    </a>
+                    <a href="courses.html" class="nav-item">
+                        <i class="fas fa-book"></i>
+                        Quản lý khóa học
+                    </a>
+                    <a href="reports.html" class="nav-item active">
+                        <i class="fas fa-chart-bar"></i>
+                        Báo cáo - Thống kê
+                    </a>
+                    <a href="settings.html" class="nav-item">
+                        <i class="fas fa-cog"></i>
+                        Cấu hình & Audit
+                    </a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-section-title">Khác</div>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-bell"></i>
+                        Thông báo
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-user-circle"></i>
+                        Tài khoản
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Đăng xuất
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h1>Báo cáo - Thống kê</h1>
+                    <div class="breadcrumb">
+                        <a href="dashboard.html">Trang chủ</a>
+                        <span>/</span>
+                        <span>Báo cáo - Thống kê</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="header-search">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Tìm kiếm...">
+                    </div>
+                    <div class="header-icons">
+                        <button class="icon-btn">
+                            <i class="fas fa-bell"></i>
+                            <span class="badge">5</span>
+                        </button>
+                        <button class="icon-btn">
+                            <i class="fas fa-envelope"></i>
+                            <span class="badge">3</span>
+                        </button>
+                    </div>
+                    <div class="user-menu">
+                        <div class="user-avatar">AD</div>
+                        <div class="user-info">
+                            <div class="user-name">Admin User</div>
+                            <div class="user-role">Quản trị viên</div>
+                        </div>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <!-- Report Tabs -->
+                <div class="tabs">
+                    <button class="tab active" onclick="showTab('attendance')">
+                        <i class="fas fa-user-check"></i>
+                        Báo cáo chuyên cần
+                    </button>
+                    <button class="tab" onclick="showTab('academic')">
+                        <i class="fas fa-graduation-cap"></i>
+                        Báo cáo học tập
+                    </button>
+                    <button class="tab" onclick="showTab('finance')">
+                        <i class="fas fa-dollar-sign"></i>
+                        Báo cáo tài chính
+                    </button>
+                </div>
+
+                <!-- Attendance Report -->
+                <div id="attendanceTab" class="tab-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Báo cáo chuyên cần theo lớp</h3>
+                            <button class="btn btn-success btn-sm" onclick="exportReport('attendance')">
+                                <i class="fas fa-file-excel"></i>
+                                Xuất Excel
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <!-- Filters -->
+                            <div class="filters">
+                                <div class="filter-item">
+                                    <label class="form-label">Từ ngày</label>
+                                    <input type="date" class="form-control" value="2024-01-01">
+                                </div>
+                                <div class="filter-item">
+                                    <label class="form-label">Đến ngày</label>
+                                    <input type="date" class="form-control" value="2024-02-21">
+                                </div>
+                                <div class="filter-item">
+                                    <label class="form-label">Lớp học</label>
+                                    <select class="form-control">
+                                        <option value="">Tất cả các lớp</option>
+                                        <option value="1">IELTS 6.0 - Sáng T2-T4-T6</option>
+                                        <option value="2">TOEIC 650 - Tối T3-T5-T7</option>
+                                        <option value="3">Giao tiếp cơ bản - Cuối tuần</option>
+                                    </select>
+                                </div>
+                                <div class="filter-item" style="display: flex; align-items: flex-end;">
+                                    <button class="btn btn-primary w-full">
+                                        <i class="fas fa-search"></i>
+                                        Tìm kiếm
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Summary Cards -->
+                            <div class="stats-grid" style="margin-bottom: 1.5rem;">
+                                <div style="padding: 1.5rem; background: var(--light-bg); border-radius: var(--radius-lg);">
+                                    <div style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Tổng buổi học</div>
+                                    <div style="font-size: 2rem; font-weight: 700; color: var(--primary-color);">156</div>
+                                </div>
+                                <div style="padding: 1.5rem; background: var(--light-bg); border-radius: var(--radius-lg);">
+                                    <div style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Có mặt</div>
+                                    <div style="font-size: 2rem; font-weight: 700; color: var(--secondary-color);">92.5%</div>
+                                </div>
+                                <div style="padding: 1.5rem; background: var(--light-bg); border-radius: var(--radius-lg);">
+                                    <div style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Vắng có phép</div>
+                                    <div style="font-size: 2rem; font-weight: 700; color: var(--warning-color);">5.2%</div>
+                                </div>
+                                <div style="padding: 1.5rem; background: var(--light-bg); border-radius: var(--radius-lg);">
+                                    <div style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Vắng không phép</div>
+                                    <div style="font-size: 2rem; font-weight: 700; color: var(--danger-color);">2.3%</div>
+                                </div>
+                            </div>
+
+                            <!-- Detailed Table -->
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Lớp học</th>
+                                            <th>Tổng HV</th>
+                                            <th>Tổng buổi</th>
+                                            <th>Có mặt</th>
+                                            <th>Vắng có phép</th>
+                                            <th>Vắng không phép</th>
+                                            <th>Tỷ lệ tham gia</th>
+                                            <th>Hành động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>IELTS 6.0 - Sáng T2-T4-T6</strong></td>
+                                            <td>18</td>
+                                            <td>36</td>
+                                            <td><span class="badge badge-success">612</span></td>
+                                            <td><span class="badge badge-warning">28</span></td>
+                                            <td><span class="badge badge-danger">8</span></td>
+                                            <td>
+                                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                                    <div style="flex: 1; height: 8px; background: var(--border-color); border-radius: 4px; overflow: hidden;">
+                                                        <div style="width: 94.5%; height: 100%; background: var(--secondary-color);"></div>
+                                                    </div>
+                                                    <span style="font-weight: 600;">94.5%</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-outline btn-sm">
+                                                    <i class="fas fa-eye"></i>
+                                                    Chi tiết
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>TOEIC 650 - Tối T3-T5-T7</strong></td>
+                                            <td>15</td>
+                                            <td>30</td>
+                                            <td><span class="badge badge-success">405</span></td>
+                                            <td><span class="badge badge-warning">32</span></td>
+                                            <td><span class="badge badge-danger">13</span></td>
+                                            <td>
+                                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                                    <div style="flex: 1; height: 8px; background: var(--border-color); border-radius: 4px; overflow: hidden;">
+                                                        <div style="width: 90%; height: 100%; background: var(--secondary-color);"></div>
+                                                    </div>
+                                                    <span style="font-weight: 600;">90%</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-outline btn-sm">
+                                                    <i class="fas fa-eye"></i>
+                                                    Chi tiết
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Giao tiếp cơ bản - Cuối tuần</strong></td>
+                                            <td>12</td>
+                                            <td>24</td>
+                                            <td><span class="badge badge-success">265</span></td>
+                                            <td><span class="badge badge-warning">18</span></td>
+                                            <td><span class="badge badge-danger">5</span></td>
+                                            <td>
+                                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                                    <div style="flex: 1; height: 8px; background: var(--border-color); border-radius: 4px; overflow: hidden;">
+                                                        <div style="width: 92%; height: 100%; background: var(--secondary-color);"></div>
+                                                    </div>
+                                                    <span style="font-weight: 600;">92%</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-outline btn-sm">
+                                                    <i class="fas fa-eye"></i>
+                                                    Chi tiết
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Students with Poor Attendance -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Học viên có tỷ lệ vắng cao</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Họ tên</th>
+                                            <th>Lớp</th>
+                                            <th>Tổng buổi</th>
+                                            <th>Vắng</th>
+                                            <th>Tỷ lệ vắng</th>
+                                            <th>Trạng thái</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Nguyễn Văn A</strong></td>
+                                            <td>IELTS 6.0 - Sáng T2-T4-T6</td>
+                                            <td>36</td>
+                                            <td>8</td>
+                                            <td><span class="badge badge-danger">22.2%</span></td>
+                                            <td><span class="badge badge-warning">Cảnh báo</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Trần Thị B</strong></td>
+                                            <td>TOEIC 650 - Tối T3-T5-T7</td>
+                                            <td>30</td>
+                                            <td>6</td>
+                                            <td><span class="badge badge-warning">20%</span></td>
+                                            <td><span class="badge badge-warning">Cảnh báo</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Academic Report (Hidden by default) -->
+                <div id="academicTab" class="tab-content" style="display: none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Báo cáo kết quả học tập</h3>
+                            <button class="btn btn-success btn-sm" onclick="exportReport('academic')">
+                                <i class="fas fa-file-excel"></i>
+                                Xuất Excel
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <!-- Filters -->
+                            <div class="filters">
+                                <div class="filter-item">
+                                    <label class="form-label">Kỳ học</label>
+                                    <select class="form-control">
+                                        <option value="">Tháng 2/2024</option>
+                                        <option value="">Tháng 1/2024</option>
+                                        <option value="">Tháng 12/2023</option>
+                                    </select>
+                                </div>
+                                <div class="filter-item">
+                                    <label class="form-label">Lớp học</label>
+                                    <select class="form-control">
+                                        <option value="">Tất cả các lớp</option>
+                                        <option value="1">IELTS 6.0 - Sáng T2-T4-T6</option>
+                                        <option value="2">TOEIC 650 - Tối T3-T5-T7</option>
+                                    </select>
+                                </div>
+                                <div class="filter-item">
+                                    <label class="form-label">Loại bài kiểm tra</label>
+                                    <select class="form-control">
+                                        <option value="">Tất cả</option>
+                                        <option value="midterm">Giữa khóa</option>
+                                        <option value="final">Cuối khóa</option>
+                                    </select>
+                                </div>
+                                <div class="filter-item" style="display: flex; align-items: flex-end;">
+                                    <button class="btn btn-primary w-full">
+                                        <i class="fas fa-search"></i>
+                                        Tìm kiếm
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Summary Stats -->
+                            <div class="stats-grid" style="margin-bottom: 1.5rem;">
+                                <div style="padding: 1.5rem; background: var(--light-bg); border-radius: var(--radius-lg);">
+                                    <div style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Điểm trung bình</div>
+                                    <div style="font-size: 2rem; font-weight: 700; color: var(--primary-color);">7.8</div>
+                                </div>
+                                <div style="padding: 1.5rem; background: var(--light-bg); border-radius: var(--radius-lg);">
+                                    <div style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Giỏi</div>
+                                    <div style="font-size: 2rem; font-weight: 700; color: var(--secondary-color);">32%</div>
+                                </div>
+                                <div style="padding: 1.5rem; background: var(--light-bg); border-radius: var(--radius-lg);">
+                                    <div style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Khá</div>
+                                    <div style="font-size: 2rem; font-weight: 700; color: var(--info-color);">45%</div>
+                                </div>
+                                <div style="padding: 1.5rem; background: var(--light-bg); border-radius: var(--radius-lg);">
+                                    <div style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Cần cải thiện</div>
+                                    <div style="font-size: 2rem; font-weight: 700; color: var(--warning-color);">23%</div>
+                                </div>
+                            </div>
+
+                            <!-- Academic Results Table -->
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Lớp học</th>
+                                            <th>Số HV</th>
+                                            <th>Listening</th>
+                                            <th>Speaking</th>
+                                            <th>Reading</th>
+                                            <th>Writing</th>
+                                            <th>Trung bình</th>
+                                            <th>Xếp loại</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>IELTS 6.0 - Sáng T2-T4-T6</strong></td>
+                                            <td>18</td>
+                                            <td>7.5</td>
+                                            <td>7.2</td>
+                                            <td>8.1</td>
+                                            <td>7.3</td>
+                                            <td><strong>7.5</strong></td>
+                                            <td><span class="badge badge-success">Giỏi</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>TOEIC 650 - Tối T3-T5-T7</strong></td>
+                                            <td>15</td>
+                                            <td>8.2</td>
+                                            <td>7.8</td>
+                                            <td>8.5</td>
+                                            <td>7.9</td>
+                                            <td><strong>8.1</strong></td>
+                                            <td><span class="badge badge-success">Giỏi</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Giao tiếp cơ bản - Cuối tuần</strong></td>
+                                            <td>12</td>
+                                            <td>6.8</td>
+                                            <td>7.1</td>
+                                            <td>7.5</td>
+                                            <td>6.9</td>
+                                            <td><strong>7.1</strong></td>
+                                            <td><span class="badge badge-info">Khá</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Finance Report (Hidden by default) -->
+                <div id="financeTab" class="tab-content" style="display: none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Báo cáo doanh thu & công nợ</h3>
+                            <button class="btn btn-success btn-sm" onclick="exportReport('finance')">
+                                <i class="fas fa-file-excel"></i>
+                                Xuất Excel
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <!-- Filters -->
+                            <div class="filters">
+                                <div class="filter-item">
+                                    <label class="form-label">Từ ngày</label>
+                                    <input type="date" class="form-control" value="2024-01-01">
+                                </div>
+                                <div class="filter-item">
+                                    <label class="form-label">Đến ngày</label>
+                                    <input type="date" class="form-control" value="2024-02-21">
+                                </div>
+                                <div class="filter-item">
+                                    <label class="form-label">Khóa học</label>
+                                    <select class="form-control">
+                                        <option value="">Tất cả khóa học</option>
+                                        <option value="1">IELTS 6.0</option>
+                                        <option value="2">TOEIC 650</option>
+                                        <option value="3">Giao tiếp cơ bản</option>
+                                    </select>
+                                </div>
+                                <div class="filter-item" style="display: flex; align-items: flex-end;">
+                                    <button class="btn btn-primary w-full">
+                                        <i class="fas fa-search"></i>
+                                        Tìm kiếm
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Financial Summary -->
+                            <div class="stats-grid" style="margin-bottom: 1.5rem;">
+                                <div style="padding: 1.5rem; background: var(--light-bg); border-radius: var(--radius-lg);">
+                                    <div style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Tổng doanh thu</div>
+                                    <div style="font-size: 2rem; font-weight: 700; color: var(--primary-color);">245M</div>
+                                </div>
+                                <div style="padding: 1.5rem; background: var(--light-bg); border-radius: var(--radius-lg);">
+                                    <div style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Đã thu</div>
+                                    <div style="font-size: 2rem; font-weight: 700; color: var(--secondary-color);">213M</div>
+                                </div>
+                                <div style="padding: 1.5rem; background: var(--light-bg); border-radius: var(--radius-lg);">
+                                    <div style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Công nợ</div>
+                                    <div style="font-size: 2rem; font-weight: 700; color: var(--danger-color);">32M</div>
+                                </div>
+                                <div style="padding: 1.5rem; background: var(--light-bg); border-radius: var(--radius-lg);">
+                                    <div style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Tỷ lệ thu</div>
+                                    <div style="font-size: 2rem; font-weight: 700; color: var(--info-color);">86.9%</div>
+                                </div>
+                            </div>
+
+                            <!-- Revenue by Course -->
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Khóa học</th>
+                                            <th>Số HV</th>
+                                            <th>Tổng doanh thu</th>
+                                            <th>Đã thu</th>
+                                            <th>Công nợ</th>
+                                            <th>Tỷ lệ thu</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>IELTS 6.0 Foundation</strong></td>
+                                            <td>45</td>
+                                            <td><strong>292,500,000đ</strong></td>
+                                            <td>255,000,000đ</td>
+                                            <td><span style="color: var(--danger-color); font-weight: 600;">37,500,000đ</span></td>
+                                            <td>
+                                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                                    <div style="flex: 1; height: 8px; background: var(--border-color); border-radius: 4px; overflow: hidden;">
+                                                        <div style="width: 87.2%; height: 100%; background: var(--secondary-color);"></div>
+                                                    </div>
+                                                    <span style="font-weight: 600;">87.2%</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>IELTS 7.0 Advanced</strong></td>
+                                            <td>28</td>
+                                            <td><strong>238,000,000đ</strong></td>
+                                            <td>210,000,000đ</td>
+                                            <td><span style="color: var(--danger-color); font-weight: 600;">28,000,000đ</span></td>
+                                            <td>
+                                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                                    <div style="flex: 1; height: 8px; background: var(--border-color); border-radius: 4px; overflow: hidden;">
+                                                        <div style="width: 88.2%; height: 100%; background: var(--secondary-color);"></div>
+                                                    </div>
+                                                    <span style="font-weight: 600;">88.2%</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>TOEIC 650 Target</strong></td>
+                                            <td>52</td>
+                                            <td><strong>286,000,000đ</strong></td>
+                                            <td>248,000,000đ</td>
+                                            <td><span style="color: var(--danger-color); font-weight: 600;">38,000,000đ</span></td>
+                                            <td>
+                                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                                    <div style="flex: 1; height: 8px; background: var(--border-color); border-radius: 4px; overflow: hidden;">
+                                                        <div style="width: 86.7%; height: 100%; background: var(--secondary-color);"></div>
+                                                    </div>
+                                                    <span style="font-weight: 600;">86.7%</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Giao tiếp cơ bản</strong></td>
+                                            <td>38</td>
+                                            <td><strong>152,000,000đ</strong></td>
+                                            <td>138,000,000đ</td>
+                                            <td><span style="color: var(--danger-color); font-weight: 600;">14,000,000đ</span></td>
+                                            <td>
+                                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                                    <div style="flex: 1; height: 8px; background: var(--border-color); border-radius: 4px; overflow: hidden;">
+                                                        <div style="width: 90.8%; height: 100%; background: var(--secondary-color);"></div>
+                                                    </div>
+                                                    <span style="font-weight: 600;">90.8%</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot style="background: var(--light-bg); font-weight: 600;">
+                                        <tr>
+                                            <td>Tổng cộng</td>
+                                            <td>163</td>
+                                            <td><strong>968,500,000đ</strong></td>
+                                            <td>851,000,000đ</td>
+                                            <td><span style="color: var(--danger-color);">117,500,000đ</span></td>
+                                            <td><strong>87.9%</strong></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Outstanding Debts -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Công nợ quá hạn</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Học viên</th>
+                                            <th>Lớp</th>
+                                            <th>Số tiền nợ</th>
+                                            <th>Hạn thanh toán</th>
+                                            <th>Quá hạn</th>
+                                            <th>Trạng thái</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Nguyễn Văn A</strong></td>
+                                            <td>IELTS 6.0 - Sáng T2-T4-T6</td>
+                                            <td><strong>3,250,000đ</strong></td>
+                                            <td>15/02/2024</td>
+                                            <td><span class="badge badge-danger">6 ngày</span></td>
+                                            <td><span class="badge badge-danger">Quá hạn</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Trần Thị B</strong></td>
+                                            <td>TOEIC 650 - Tối T3-T5-T7</td>
+                                            <td><strong>2,750,000đ</strong></td>
+                                            <td>10/02/2024</td>
+                                            <td><span class="badge badge-danger">11 ngày</span></td>
+                                            <td><span class="badge badge-danger">Quá hạn</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.style.display = 'none';
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab
+            const selectedTab = document.getElementById(tabName + 'Tab');
+            if (selectedTab) {
+                selectedTab.style.display = 'block';
+            }
+            
+            // Add active class to clicked tab
+            event.target.closest('.tab').classList.add('active');
+        }
+
+        function exportReport(reportType) {
+            alert(`Đang xuất báo cáo ${reportType} ra file Excel...`);
+            // Add export logic here
+        }
+    </script>
+</body>
+</html>
