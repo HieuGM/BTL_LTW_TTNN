@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Chi tiết khóa học</title>
+    <link rel="stylesheet" href="courses_details.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="container">
+        <h2 class="logo">Anh Ngữ ABC</h2>
+    </div>
+</header>
+
+<section class="course-detail">
+    <div class="container">
+
+        <h1 id="courseTitle"></h1>
+
+        <div class="detail-section">
+            <h3>Mô tả khóa học</h3>
+            <p id="courseDescription"></p>
+        </div>
+
+        <div class="detail-section">
+            <h3>Đối tượng phù hợp</h3>
+            <p id="courseTarget"></p>
+        </div>
+
+        <div class="detail-section">
+            <h3>Mục tiêu đầu ra</h3>
+            <p id="courseGoal"></p>
+        </div>
+
+        <div class="detail-section">
+            <h3>Lộ trình học</h3>
+            <p id="courseRoadmap"></p>
+        </div>
+
+        <div class="detail-section">
+            <h3>Thời lượng</h3>
+            <p id="courseDuration"></p>
+        </div>
+
+        <div class="detail-section highlight">
+            <h3>Học phí</h3>
+            <p id="courseFee"></p>
+            <p id="coursePromotion" class="promotion"></p>
+        </div>
+
+        <div class="detail-section">
+            <h3>Lịch khai giảng</h3>
+            <p id="courseSchedule"></p>
+        </div>
+
+        <div class="detail-section">
+            <h3>Giáo trình / Tài liệu</h3>
+            <p id="courseMaterial"></p>
+        </div>
+
+        <div class="detail-section">
+            <h3>Giảng viên tiêu biểu</h3>
+            <p id="courseTeacher"></p>
+        </div>
+
+        <a class="register-btn">Đăng ký khóa học</a>
+
+    </div>
+</section>
+
+<script src="../FakeData/courses-data.js"></script>
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const courseId = params.get("id");
+
+    const course = courses.find(c => c.id === courseId);
+
+    if (course) {
+        document.getElementById("courseTitle").innerText = course.title;
+        document.getElementById("courseDescription").innerText = course.description;
+        document.getElementById("courseTarget").innerText = course.target;
+        document.getElementById("courseGoal").innerText = course.goal;
+        document.getElementById("courseRoadmap").innerText = course.roadmap;
+        document.getElementById("courseDuration").innerText = course.duration;
+        document.getElementById("courseFee").innerText = course.fee;
+        document.getElementById("coursePromotion").innerText = course.promotion;
+        document.getElementById("courseSchedule").innerText = course.schedule;
+        document.getElementById("courseMaterial").innerText = course.material;
+        document.getElementById("courseTeacher").innerText = course.teacher;
+    }
+    const registerBtn = document.querySelector(".register-btn");
+    if (registerBtn) {
+        registerBtn.href = `Register_Courses.html?id=${course.id}`;
+    }
+</script>
+</body>
+</html>

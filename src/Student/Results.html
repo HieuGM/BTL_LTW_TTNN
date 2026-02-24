@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Kết quả học tập</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="Results.css">
+</head>
+<body>
+
+<div class="layout">
+
+    <aside class="sidebar">
+        <h2 class="logo">Anh Ngữ ABC</h2>
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="schedule.html">Lịch học</a>
+            <a href="results.html" class="active">Kết quả</a>
+            <a href="tuition.html">Học phí</a>
+            <a href="profile.html">Hồ sơ cá nhân</a>
+        </nav>
+    </aside>
+
+    <main class="content">
+
+        <h1>Kết quả học tập</h1>
+
+        <div id="classResultsContainer"></div>
+
+    </main>
+</div>
+
+<script src="../FakeData/student-data.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const container = document.getElementById("classResultsContainer");
+
+        student.classes.forEach(cls => {
+
+            const classSection = document.createElement("div");
+            classSection.classList.add("result-card");
+
+            classSection.innerHTML = `
+            <h2>${cls.name}</h2>
+            <p class="teacher">Giảng viên: ${cls.teacher}</p>
+
+            <h3>Điểm kiểm tra</h3>
+            <div class="test-list"></div>
+
+            <h3>Báo cáo tiến độ</h3>
+            <div class="progress-list"></div>
+        `;
+
+            container.appendChild(classSection);
+
+            // ===== Render Tests =====
+            const testList = classSection.querySelector(".test-list");
+
+            cls.results.tests.forEach(test => {
+
+                const percent = (test.score / test.maxScore) * 100;
+
+                const testItem = document.createElement("div");
+                testItem.classList.add("test-item");
+
+                testItem.innerHTML = `
+                <div class="test-header">
+                    <strong>${test.name}</strong>
+                    <span>${test.score}/${test.maxScore}</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" style="width:${percent}%"></div>
+                </div>
+                <p class="comment">${test.teacherComment}</p>
+            `;
+
+                testList.appendChild(testItem);
+            });
+
+            // ===== Render Progress Reports =====
+            const progressList = classSection.querySelector(".progress-list");
+
+            cls.results.progressReports.forEach(report => {
+
+                const reportItem = document.createElement("div");
+                reportItem.classList.add("report-item");
+
+                reportItem.innerHTML = `
+                <strong>${report.stage}</strong>
+                <p>${report.description}</p>
+                <span class="evaluation">${report.evaluation}</span>
+            `;
+
+                progressList.appendChild(reportItem);
+            });
+
+        });
+
+    });
+</script>
+
+</body>
+</html>

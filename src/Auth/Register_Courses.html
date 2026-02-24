@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng ký khóa học</title>
+    <link rel="stylesheet" href="Register_Courses.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="container">
+        <h2 class="logo">Anh Ngữ ABC</h2>
+    </div>
+</header>
+
+<section class="register-section">
+    <div class="container">
+
+        <h1>Đăng ký khóa học</h1>
+
+        <form id="registerForm" class="register-form">
+
+            <label>Họ và tên *</label>
+            <input type="text" required>
+
+            <label>SĐT *</label>
+            <input type="tel" required>
+
+            <label>Email</label>
+            <input type="email">
+
+            <label>Đối tượng *</label>
+            <select required>
+                <option value="">-- Chọn --</option>
+                <option>Học sinh</option>
+                <option>Sinh viên</option>
+                <option>Phụ huynh</option>
+                <option>Người đi làm</option>
+            </select>
+
+            <label>Khóa học quan tâm *</label>
+            <select id="courseSelect" required>
+                <option value="">-- Chọn khóa học --</option>
+            </select>
+
+
+            <label>Trình độ hiện tại *</label>
+            <select required>
+                <option value="">-- Chọn --</option>
+                <option>Mất gốc</option>
+                <option>Cơ bản</option>
+                <option>Đã học trước đó</option>
+            </select>
+
+            <label>Mục tiêu</label>
+            <input type="text" placeholder="VD: IELTS 6.5">
+
+            <label>Ghi chú</label>
+            <textarea rows="4"
+                      placeholder="Khung giờ phù hợp, nhu cầu đặc biệt..."></textarea>
+
+            <button type="submit" class="submit-btn">
+                Gửi đăng ký
+            </button>
+
+            <p id="successMessage" class="success-message"></p>
+
+        </form>
+
+    </div>
+</section>
+
+<script src="../FakeData/courses-data.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const select = document.getElementById("courseSelect");
+
+        const params = new URLSearchParams(window.location.search);
+        const selectedId = params.get("id");
+
+        // Render toàn bộ khóa học vào dropdown
+        courses.forEach(course => {
+            const option = document.createElement("option");
+            option.value = course.id;
+            option.textContent = course.title;
+
+            if (selectedId && course.id === selectedId) {
+                option.selected = true;
+            }
+
+            select.appendChild(option);
+        });
+
+        document.getElementById("registerForm")
+            .addEventListener("submit", function(e) {
+                e.preventDefault();
+
+                document.getElementById("successMessage")
+                    .innerText = "Đăng ký thành công! Trung tâm sẽ liên hệ với bạn sớm nhất.";
+
+                this.reset();
+            });
+
+    });
+</script>
+
+
+</body>
+</html>

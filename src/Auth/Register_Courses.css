@@ -1,0 +1,64 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+}
+
+.container {
+    width: 90%;
+    max-width: 600px;
+    margin: auto;
+}
+
+.register-section {
+    padding: 50px 0;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #4e73df;
+}
+
+.register-form {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.register-form label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.register-form input,
+.register-form select,
+.register-form textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.submit-btn {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    background: #4e73df;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    background: #3b5ccc;
+}
+
+.success-message {
+    margin-top: 15px;
+    color: green;
+    font-weight: bold;
+}

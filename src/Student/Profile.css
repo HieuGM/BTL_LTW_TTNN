@@ -1,0 +1,53 @@
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.profile-card,
+.password-card {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+    margin-bottom: 30px;
+}
+
+.profile-card h2,
+.password-card h2 {
+    margin-top: 0;
+    font-weight: 600;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+}
+
+button {
+    margin-top: 15px;
+    padding: 10px 15px;
+    background: #4e73df;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+p {
+    margin-top: 10px;
+    font-size: 14px;
+}

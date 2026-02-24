@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Hồ sơ cá nhân</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="Profile.css">
+</head>
+<body>
+
+<div class="layout">
+
+    <aside class="sidebar">
+        <h2 class="logo">Anh Ngữ ABC</h2>
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="schedule.html">Lịch học</a>
+            <a href="results.html">Kết quả</a>
+            <a href="tuition.html">Học phí</a>
+            <a href="profile.html" class="active">Hồ sơ cá nhân</a>
+        </nav>
+    </aside>
+
+    <main class="content">
+
+        <h1>Hồ sơ cá nhân</h1>
+
+        <!-- Thông tin cá nhân -->
+        <section class="profile-card">
+            <h2>Thông tin cá nhân</h2>
+
+            <label>Email</label>
+            <input type="email" id="email">
+
+            <label>SĐT</label>
+            <input type="text" id="phone">
+
+            <label>Ngày sinh</label>
+            <input type="date" id="birthday">
+
+            <label>Địa chỉ</label>
+            <input type="text" id="address">
+
+            <button id="saveProfile">Cập nhật thông tin</button>
+            <p id="profileMessage"></p>
+        </section>
+
+        <!-- Đổi mật khẩu -->
+        <section class="password-card">
+            <h2>Đổi mật khẩu</h2>
+
+            <label>Mật khẩu hiện tại</label>
+            <input type="password" id="currentPassword">
+
+            <label>Mật khẩu mới</label>
+            <input type="password" id="newPassword">
+
+            <label>Nhập lại mật khẩu mới</label>
+            <input type="password" id="confirmPassword">
+
+            <button id="changePassword">Đổi mật khẩu</button>
+            <p id="passwordMessage"></p>
+        </section>
+
+    </main>
+</div>
+
+<script src="../FakeData/student-data.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        // ===== Load profile =====
+        document.getElementById("email").value =
+            student.profile.email;
+
+        document.getElementById("phone").value =
+            student.profile.phone;
+
+        document.getElementById("birthday").value =
+            student.profile.birthday;
+
+        document.getElementById("address").value =
+            student.profile.address;
+
+        // ===== Update profile (fake save) =====
+        document.getElementById("saveProfile")
+            .addEventListener("click", function () {
+
+                student.profile.email =
+                    document.getElementById("email").value;
+
+                student.profile.phone =
+                    document.getElementById("phone").value;
+
+                student.profile.birthday =
+                    document.getElementById("birthday").value;
+
+                student.profile.address =
+                    document.getElementById("address").value;
+
+                document.getElementById("profileMessage").innerText =
+                    "Cập nhật thành công (demo).";
+            });
+
+        // ===== Change password (demo) =====
+        document.getElementById("changePassword")
+            .addEventListener("click", function () {
+
+                const newPass =
+                    document.getElementById("newPassword").value;
+
+                const confirm =
+                    document.getElementById("confirmPassword").value;
+
+                if (newPass !== confirm) {
+                    document.getElementById("passwordMessage").innerText =
+                        "Mật khẩu nhập lại không khớp.";
+                    return;
+                }
+
+                document.getElementById("passwordMessage").innerText =
+                    "Đổi mật khẩu thành công (demo).";
+            });
+
+    });
+</script>
+
+</body>
+</html>

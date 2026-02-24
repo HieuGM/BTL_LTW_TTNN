@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Học viên</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="student.css">
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <h2 class="logo">Anh Ngữ ABC</h2>
+        <nav>
+            <a href="dashboard.html" class="active">Dashboard</a>
+            <a href="Schedule.html">Lịch học</a>
+            <a href="Results.html">Kết quả</a>
+            <a href="tuition.html">Học phí</a>
+            <a href="profile.html">Hồ sơ cá nhân</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="content">
+
+        <h1 id="studentName"></h1>
+
+        <!-- ===== QUICK STATS ===== -->
+        <div class="stats-grid">
+
+            <div class="stat-card blue">
+                <div class="stat-number" id="totalClasses"></div>
+                <div class="stat-label">Lớp đang học</div>
+            </div>
+
+            <div class="stat-card purple">
+                <div class="stat-number" id="totalProgress"></div>
+                <div class="stat-label">Tổng buổi đã học</div>
+            </div>
+
+            <div class="stat-card green">
+                <div class="stat-number" id="tuitionPaid"></div>
+                <div class="stat-label">Đã đóng</div>
+                <div class="tuition-sub" id="tuitionDebt"></div>
+                <div class="progress-bar">
+                    <div id="tuitionBar" class="progress"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ===== CLASS LIST ===== -->
+        <h2 style="margin-top:40px;">Các lớp đang học</h2>
+        <div id="classGrid" class="class-grid"></div>
+
+    </main>
+
+
+</div>
+
+
+<script src="../FakeData/student-data.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        // Xin chào
+        document.getElementById("studentName").innerText =
+            `Xin chào, ${student.name} 👋`;
+
+        // ===== STATS =====
+
+        // Tổng lớp
+        document.getElementById("totalClasses").innerText =
+            student.classes.length;
+
+        // Tổng buổi đã học
+        let totalCompleted = 0;
+        student.classes.forEach(cls => {
+            totalCompleted += cls.completedLessons;
+        });
+
+        document.getElementById("totalProgress").innerText =
+            totalCompleted;
+
+        // ===== Tuition =====
+
+        const total = student.tuition.total;
+        const paid = student.tuition.paid;
+        const debt = total - paid;
+
+        document.getElementById("tuitionPaid").innerText =
+            paid.toLocaleString("vi-VN") + " đ";
+
+        document.getElementById("tuitionDebt").innerText =
+            "Còn nợ: " + debt.toLocaleString("vi-VN") + " đ";
+
+        const percent = (paid / total) * 100;
+
+        document.getElementById("tuitionBar").style.width =
+            percent + "%";
+
+        // ===== CLASS CARDS =====
+
+        const grid = document.getElementById("classGrid");
+
+        student.classes.forEach(cls => {
+
+            const percent =
+                (cls.completedLessons / cls.totalLessons) * 100;
+
+            const card = document.createElement("div");
+            card.classList.add("class-card");
+
+            card.style.cursor = "pointer";
+            card.addEventListener("click", function () {
+                window.location.href =
+                    `Class_Detail.html?id=${cls.code}`;
+            });
+
+            card.innerHTML = `
+            <div class="class-header">
+                <span class="class-code">${cls.code}</span>
+                <span class="next-session">
+                    Sắp tới: ${cls.nextSession}
+                </span>
+            </div>
+
+            <h3>${cls.name}</h3>
+            <p>Giảng viên: ${cls.teacher}</p>
+
+            <p>Tiến trình:
+               ${cls.completedLessons}/${cls.totalLessons}
+            </p>
+
+            <div class="progress-bar">
+                <div class="progress"
+                     style="width:${percent}%"></div>
+            </div>
+        `;
+
+            grid.appendChild(card);
+        });
+
+    });
+
+</script>
+
+</body>
+</html>
