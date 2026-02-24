@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm/Sửa khóa học - Quản lý Trung tâm Ngoại ngữ</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>TTNN Admin</h2>
+                <p>Quản lý trung tâm</p>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Admin</div>
+                    <a href="dashboard.html" class="nav-item">
+                        <i class="fas fa-chart-line"></i>
+                        Dashboard
+                    </a>
+                    <a href="courses.html" class="nav-item active">
+                        <i class="fas fa-book"></i>
+                        Quản lý khóa học
+                    </a>
+                    <a href="reports.html" class="nav-item">
+                        <i class="fas fa-chart-bar"></i>
+                        Báo cáo - Thống kê
+                    </a>
+                    <a href="settings.html" class="nav-item">
+                        <i class="fas fa-cog"></i>
+                        Cấu hình & Audit
+                    </a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-section-title">Khác</div>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-bell"></i>
+                        Thông báo
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-user-circle"></i>
+                        Tài khoản
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Đăng xuất
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h1>Thêm khóa học mới</h1>
+                    <div class="breadcrumb">
+                        <a href="dashboard.html">Trang chủ</a>
+                        <span>/</span>
+                        <a href="courses.html">Quản lý khóa học</a>
+                        <span>/</span>
+                        <span>Thêm mới</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="header-search">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Tìm kiếm...">
+                    </div>
+                    <div class="header-icons">
+                        <button class="icon-btn">
+                            <i class="fas fa-bell"></i>
+                            <span class="badge">5</span>
+                        </button>
+                        <button class="icon-btn">
+                            <i class="fas fa-envelope"></i>
+                            <span class="badge">3</span>
+                        </button>
+                    </div>
+                    <div class="user-menu">
+                        <div class="user-avatar">AD</div>
+                        <div class="user-info">
+                            <div class="user-name">Admin User</div>
+                            <div class="user-role">Quản trị viên</div>
+                        </div>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <form id="courseForm">
+                    <!-- Basic Information -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Thông tin cơ bản</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label required">Mã khóa học</label>
+                                    <input type="text" class="form-control" placeholder="VD: IELTS60" required>
+                                    <div class="form-text">Mã khóa học duy nhất, không trùng lặp</div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label required">Tên khóa học</label>
+                                    <input type="text" class="form-control" placeholder="VD: IELTS 6.0 Foundation" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label required">Mô tả khóa học</label>
+                                <textarea class="form-control" rows="4" placeholder="Mô tả chi tiết về khóa học..." required></textarea>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label required">Trình độ</label>
+                                    <select class="form-control" required>
+                                        <option value="">-- Chọn trình độ --</option>
+                                        <option value="beginner">Cơ bản</option>
+                                        <option value="intermediate">Trung cấp</option>
+                                        <option value="advanced">Nâng cao</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label required">Loại khóa học</label>
+                                    <select class="form-control" required>
+                                        <option value="">-- Chọn loại khóa học --</option>
+                                        <option value="ielts">IELTS</option>
+                                        <option value="toeic">TOEIC</option>
+                                        <option value="conversation">Giao tiếp</option>
+                                        <option value="kids">Thiếu nhi</option>
+                                        <option value="business">Business</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label required">Đối tượng học viên</label>
+                                <input type="text" class="form-control" placeholder="VD: Sinh viên, người đi làm" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Course Details -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Chi tiết khóa học</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="form-label required">Mục tiêu đầu ra</label>
+                                <textarea class="form-control" rows="3" placeholder="Mô tả mục tiêu học viên đạt được sau khóa học..." required></textarea>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label required">Số buổi học</label>
+                                    <input type="number" class="form-control" placeholder="VD: 36" min="1" required>
+                                    <div class="form-text">Tổng số buổi học trong khóa</div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label required">Thời lượng mỗi buổi (giờ)</label>
+                                    <input type="number" class="form-control" placeholder="VD: 2" min="0.5" step="0.5" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label required">Giáo trình</label>
+                                <input type="text" class="form-control" placeholder="VD: Cambridge IELTS 15-18, Mindset for IELTS" required>
+                                <div class="form-text">Tên giáo trình, tài liệu sử dụng trong khóa học</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Nội dung chi tiết</label>
+                                <textarea class="form-control" rows="6" placeholder="Mô tả chi tiết nội dung từng giai đoạn học...&#10;VD:&#10;- Giai đoạn 1 (Buổi 1-12): Vocabulary & Grammar...&#10;- Giai đoạn 2 (Buổi 13-24): Reading & Listening..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pricing -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Học phí</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label required">Học phí chuẩn (VNĐ)</label>
+                                    <input type="number" class="form-control" placeholder="VD: 6500000" min="0" step="100000" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Học phí khuyến mãi (VNĐ)</label>
+                                    <input type="number" class="form-control" placeholder="Để trống nếu không có" min="0" step="100000">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <input type="checkbox" id="allowInstallment" style="margin-right: 0.5rem;">
+                                    Cho phép đóng học phí theo đợt
+                                </label>
+                            </div>
+
+                            <div id="installmentSection" style="display: none; margin-top: 1rem; padding: 1rem; background: var(--light-bg); border-radius: var(--radius-md);">
+                                <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 1rem;">Gói học phí</h4>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Số đợt thanh toán</label>
+                                        <select class="form-control">
+                                            <option value="2">2 đợt</option>
+                                            <option value="3">3 đợt</option>
+                                            <option value="4">4 đợt</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Mô tả gói</label>
+                                        <input type="text" class="form-control" placeholder="VD: Đóng theo tháng">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Settings -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Cài đặt khác</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label required">Trạng thái</label>
+                                    <select class="form-control" required>
+                                        <option value="active">Đang mở</option>
+                                        <option value="inactive">Tạm ngưng</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Sĩ số tối đa mỗi lớp</label>
+                                    <input type="number" class="form-control" placeholder="VD: 20" min="1" value="20">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <input type="checkbox" style="margin-right: 0.5rem;">
+                                    Hiển thị trên trang công khai
+                                </label>
+                                <div class="form-text">Cho phép khách truy cập xem thông tin khóa học trên website</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Ghi chú</label>
+                                <textarea class="form-control" rows="3" placeholder="Ghi chú thêm về khóa học (nội bộ)..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="btn-group">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i>
+                                    Lưu khóa học
+                                </button>
+                                <button type="button" class="btn btn-success">
+                                    <i class="fas fa-check"></i>
+                                    Lưu và kích hoạt
+                                </button>
+                                <button type="reset" class="btn btn-outline">
+                                    <i class="fas fa-redo"></i>
+                                    Đặt lại
+                                </button>
+                                <a href="courses.html" class="btn btn-secondary">
+                                    <i class="fas fa-times"></i>
+                                    Hủy
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Toggle installment section
+        document.getElementById('allowInstallment').addEventListener('change', function() {
+            const section = document.getElementById('installmentSection');
+            section.style.display = this.checked ? 'block' : 'none';
+        });
+
+        // Form submission
+        document.getElementById('courseForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validate form
+            if (this.checkValidity()) {
+                // Get form data
+                const formData = new FormData(this);
+                console.log('Form data:', Object.fromEntries(formData));
+                
+                // Show success message
+                alert('Khóa học đã được lưu thành công!');
+                
+                // Redirect to courses list
+                // window.location.href = 'courses.html';
+            } else {
+                alert('Vui lòng điền đầy đủ thông tin bắt buộc!');
+            }
+        });
+
+        // Auto-generate course code
+        const courseNameInput = document.querySelector('input[placeholder*="Tên khóa học"]');
+        const courseCodeInput = document.querySelector('input[placeholder*="Mã khóa học"]');
+        
+        courseNameInput.addEventListener('blur', function() {
+            if (!courseCodeInput.value) {
+                // Simple auto-generate logic (can be improved)
+                const name = this.value.toUpperCase();
+                if (name.includes('IELTS')) {
+                    const match = name.match(/\d+\.?\d*/);
+                    if (match) {
+                        courseCodeInput.value = 'IELTS' + match[0].replace('.', '');
+                    }
+                } else if (name.includes('TOEIC')) {
+                    const match = name.match(/\d+/);
+                    if (match) {
+                        courseCodeInput.value = 'TOEIC' + match[0];
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

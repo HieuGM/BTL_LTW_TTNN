@@ -1,0 +1,9 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+
+# Project planning files (internal use only)
+chia_viec.txt
+chuc_nang.txt
+*.pdf
+*.docx
