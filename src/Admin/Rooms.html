@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý phòng học & lịch</title>
+    <link rel="stylesheet" href="Rooms.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h2><i class="fas fa-graduation-cap"></i> Trung tâm</h2>
+            </div>
+            <nav>
+                <a href="#"><i class="fas fa-home"></i> Dashboard</a>
+                <a href="Classes.html"><i class="fas fa-chalkboard"></i> Quản lý lớp</a>
+                <a href="#" class="active"><i class="fas fa-door-open"></i> Phòng học & lịch</a>
+                <a href="Attendance.html"><i class="fas fa-clipboard-check"></i> Điểm danh</a>
+                <a href="Notifications.html"><i class="fas fa-bell"></i> Thông báo</a>
+                <a href="EnrollRequests.html"><i class="fas fa-user-plus"></i> Đơn đăng ký</a>
+                <a href="#"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="content">
+            <header class="page-header">
+                <h1>Quản lý phòng học & lịch</h1>
+                <button class="btn-primary" onclick="showAddRoomModal()">
+                    <i class="fas fa-plus"></i> Thêm phòng học
+                </button>
+            </header>
+
+            <!-- TABS -->
+            <div class="tabs">
+                <button class="tab-btn active" onclick="showTab('rooms')">
+                    <i class="fas fa-door-open"></i> Danh sách phòng
+                </button>
+                <button class="tab-btn" onclick="showTab('schedule')">
+                    <i class="fas fa-calendar-alt"></i> Lịch sử dụng phòng
+                </button>
+            </div>
+
+            <!-- TAB 1: ROOMS LIST -->
+            <div id="roomsTab" class="tab-content active">
+                <div class="rooms-grid">
+                    <div class="room-card">
+                        <div class="room-header">
+                            <h3><i class="fas fa-door-open"></i> Phòng 101</h3>
+                            <span class="badge badge-available">Còn trống</span>
+                        </div>
+                        <div class="room-body">
+                            <p><i class="fas fa-users"></i> Sức chứa: <strong>25 người</strong></p>
+                            <p><i class="fas fa-tv"></i> Trang thiết bị: Máy chiếu, bảng thông minh</p>
+                            <p><i class="fas fa-building"></i> Tầng 1</p>
+                        </div>
+                        <div class="room-footer">
+                            <button class="btn-icon" title="Xem lịch" onclick="viewRoomSchedule('101')">
+                                <i class="fas fa-calendar-alt"></i>
+                            </button>
+                            <button class="btn-icon" title="Chỉnh sửa" onclick="editRoom('101')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon btn-danger" title="Xóa" onclick="deleteRoom('101')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="room-card">
+                        <div class="room-header">
+                            <h3><i class="fas fa-door-open"></i> Phòng 102</h3>
+                            <span class="badge badge-busy">Đang sử dụng</span>
+                        </div>
+                        <div class="room-body">
+                            <p><i class="fas fa-users"></i> Sức chứa: <strong>20 người</strong></p>
+                            <p><i class="fas fa-tv"></i> Trang thiết bị: Máy chiếu, loa</p>
+                            <p><i class="fas fa-building"></i> Tầng 1</p>
+                            <div class="current-class">
+                                <p><strong>Lớp đang học:</strong> IELTS 6.5 - Sáng</p>
+                                <p><strong>Thời gian:</strong> 8:00 - 10:00</p>
+                            </div>
+                        </div>
+                        <div class="room-footer">
+                            <button class="btn-icon" title="Xem lịch" onclick="viewRoomSchedule('102')">
+                                <i class="fas fa-calendar-alt"></i>
+                            </button>
+                            <button class="btn-icon" title="Chỉnh sửa" onclick="editRoom('102')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon btn-danger" title="Xóa" onclick="deleteRoom('102')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="room-card">
+                        <div class="room-header">
+                            <h3><i class="fas fa-door-open"></i> Phòng 201</h3>
+                            <span class="badge badge-available">Còn trống</span>
+                        </div>
+                        <div class="room-body">
+                            <p><i class="fas fa-users"></i> Sức chứa: <strong>15 người</strong></p>
+                            <p><i class="fas fa-tv"></i> Trang thiết bị: TV màn hình lớn</p>
+                            <p><i class="fas fa-building"></i> Tầng 2</p>
+                        </div>
+                        <div class="room-footer">
+                            <button class="btn-icon" title="Xem lịch" onclick="viewRoomSchedule('201')">
+                                <i class="fas fa-calendar-alt"></i>
+                            </button>
+                            <button class="btn-icon" title="Chỉnh sửa" onclick="editRoom('201')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon btn-danger" title="Xóa" onclick="deleteRoom('201')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="room-card">
+                        <div class="room-header">
+                            <h3><i class="fas fa-laptop"></i> Phòng Online 1</h3>
+                            <span class="badge badge-online">Online</span>
+                        </div>
+                        <div class="room-body">
+                            <p><i class="fas fa-users"></i> Sức chứa: <strong>50 người</strong></p>
+                            <p><i class="fas fa-video"></i> Nền tảng: Zoom</p>
+                            <p><i class="fas fa-link"></i> Link: zoom.us/j/123456789</p>
+                        </div>
+                        <div class="room-footer">
+                            <button class="btn-icon" title="Xem lịch" onclick="viewRoomSchedule('online1')">
+                                <i class="fas fa-calendar-alt"></i>
+                            </button>
+                            <button class="btn-icon" title="Chỉnh sửa" onclick="editRoom('online1')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon btn-danger" title="Xóa" onclick="deleteRoom('online1')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: SCHEDULE -->
+            <div id="scheduleTab" class="tab-content">
+                <div class="card">
+                    <div class="schedule-filter">
+                        <div class="filter-group">
+                            <label>Chọn phòng:</label>
+                            <select id="roomSelect">
+                                <option value="">Tất cả phòng</option>
+                                <option value="101">Phòng 101</option>
+                                <option value="102">Phòng 102</option>
+                                <option value="201">Phòng 201</option>
+                                <option value="online1">Phòng Online 1</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Ngày:</label>
+                            <input type="date" id="scheduleDate">
+                        </div>
+                        <button class="btn-search"><i class="fas fa-search"></i> Xem lịch</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Lịch sử dụng phòng - Thứ 2, 24/02/2026</h3>
+                    <div class="schedule-timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-time">08:00 - 10:00</div>
+                            <div class="timeline-content">
+                                <div class="timeline-room">Phòng 102</div>
+                                <div class="timeline-class">IELTS 6.5 - Sáng</div>
+                                <div class="timeline-teacher">GV: Nguyễn Văn A</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">10:30 - 12:30</div>
+                            <div class="timeline-content">
+                                <div class="timeline-room">Phòng 101</div>
+                                <div class="timeline-class">Giao tiếp thiếu nhi</div>
+                                <div class="timeline-teacher">GV: Trần Thị B</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">14:00 - 16:00</div>
+                            <div class="timeline-content">
+                                <div class="timeline-room">Phòng 102</div>
+                                <div class="timeline-class">IELTS 7.0 - Intensive</div>
+                                <div class="timeline-teacher">GV: Phạm Thị D</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">18:00 - 20:00</div>
+                            <div class="timeline-content">
+                                <div class="timeline-room">Phòng 201</div>
+                                <div class="timeline-class">TOEIC 650+ - Tối</div>
+                                <div class="timeline-teacher">GV: Lê Văn C</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="conflict-warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <strong>Cảnh báo xung đột:</strong> Không có xung đột phòng học hôm nay
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ADD/EDIT ROOM MODAL -->
+    <div id="roomModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Thêm phòng học</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Tên phòng <span class="required">*</span></label>
+                    <input type="text" placeholder="VD: Phòng 101">
+                </div>
+                <div class="form-group">
+                    <label>Loại phòng <span class="required">*</span></label>
+                    <select>
+                        <option value="physical">Phòng học vật lý</option>
+                        <option value="online">Phòng học online</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Sức chứa <span class="required">*</span></label>
+                        <input type="number" placeholder="VD: 25">
+                    </div>
+                    <div class="form-group">
+                        <label>Tầng</label>
+                        <input type="text" placeholder="VD: Tầng 1">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Trang thiết bị</label>
+                    <textarea rows="3" placeholder="VD: Máy chiếu, bảng thông minh, điều hòa..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Link phòng (dành cho phòng online)</label>
+                    <input type="text" placeholder="VD: zoom.us/j/123456789">
+                </div>
+                <div class="form-group">
+                    <label>Ghi chú</label>
+                    <textarea rows="2" placeholder="Ghi chú thêm..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal()">Hủy</button>
+                <button class="btn-primary">Lưu lại</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="Rooms.js"></script>
+</body>
+</html>

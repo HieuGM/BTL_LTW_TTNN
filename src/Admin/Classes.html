@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý lớp học</title>
+    <link rel="stylesheet" href="Classes.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h2><i class="fas fa-graduation-cap"></i> Trung tâm</h2>
+            </div>
+            <nav>
+                <a href="#"><i class="fas fa-home"></i> Dashboard</a>
+                <a href="#" class="active"><i class="fas fa-chalkboard"></i> Quản lý lớp</a>
+                <a href="Rooms.html"><i class="fas fa-door-open"></i> Phòng học & lịch</a>
+                <a href="Attendance.html"><i class="fas fa-clipboard-check"></i> Điểm danh</a>
+                <a href="Notifications.html"><i class="fas fa-bell"></i> Thông báo</a>
+                <a href="EnrollRequests.html"><i class="fas fa-user-plus"></i> Đơn đăng ký</a>
+                <a href="#"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="content">
+            <header class="page-header">
+                <h1>Quản lý lớp học</h1>
+                <button class="btn-primary" onclick="showAddClassModal()">
+                    <i class="fas fa-plus"></i> Thêm lớp mới
+                </button>
+            </header>
+
+            <!-- FILTER BAR -->
+            <div class="filter-bar card">
+                <div class="filter-group">
+                    <label>Khóa học:</label>
+                    <select id="courseFilter">
+                        <option value="">Tất cả</option>
+                        <option value="ielts">IELTS</option>
+                        <option value="toeic">TOEIC</option>
+                        <option value="giaotiep">Giao tiếp</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Trạng thái:</label>
+                    <select id="statusFilter">
+                        <option value="">Tất cả</option>
+                        <option value="draft">Nháp</option>
+                        <option value="recruiting">Đang tuyển</option>
+                        <option value="ongoing">Đang học</option>
+                        <option value="completed">Kết thúc</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Tìm kiếm:</label>
+                    <input type="text" id="searchClass" placeholder="Tên lớp, giảng viên...">
+                </div>
+                <button class="btn-search"><i class="fas fa-search"></i> Tìm kiếm</button>
+            </div>
+
+            <!-- CLASSES TABLE -->
+            <div class="card">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Mã lớp</th>
+                            <th>Tên lớp</th>
+                            <th>Khóa học</th>
+                            <th>Giảng viên</th>
+                            <th>Lịch học</th>
+                            <th>Sĩ số</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CLS001</td>
+                            <td>IELTS 6.5 - Sáng</td>
+                            <td>IELTS Foundation</td>
+                            <td>Nguyễn Văn A</td>
+                            <td>T2-T4-T6 (8:00-10:00)</td>
+                            <td><span class="capacity">15/20</span></td>
+                            <td><span class="badge badge-ongoing">Đang học</span></td>
+                            <td>
+                                <button class="btn-icon" title="Xem chi tiết" onclick="viewClassDetail('CLS001')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon" title="Chỉnh sửa" onclick="editClass('CLS001')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon btn-danger" title="Xóa" onclick="deleteClass('CLS001')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>CLS002</td>
+                            <td>TOEIC 650+ - Tối</td>
+                            <td>TOEIC Cơ bản</td>
+                            <td>Trần Thị B</td>
+                            <td>T3-T5-T7 (18:00-20:00)</td>
+                            <td><span class="capacity warning">18/20</span></td>
+                            <td><span class="badge badge-recruiting">Đang tuyển</span></td>
+                            <td>
+                                <button class="btn-icon" title="Xem chi tiết" onclick="viewClassDetail('CLS002')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon" title="Chỉnh sửa" onclick="editClass('CLS002')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon btn-danger" title="Xóa" onclick="deleteClass('CLS002')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>CLS003</td>
+                            <td>Giao tiếp cơ bản</td>
+                            <td>Giao tiếp người đi làm</td>
+                            <td>Lê Văn C</td>
+                            <td>T7-CN (9:00-11:00)</td>
+                            <td><span class="capacity">8/15</span></td>
+                            <td><span class="badge badge-recruiting">Đang tuyển</span></td>
+                            <td>
+                                <button class="btn-icon" title="Xem chi tiết" onclick="viewClassDetail('CLS003')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon" title="Chỉnh sửa" onclick="editClass('CLS003')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon btn-danger" title="Xóa" onclick="deleteClass('CLS003')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>CLS004</td>
+                            <td>IELTS 7.0 - Intensive</td>
+                            <td>IELTS Advanced</td>
+                            <td>Phạm Thị D</td>
+                            <td>T2-T3-T4-T5-T6 (14:00-16:00)</td>
+                            <td><span class="capacity full">12/12</span></td>
+                            <td><span class="badge badge-ongoing">Đang học</span></td>
+                            <td>
+                                <button class="btn-icon" title="Xem chi tiết" onclick="viewClassDetail('CLS004')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon" title="Chỉnh sửa" onclick="editClass('CLS004')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon btn-danger" title="Xóa" onclick="deleteClass('CLS004')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- PAGINATION -->
+            <div class="pagination">
+                <button class="btn-page"><i class="fas fa-chevron-left"></i></button>
+                <button class="btn-page active">1</button>
+                <button class="btn-page">2</button>
+                <button class="btn-page">3</button>
+                <button class="btn-page"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </main>
+    </div>
+
+    <!-- ADD/EDIT CLASS MODAL -->
+    <div id="classModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Thêm lớp mới</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Tên lớp <span class="required">*</span></label>
+                    <input type="text" placeholder="VD: IELTS 6.5 - Sáng">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Khóa học <span class="required">*</span></label>
+                        <select>
+                            <option value="">Chọn khóa học</option>
+                            <option>IELTS Foundation</option>
+                            <option>TOEIC Cơ bản</option>
+                            <option>Giao tiếp người đi làm</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Giảng viên <span class="required">*</span></label>
+                        <select>
+                            <option value="">Chọn giảng viên</option>
+                            <option>Nguyễn Văn A</option>
+                            <option>Trần Thị B</option>
+                            <option>Lê Văn C</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Phòng học <span class="required">*</span></label>
+                        <select>
+                            <option value="">Chọn phòng</option>
+                            <option>Phòng 101</option>
+                            <option>Phòng 102</option>
+                            <option>Online</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Sĩ số tối đa <span class="required">*</span></label>
+                        <input type="number" value="20">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Lịch học <span class="required">*</span></label>
+                    <input type="text" placeholder="VD: T2-T4-T6 (8:00-10:00)">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Ngày khai giảng</label>
+                        <input type="date">
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày kết thúc (dự kiến)</label>
+                        <input type="date">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Trạng thái</label>
+                    <select>
+                        <option value="draft">Nháp</option>
+                        <option value="recruiting">Đang tuyển</option>
+                        <option value="ongoing">Đang học</option>
+                        <option value="completed">Kết thúc</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Ghi chú</label>
+                    <textarea rows="3" placeholder="Ghi chú thêm về lớp học..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal()">Hủy</button>
+                <button class="btn-primary">Lưu lại</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="Classes.js"></script>
+</body>
+</html>

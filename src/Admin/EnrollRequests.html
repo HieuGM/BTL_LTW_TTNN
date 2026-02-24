@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý đơn đăng ký</title>
+    <link rel="stylesheet" href="EnrollRequests.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h2><i class="fas fa-graduation-cap"></i> Trung tâm</h2>
+            </div>
+            <nav>
+                <a href="#"><i class="fas fa-home"></i> Dashboard</a>
+                <a href="Classes.html"><i class="fas fa-chalkboard"></i> Quản lý lớp</a>
+                <a href="Rooms.html"><i class="fas fa-door-open"></i> Phòng học & lịch</a>
+                <a href="Attendance.html"><i class="fas fa-clipboard-check"></i> Điểm danh</a>
+                <a href="Notifications.html"><i class="fas fa-bell"></i> Thông báo</a>
+                <a href="#" class="active"><i class="fas fa-user-plus"></i> Đơn đăng ký</a>
+                <a href="#"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="content">
+            <header class="page-header">
+                <h1>Quản lý đơn đăng ký</h1>
+                <button class="btn-primary" onclick="showAddRequestModal()">
+                    <i class="fas fa-plus"></i> Thêm đơn đăng ký
+                </button>
+            </header>
+
+            <!-- STATISTICS -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #f6c23e;">
+                        <i class="fas fa-hourglass-half"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>12</h3>
+                        <p>Đơn mới chờ xử lý</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #4e73df;">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>8</h3>
+                        <p>Đã liên hệ</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #1cc88a;">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>25</h3>
+                        <p>Hoàn tất tháng này</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #e74a3b;">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>5</h3>
+                        <p>Từ chối/Hủy</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FILTER BAR -->
+            <div class="filter-bar card">
+                <div class="filter-group">
+                    <label>Trạng thái:</label>
+                    <select id="statusFilter">
+                        <option value="">Tất cả</option>
+                        <option value="new">Mới</option>
+                        <option value="contacted">Đã liên hệ</option>
+                        <option value="assigned">Đã xếp lớp</option>
+                        <option value="paid">Đã đóng phí</option>
+                        <option value="completed">Hoàn tất</option>
+                        <option value="cancelled">Hủy</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Khóa học:</label>
+                    <select id="courseFilter">
+                        <option value="">Tất cả</option>
+                        <option value="ielts">IELTS</option>
+                        <option value="toeic">TOEIC</option>
+                        <option value="giaotiep">Giao tiếp</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Từ ngày:</label>
+                    <input type="date" id="fromDate">
+                </div>
+                <div class="filter-group">
+                    <label>Đến ngày:</label>
+                    <input type="date" id="toDate">
+                </div>
+                <button class="btn-search"><i class="fas fa-search"></i> Tìm kiếm</button>
+            </div>
+
+            <!-- REQUESTS TABLE -->
+            <div class="card">
+                <h3>Danh sách đơn đăng ký</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Mã đơn</th>
+                            <th>Họ tên</th>
+                            <th>SĐT</th>
+                            <th>Khóa học quan tâm</th>
+                            <th>Trình độ</th>
+                            <th>Ngày đăng ký</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>REQ001</td>
+                            <td>Nguyễn Văn A</td>
+                            <td>0912345678</td>
+                            <td>IELTS Foundation</td>
+                            <td>Mất gốc</td>
+                            <td>24/02/2026</td>
+                            <td><span class="badge badge-new">Mới</span></td>
+                            <td>
+                                <button class="btn-icon" title="Xem chi tiết" onclick="viewRequest('REQ001')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon btn-success" title="Xử lý" onclick="processRequest('REQ001')">
+                                    <i class="fas fa-tasks"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>REQ002</td>
+                            <td>Trần Thị B</td>
+                            <td>0987654321</td>
+                            <td>TOEIC Cơ bản</td>
+                            <td>Cơ bản</td>
+                            <td>23/02/2026</td>
+                            <td><span class="badge badge-contacted">Đã liên hệ</span></td>
+                            <td>
+                                <button class="btn-icon" title="Xem chi tiết" onclick="viewRequest('REQ002')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon btn-success" title="Xử lý" onclick="processRequest('REQ002')">
+                                    <i class="fas fa-tasks"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>REQ003</td>
+                            <td>Lê Văn C</td>
+                            <td>0901234567</td>
+                            <td>Giao tiếp người đi làm</td>
+                            <td>Trung bình</td>
+                            <td>22/02/2026</td>
+                            <td><span class="badge badge-assigned">Đã xếp lớp</span></td>
+                            <td>
+                                <button class="btn-icon" title="Xem chi tiết" onclick="viewRequest('REQ003')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon btn-success" title="Xử lý" onclick="processRequest('REQ003')">
+                                    <i class="fas fa-tasks"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>REQ004</td>
+                            <td>Phạm Thị D</td>
+                            <td>0909876543</td>
+                            <td>IELTS Advanced</td>
+                            <td>Nâng cao</td>
+                            <td>21/02/2026</td>
+                            <td><span class="badge badge-completed">Hoàn tất</span></td>
+                            <td>
+                                <button class="btn-icon" title="Xem chi tiết" onclick="viewRequest('REQ004')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon btn-success" title="Xử lý" onclick="processRequest('REQ004')">
+                                    <i class="fas fa-tasks"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>REQ005</td>
+                            <td>Hoàng Văn E</td>
+                            <td>0912349876</td>
+                            <td>TOEIC 850+</td>
+                            <td>Khá</td>
+                            <td>20/02/2026</td>
+                            <td><span class="badge badge-cancelled">Hủy</span></td>
+                            <td>
+                                <button class="btn-icon" title="Xem chi tiết" onclick="viewRequest('REQ005')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon btn-success" title="Xử lý" onclick="processRequest('REQ005')">
+                                    <i class="fas fa-tasks"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- PAGINATION -->
+                <div class="pagination">
+                    <button class="btn-page"><i class="fas fa-chevron-left"></i></button>
+                    <button class="btn-page active">1</button>
+                    <button class="btn-page">2</button>
+                    <button class="btn-page">3</button>
+                    <button class="btn-page"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- VIEW/PROCESS REQUEST MODAL -->
+    <div id="requestModal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2>Chi tiết đơn đăng ký - REQ001</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <!-- STUDENT INFO -->
+                <div class="info-section">
+                    <h4><i class="fas fa-user"></i> Thông tin học viên</h4>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <strong>Họ và tên:</strong>
+                            <span>Nguyễn Văn A</span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Số điện thoại:</strong>
+                            <span>0912345678</span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Email:</strong>
+                            <span>nguyenvana@email.com</span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Đối tượng:</strong>
+                            <span>Sinh viên</span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Khóa học quan tâm:</strong>
+                            <span>IELTS Foundation</span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Trình độ hiện tại:</strong>
+                            <span>Mất gốc</span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Mục tiêu:</strong>
+                            <span>IELTS 6.5</span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Ngày đăng ký:</strong>
+                            <span>24/02/2026 09:30</span>
+                        </div>
+                    </div>
+                    <div class="info-item full">
+                        <strong>Ghi chú:</strong>
+                        <p>Có thể học tối thứ 2, 4, 6 hoặc cuối tuần. Mong muốn học nhóm nhỏ 10-15 người.</p>
+                    </div>
+                </div>
+
+                <!-- PROCESSING STATUS -->
+                <div class="info-section">
+                    <h4><i class="fas fa-tasks"></i> Trạng thái xử lý</h4>
+                    <div class="form-group">
+                        <label>Trạng thái hiện tại</label>
+                        <select id="statusSelect">
+                            <option value="new" selected>Mới</option>
+                            <option value="contacted">Đã liên hệ</option>
+                            <option value="assigned">Đã xếp lớp</option>
+                            <option value="paid">Đã đóng phí</option>
+                            <option value="completed">Hoàn tất</option>
+                            <option value="cancelled">Hủy</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="classAssignSection" style="display: none;">
+                        <label>Xếp lớp dự kiến</label>
+                        <select>
+                            <option value="">Chọn lớp</option>
+                            <option>IELTS 6.5 - Sáng</option>
+                            <option>IELTS 6.5 - Tối</option>
+                            <option>IELTS 7.0 - Intensive</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ghi chú xử lý</label>
+                        <textarea rows="3" placeholder="Ghi chú về quá trình xử lý đơn..."></textarea>
+                    </div>
+                </div>
+
+                <!-- ACTIVITY LOG -->
+                <div class="info-section">
+                    <h4><i class="fas fa-history"></i> Lịch sử xử lý</h4>
+                    <div class="activity-log">
+                        <div class="log-item">
+                            <div class="log-time">24/02/2026 09:30</div>
+                            <div class="log-content">
+                                <strong>Tạo đơn đăng ký</strong>
+                                <p>Học viên đăng ký qua website</p>
+                            </div>
+                        </div>
+                        <div class="log-item">
+                            <div class="log-time">24/02/2026 10:15</div>
+                            <div class="log-content">
+                                <strong>Cập nhật trạng thái</strong>
+                                <p>Chuyển sang "Đã liên hệ" - Gọi điện tư vấn (Nhân viên: Nguyễn Thu)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QUICK ACTIONS -->
+                <div class="quick-actions">
+                    <button class="action-btn btn-call">
+                        <i class="fas fa-phone"></i>
+                        Gọi điện
+                    </button>
+                    <button class="action-btn btn-email">
+                        <i class="fas fa-envelope"></i>
+                        Gửi Email
+                    </button>
+                    <button class="action-btn btn-student">
+                        <i class="fas fa-user-plus"></i>
+                        Tạo học viên
+                    </button>
+                    <button class="action-btn btn-assign">
+                        <i class="fas fa-chalkboard"></i>
+                        Xếp lớp
+                    </button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal()">Đóng</button>
+                <button class="btn-primary">Cập nhật</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD REQUEST MODAL -->
+    <div id="addRequestModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Thêm đơn đăng ký mới</h2>
+                <span class="close" onclick="closeAddModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Họ và tên <span class="required">*</span></label>
+                        <input type="text" placeholder="Nhập họ tên">
+                    </div>
+                    <div class="form-group">
+                        <label>Số điện thoại <span class="required">*</span></label>
+                        <input type="text" placeholder="Nhập SĐT">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" placeholder="Nhập email">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Đối tượng</label>
+                        <select>
+                            <option>Học sinh</option>
+                            <option>Sinh viên</option>
+                            <option>Người đi làm</option>
+                            <option>Phụ huynh</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Khóa học quan tâm <span class="required">*</span></label>
+                        <select>
+                            <option>IELTS Foundation</option>
+                            <option>TOEIC Cơ bản</option>
+                            <option>Giao tiếp người đi làm</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Trình độ hiện tại</label>
+                        <select>
+                            <option>Mất gốc</option>
+                            <option>Cơ bản</option>
+                            <option>Trung bình</option>
+                            <option>Khá</option>
+                            <option>Nâng cao</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Mục tiêu</label>
+                        <input type="text" placeholder="VD: IELTS 6.5">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Ghi chú</label>
+                    <textarea rows="3" placeholder="Thời gian phù hợp, nhu cầu đặc biệt..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeAddModal()">Hủy</button>
+                <button class="btn-primary">Tạo đơn</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="EnrollRequests.js"></script>
+</body>
+</html>
