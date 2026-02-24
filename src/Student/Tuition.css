@@ -39,7 +39,7 @@ body {
 }
 
 .progress {
-    background: #4e73df;
+    background: #2563eb;
     height: 8px;
     border-radius: 5px;
 }
@@ -73,7 +73,7 @@ body {
 .upload-proof button {
     margin-top: 10px;
     padding: 8px 15px;
-    background: #4e73df;
+    background: #2563eb;
     color: white;
     border: none;
     border-radius: 5px;

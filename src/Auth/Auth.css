@@ -1,6 +1,20 @@
+﻿/* ===== RESET & GLOBAL ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f9fafb;
+    color: #111827;
+    line-height: 1.6;
+}
+
 /* HEADER */
 .header {
-    background: #4e73df;
+    background: #1f2937;
     padding: 20px 0;
 }
 
@@ -42,7 +56,7 @@
 .hero {
     text-align: center;
     padding: 80px 20px;
-    background: linear-gradient(135deg, #4e73df, #1cc88a);
+    background: linear-gradient(135deg, #2563eb, #1cc88a);
     color: white;
 }
 
@@ -62,11 +76,11 @@
 
 .btn-primary {
     background: white;
-    color: #4e73df;
+    color: #2563eb;
 }
 
 .btn-secondary {
-    background: #2e59d9;
+    background: #1e40af;
     color: white;
 }
 
@@ -88,7 +102,7 @@
 }
 
 .course-card {
-    background: #4e73df;
+    background: #2563eb;
     color: white;
     padding: 20px 40px;
     border-radius: 10px;
@@ -106,8 +120,8 @@
 .footer {
     text-align: center;
     padding: 20px;
-    background: #333;
-    color: white;
+    background: #1f2937;
+    color: rgba(255,255,255,0.7);
     font-size: 14px;
 }
 
@@ -131,7 +145,7 @@
 .contact-info h2,
 .contact-support h2 {
     margin-bottom: 20px;
-    color: #4e73df;
+    color: #2563eb;
 }
 
 .contact-support p {

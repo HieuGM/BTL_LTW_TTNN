@@ -1,6 +1,59 @@
 body {
-    font-family: Arial, sans-serif;
-    background: #f4f6f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f9fafb;
+    color: #111827;
+}
+
+/* ===== HEADER ===== */
+.header {
+    background: #2563eb;
+    padding: 15px 0;
+}
+
+.container {
+    width: 90%;
+    max-width: 900px;
+    margin: auto;
+}
+
+.header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+}
+
+.logo {
+    color: white;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 25px;
+}
+
+.nav-menu a {
+    color: rgba(255,255,255,0.9);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.nav-menu a:hover {
+    color: white;
+    opacity: 0.85;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+    text-align: center;
+    padding: 20px;
+    background: #1f2937;
+    color: rgba(255,255,255,0.7);
+    font-size: 14px;
+    margin-top: 50px;
 }
 
 .container {
@@ -15,7 +68,7 @@ body {
 
 h1 {
     margin-bottom: 30px;
-    color: #4e73df;
+    color: #2563eb;
 }
 
 .detail-section {
@@ -31,7 +84,7 @@ h1 {
 }
 
 .highlight {
-    border-left: 5px solid #4e73df;
+    border-left: 5px solid #2563eb;
 }
 
 .promotion {
@@ -43,12 +96,12 @@ h1 {
     display: inline-block;
     margin-top: 20px;
     padding: 12px 25px;
-    background: #4e73df;
+    background: #2563eb;
     color: white;
     text-decoration: none;
     border-radius: 6px;
 }
 
 .register-btn:hover {
-    background: #3b5ccc;
+    background: #1e40af;
 }

@@ -1,8 +1,21 @@
+/* ===== CSS VARIABLES ===== */
+:root {
+    --primary-color: #2563eb;
+    --primary-dark: #1e40af;
+    --sidebar-bg: #1f2937;
+    --light-bg: #f9fafb;
+    --border-color: #e5e7eb;
+    --text-primary: #111827;
+    --text-secondary: #6b7280;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+}
+
 /* ===== GLOBAL ===== */
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f4f6f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--light-bg);
+    color: var(--text-primary);
 }
 
 .layout {
@@ -12,34 +25,69 @@ body {
 
 /* ===== SIDEBAR ===== */
 .sidebar {
-    width: 220px;
-    background: #4e73df;
+    width: 260px;
+    background: var(--sidebar-bg);
     color: white;
-    padding: 20px;
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 1000;
 }
 
-.logo {
-    margin-bottom: 30px;
+.sidebar-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
-.sidebar nav a {
-    display: block;
+.sidebar-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
     color: white;
+    margin: 0;
+}
+
+.sidebar-header p {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.5);
+    margin-top: 0.25rem;
+}
+
+.sidebar-nav {
+    padding: 1rem 0;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    color: rgba(255,255,255,0.8);
     text-decoration: none;
-    margin-bottom: 15px;
-    padding: 8px;
-    border-radius: 5px;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.2s;
+    gap: 0.75rem;
+    font-size: 0.9rem;
 }
 
-.sidebar nav a:hover,
-.sidebar nav a.active {
-    background: rgba(255,255,255,0.2);
+.nav-item i {
+    width: 20px;
+    font-size: 1rem;
+}
+
+.nav-item:hover {
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+
+.nav-item.active {
+    background: var(--primary-color);
+    color: white;
+    border-left: 4px solid white;
 }
 
 /* ===== CONTENT ===== */
 .content {
     flex: 1;
-    padding: 30px;
+    margin-left: 260px;
+    padding: 2rem;
 }
 
 /* ===== COMMON CARD ===== */
@@ -58,7 +106,7 @@ body {
 }
 
 .progress {
-    background: #4e73df;
+    background: var(--primary-color);
     height: 10px;
     border-radius: 5px;
 }
