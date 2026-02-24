@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý thông báo</title>
+    <link rel="stylesheet" href="Notifications.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h2><i class="fas fa-graduation-cap"></i> Trung tâm</h2>
+            </div>
+            <nav>
+                <a href="#"><i class="fas fa-home"></i> Dashboard</a>
+                <a href="Classes.html"><i class="fas fa-chalkboard"></i> Quản lý lớp</a>
+                <a href="Rooms.html"><i class="fas fa-door-open"></i> Phòng học & lịch</a>
+                <a href="Attendance.html"><i class="fas fa-clipboard-check"></i> Điểm danh</a>
+                <a href="#" class="active"><i class="fas fa-bell"></i> Thông báo</a>
+                <a href="EnrollRequests.html"><i class="fas fa-user-plus"></i> Đơn đăng ký</a>
+                <a href="#"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="content">
+            <header class="page-header">
+                <h1>Quản lý thông báo</h1>
+                <button class="btn-primary" onclick="showCreateNotificationModal()">
+                    <i class="fas fa-plus"></i> Gửi thông báo mới
+                </button>
+            </header>
+
+            <!-- STATISTICS -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #4e73df;">
+                        <i class="fas fa-paper-plane"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>48</h3>
+                        <p>Đã gửi hôm nay</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #1cc88a;">
+                        <i class="fas fa-envelope-open"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>92%</h3>
+                        <p>Tỷ lệ đã đọc</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #f6c23e;">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>5</h3>
+                        <p>Đang chờ gửi</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FILTER BAR -->
+            <div class="filter-bar card">
+                <div class="filter-group">
+                    <label>Loại thông báo:</label>
+                    <select id="typeFilter">
+                        <option value="">Tất cả</option>
+                        <option value="general">Thông báo chung</option>
+                        <option value="class">Thông báo lớp học</option>
+                        <option value="schedule">Thông báo lịch học</option>
+                        <option value="exam">Thông báo kiểm tra</option>
+                        <option value="tuition">Thông báo học phí</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Đối tượng:</label>
+                    <select id="targetFilter">
+                        <option value="">Tất cả</option>
+                        <option value="all">Toàn bộ học viên</option>
+                        <option value="class">Theo lớp</option>
+                        <option value="individual">Cá nhân</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Trạng thái:</label>
+                    <select id="statusFilter">
+                        <option value="">Tất cả</option>
+                        <option value="sent">Đã gửi</option>
+                        <option value="pending">Chờ gửi</option>
+                        <option value="draft">Nháp</option>
+                    </select>
+                </div>
+                <button class="btn-search"><i class="fas fa-search"></i> Tìm kiếm</button>
+            </div>
+
+            <!-- NOTIFICATIONS LIST -->
+            <div class="card">
+                <h3>Danh sách thông báo</h3>
+                <div class="notifications-list">
+                    <div class="notification-item">
+                        <div class="notification-icon" style="background: #4e73df;">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-header">
+                                <h4>Thông báo nghỉ Tết Nguyên Đán 2026</h4>
+                                <span class="badge badge-sent">Đã gửi</span>
+                            </div>
+                            <p>Trung tâm xin thông báo lịch nghỉ Tết Nguyên Đán từ ngày 26/01 đến 02/02/2026...</p>
+                            <div class="notification-meta">
+                                <span><i class="fas fa-users"></i> Toàn bộ học viên</span>
+                                <span><i class="fas fa-clock"></i> 20/02/2026 10:30</span>
+                                <span><i class="fas fa-eye"></i> 245/280 đã đọc</span>
+                            </div>
+                        </div>
+                        <div class="notification-actions">
+                            <button class="btn-icon" title="Xem chi tiết" onclick="viewNotification('noti001')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn-icon" title="Chỉnh sửa" onclick="editNotification('noti001')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon btn-danger" title="Xóa" onclick="deleteNotification('noti001')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="notification-item">
+                        <div class="notification-icon" style="background: #f6c23e;">
+                            <i class="fas fa-calendar-times"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-header">
+                                <h4>Đổi lịch học - Lớp IELTS 6.5 Sáng</h4>
+                                <span class="badge badge-sent">Đã gửi</span>
+                            </div>
+                            <p>Thông báo đổi lịch học từ T2-T4-T6 sang T3-T5-T7 do giảng viên có việc đột xuất...</p>
+                            <div class="notification-meta">
+                                <span><i class="fas fa-chalkboard"></i> Lớp IELTS 6.5 - Sáng</span>
+                                <span><i class="fas fa-clock"></i> 22/02/2026 14:20</span>
+                                <span><i class="fas fa-eye"></i> 14/15 đã đọc</span>
+                            </div>
+                        </div>
+                        <div class="notification-actions">
+                            <button class="btn-icon" title="Xem chi tiết" onclick="viewNotification('noti002')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn-icon" title="Chỉnh sửa" onclick="editNotification('noti002')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon btn-danger" title="Xóa" onclick="deleteNotification('noti002')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="notification-item">
+                        <div class="notification-icon" style="background: #e74a3b;">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-header">
+                                <h4>Nhắc nhở đóng học phí tháng 3</h4>
+                                <span class="badge badge-pending">Chờ gửi</span>
+                            </div>
+                            <p>Nhắc nhở các học viên chưa đóng học phí tháng 3/2026. Hạn đóng: 05/03/2026...</p>
+                            <div class="notification-meta">
+                                <span><i class="fas fa-user"></i> 25 học viên</span>
+                                <span><i class="fas fa-clock"></i> Gửi lúc: 01/03/2026 08:00</span>
+                            </div>
+                        </div>
+                        <div class="notification-actions">
+                            <button class="btn-icon" title="Xem chi tiết" onclick="viewNotification('noti003')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn-icon" title="Chỉnh sửa" onclick="editNotification('noti003')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon btn-success" title="Gửi ngay" onclick="sendNow('noti003')">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                            <button class="btn-icon btn-danger" title="Xóa" onclick="deleteNotification('noti003')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="notification-item">
+                        <div class="notification-icon" style="background: #1cc88a;">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-header">
+                                <h4>Thông báo kiểm tra giữa khóa</h4>
+                                <span class="badge badge-draft">Nháp</span>
+                            </div>
+                            <p>Thông báo lịch kiểm tra giữa khóa cho các lớp IELTS và TOEIC...</p>
+                            <div class="notification-meta">
+                                <span><i class="fas fa-chalkboard"></i> 8 lớp</span>
+                                <span><i class="fas fa-clock"></i> Chưa lên lịch</span>
+                            </div>
+                        </div>
+                        <div class="notification-actions">
+                            <button class="btn-icon" title="Xem chi tiết" onclick="viewNotification('noti004')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn-icon" title="Chỉnh sửa" onclick="editNotification('noti004')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon btn-danger" title="Xóa" onclick="deleteNotification('noti004')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGINATION -->
+                <div class="pagination">
+                    <button class="btn-page"><i class="fas fa-chevron-left"></i></button>
+                    <button class="btn-page active">1</button>
+                    <button class="btn-page">2</button>
+                    <button class="btn-page">3</button>
+                    <button class="btn-page"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- CREATE/EDIT NOTIFICATION MODAL -->
+    <div id="notificationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Gửi thông báo mới</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Loại thông báo <span class="required">*</span></label>
+                    <select>
+                        <option value="">Chọn loại</option>
+                        <option value="general">Thông báo chung</option>
+                        <option value="class">Thông báo lớp học</option>
+                        <option value="schedule">Thông báo lịch học</option>
+                        <option value="exam">Thông báo kiểm tra</option>
+                        <option value="tuition">Thông báo học phí</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Đối tượng nhận <span class="required">*</span></label>
+                    <select id="targetSelect" onchange="toggleTargetOptions()">
+                        <option value="">Chọn đối tượng</option>
+                        <option value="all">Toàn bộ học viên</option>
+                        <option value="class">Theo lớp</option>
+                        <option value="individual">Học viên cụ thể</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="classSelectGroup" style="display: none;">
+                    <label>Chọn lớp</label>
+                    <select multiple>
+                        <option>IELTS 6.5 - Sáng</option>
+                        <option>TOEIC 650+ - Tối</option>
+                        <option>Giao tiếp cơ bản</option>
+                        <option>IELTS 7.0 - Intensive</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Tiêu đề <span class="required">*</span></label>
+                    <input type="text" placeholder="Nhập tiêu đề thông báo">
+                </div>
+
+                <div class="form-group">
+                    <label>Nội dung <span class="required">*</span></label>
+                    <textarea rows="6" placeholder="Nhập nội dung thông báo..."></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Gửi vào lúc</label>
+                        <select>
+                            <option value="now">Gửi ngay</option>
+                            <option value="schedule">Hẹn giờ</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày giờ gửi</label>
+                        <input type="datetime-local">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox"> Gửi qua Email
+                    </label>
+                    <label>
+                        <input type="checkbox" checked> Hiển thị trong hệ thống
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal()">Hủy</button>
+                <button class="btn-secondary">Lưu nháp</button>
+                <button class="btn-primary">Gửi thông báo</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="Notifications.js"></script>
+</body>
+</html>

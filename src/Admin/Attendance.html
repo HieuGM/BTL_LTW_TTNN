@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý điểm danh</title>
+    <link rel="stylesheet" href="Attendance.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h2><i class="fas fa-graduation-cap"></i> Trung tâm</h2>
+            </div>
+            <nav>
+                <a href="#"><i class="fas fa-home"></i> Dashboard</a>
+                <a href="Classes.html"><i class="fas fa-chalkboard"></i> Quản lý lớp</a>
+                <a href="Rooms.html"><i class="fas fa-door-open"></i> Phòng học & lịch</a>
+                <a href="#" class="active"><i class="fas fa-clipboard-check"></i> Điểm danh</a>
+                <a href="Notifications.html"><i class="fas fa-bell"></i> Thông báo</a>
+                <a href="EnrollRequests.html"><i class="fas fa-user-plus"></i> Đơn đăng ký</a>
+                <a href="#"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="content">
+            <header class="page-header">
+                <h1>Quản lý điểm danh</h1>
+                <button class="btn-primary" onclick="showCreateAttendanceModal()">
+                    <i class="fas fa-plus"></i> Tạo điểm danh mới
+                </button>
+            </header>
+
+            <!-- FILTER BAR -->
+            <div class="filter-bar card">
+                <div class="filter-group">
+                    <label>Chọn lớp:</label>
+                    <select id="classFilter">
+                        <option value="">Tất cả lớp</option>
+                        <option value="cls001">IELTS 6.5 - Sáng</option>
+                        <option value="cls002">TOEIC 650+ - Tối</option>
+                        <option value="cls003">Giao tiếp cơ bản</option>
+                        <option value="cls004">IELTS 7.0 - Intensive</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Từ ngày:</label>
+                    <input type="date" id="fromDate">
+                </div>
+                <div class="filter-group">
+                    <label>Đến ngày:</label>
+                    <input type="date" id="toDate">
+                </div>
+                <button class="btn-search"><i class="fas fa-search"></i> Tìm kiếm</button>
+            </div>
+
+            <!-- STATISTICS CARDS -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #4e73df;">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>24</h3>
+                        <p>Buổi học hôm nay</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #1cc88a;">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>92%</h3>
+                        <p>Tỷ lệ có mặt</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #f6c23e;">
+                        <i class="fas fa-user-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>15</h3>
+                        <p>Học viên vắng có phép</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #e74a3b;">
+                        <i class="fas fa-user-times"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>8</h3>
+                        <p>Học viên vắng không phép</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ATTENDANCE LIST -->
+            <div class="card">
+                <h3>Danh sách điểm danh</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Ngày</th>
+                            <th>Buổi</th>
+                            <th>Lớp</th>
+                            <th>Giảng viên</th>
+                            <th>Tổng số</th>
+                            <th>Có mặt</th>
+                            <th>Vắng có phép</th>
+                            <th>Vắng không phép</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>24/02/2026</td>
+                            <td>Buổi 15</td>
+                            <td>IELTS 6.5 - Sáng</td>
+                            <td>Nguyễn Văn A</td>
+                            <td>15</td>
+                            <td><span class="badge badge-present">14</span></td>
+                            <td><span class="badge badge-excused">1</span></td>
+                            <td><span class="badge badge-absent">0</span></td>
+                            <td>
+                                <button class="btn-icon" title="Xem chi tiết" onclick="viewAttendance('att001')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon" title="Chỉnh sửa" onclick="editAttendance('att001')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon" title="Xuất Excel" onclick="exportAttendance('att001')">
+                                    <i class="fas fa-file-excel"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>24/02/2026</td>
+                            <td>Buổi 8</td>
+                            <td>TOEIC 650+ - Tối</td>
+                            <td>Trần Thị B</td>
+                            <td>18</td>
+                            <td><span class="badge badge-present">16</span></td>
+                            <td><span class="badge badge-excused">0</span></td>
+                            <td><span class="badge badge-absent">2</span></td>
+                            <td>
+                                <button class="btn-icon" title="Xem chi tiết" onclick="viewAttendance('att002')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon" title="Chỉnh sửa" onclick="editAttendance('att002')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon" title="Xuất Excel" onclick="exportAttendance('att002')">
+                                    <i class="fas fa-file-excel"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>23/02/2026</td>
+                            <td>Buổi 12</td>
+                            <td>Giao tiếp cơ bản</td>
+                            <td>Lê Văn C</td>
+                            <td>8</td>
+                            <td><span class="badge badge-present">8</span></td>
+                            <td><span class="badge badge-excused">0</span></td>
+                            <td><span class="badge badge-absent">0</span></td>
+                            <td>
+                                <button class="btn-icon" title="Xem chi tiết" onclick="viewAttendance('att003')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon" title="Chỉnh sửa" onclick="editAttendance('att003')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon" title="Xuất Excel" onclick="exportAttendance('att003')">
+                                    <i class="fas fa-file-excel"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ABSENT STUDENTS REPORT -->
+            <div class="card">
+                <h3><i class="fas fa-exclamation-triangle"></i> Học viên vắng nhiều (cần lưu ý)</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Học viên</th>
+                            <th>Lớp</th>
+                            <th>Số buổi vắng</th>
+                            <th>Tỷ lệ vắng</th>
+                            <th>Lần cuối vắng</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Trần Văn B</td>
+                            <td>IELTS 6.5 - Sáng</td>
+                            <td>5 buổi</td>
+                            <td><span class="warning-text">33%</span></td>
+                            <td>22/02/2026</td>
+                            <td>
+                                <button class="btn-icon" title="Xem chi tiết" onclick="viewStudentAttendance('std001')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon" title="Gửi thông báo" onclick="sendWarning('std001')">
+                                    <i class="fas fa-bell"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Nguyễn Thị D</td>
+                            <td>TOEIC 650+ - Tối</td>
+                            <td>4 buổi</td>
+                            <td><span class="warning-text">29%</span></td>
+                            <td>24/02/2026</td>
+                            <td>
+                                <button class="btn-icon" title="Xem chi tiết" onclick="viewStudentAttendance('std002')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon" title="Gửi thông báo" onclick="sendWarning('std002')">
+                                    <i class="fas fa-bell"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- CREATE/EDIT ATTENDANCE MODAL -->
+    <div id="attendanceModal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2>Điểm danh lớp học</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Chọn lớp <span class="required">*</span></label>
+                        <select id="classSelect">
+                            <option value="">Chọn lớp</option>
+                            <option value="cls001">IELTS 6.5 - Sáng</option>
+                            <option value="cls002">TOEIC 650+ - Tối</option>
+                            <option value="cls003">Giao tiếp cơ bản</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày học <span class="required">*</span></label>
+                        <input type="date" id="attendanceDate">
+                    </div>
+                    <div class="form-group">
+                        <label>Buổi học <span class="required">*</span></label>
+                        <input type="number" placeholder="VD: 15" value="15">
+                    </div>
+                </div>
+
+                <h4>Danh sách học viên</h4>
+                <table class="table attendance-table">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Họ và tên</th>
+                            <th>Trạng thái</th>
+                            <th>Ghi chú</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Nguyễn Văn A</td>
+                            <td>
+                                <select class="status-select present">
+                                    <option value="present" selected>Có mặt</option>
+                                    <option value="excused">Vắng có phép</option>
+                                    <option value="absent">Vắng không phép</option>
+                                </select>
+                            </td>
+                            <td><input type="text" placeholder="Ghi chú..."></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Trần Thị B</td>
+                            <td>
+                                <select class="status-select excused">
+                                    <option value="present">Có mặt</option>
+                                    <option value="excused" selected>Vắng có phép</option>
+                                    <option value="absent">Vắng không phép</option>
+                                </select>
+                            </td>
+                            <td><input type="text" value="Nghỉ ốm có giấy"></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Lê Văn C</td>
+                            <td>
+                                <select class="status-select present">
+                                    <option value="present" selected>Có mặt</option>
+                                    <option value="excused">Vắng có phép</option>
+                                    <option value="absent">Vắng không phép</option>
+                                </select>
+                            </td>
+                            <td><input type="text" placeholder="Ghi chú..."></td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Phạm Thị D</td>
+                            <td>
+                                <select class="status-select present">
+                                    <option value="present" selected>Có mặt</option>
+                                    <option value="excused">Vắng có phép</option>
+                                    <option value="absent">Vắng không phép</option>
+                                </select>
+                            </td>
+                            <td><input type="text" placeholder="Ghi chú..."></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="attendance-summary">
+                    <div class="summary-item">
+                        <strong>Tổng số:</strong> 15 học viên
+                    </div>
+                    <div class="summary-item">
+                        <strong>Có mặt:</strong> <span class="text-present">13</span>
+                    </div>
+                    <div class="summary-item">
+                        <strong>Vắng có phép:</strong> <span class="text-excused">1</span>
+                    </div>
+                    <div class="summary-item">
+                        <strong>Vắng không phép:</strong> <span class="text-absent">1</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal()">Hủy</button>
+                <button class="btn-primary">Lưu điểm danh</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="Attendance.js"></script>
+</body>
+</html>
