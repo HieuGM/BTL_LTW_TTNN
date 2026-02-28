@@ -1,0 +1,146 @@
+/* ===== ATTENDANCE PAGE STYLES ===== */
+
+/* Class Selection */
+.class-selection {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 20px;
+    align-items: end;
+}
+
+/* Quick Actions */
+.quick-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+/* Attendance Table */
+.attendance-row {
+    transition: background 0.3s;
+}
+
+.attendance-row.status-present {
+    background: #d4edda !important;
+}
+
+.attendance-row.status-excused {
+    background: #fff3cd !important;
+}
+
+.attendance-row.status-absent {
+    background: #f8d7da !important;
+}
+
+.status-select {
+    padding: 6px 10px;
+    border: 2px solid #e9ecef;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.status-select.present {
+    background: #d4edda;
+    border-color: #1cc88a;
+    color: #155724;
+}
+
+.status-select.excused {
+    background: #fff3cd;
+    border-color: #f6c23e;
+    color: #856404;
+}
+
+.status-select.absent {
+    background: #f8d7da;
+    border-color: #e74a3b;
+    color: #721c24;
+}
+
+.note-input {
+    padding: 6px 10px;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    font-size: 13px;
+    width: 100%;
+}
+
+/* Attendance Summary */
+.attendance-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.summary-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.summary-item i {
+    font-size: 32px;
+}
+
+.summary-item.present i {
+    color: #1cc88a;
+}
+
+.summary-item.excused i {
+    color: #f6c23e;
+}
+
+.summary-item.absent i {
+    color: #e74a3b;
+}
+
+.summary-item.total i {
+    color: #36b9cc;
+}
+
+.summary-label {
+    font-size: 13px;
+    color: #6c757d;
+    margin-bottom: 5px;
+}
+
+.summary-count {
+    font-size: 28px;
+    font-weight: 700;
+    color: #333;
+}
+
+/* Attendance Actions */
+.attendance-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .class-selection {
+        grid-template-columns: 1fr;
+    }
+    
+    .attendance-summary {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .attendance-actions {
+        flex-direction: column;
+    }
+}

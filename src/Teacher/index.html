@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Giảng Viên - Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 900px;
+            width: 100%;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+        
+        .header .badge {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+        
+        .pages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .page-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: inherit;
+            border: 2px solid transparent;
+        }
+        
+        .page-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            border-color: #2563eb;
+        }
+        
+        .page-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #2563eb;
+        }
+        
+        .page-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .page-desc {
+            font-size: 0.9rem;
+            color: #6c757d;
+            line-height: 1.5;
+        }
+        
+        .info-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+        
+        .info-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .info-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #dee2e6;
+            color: #495057;
+        }
+        
+        .info-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .info-list li strong {
+            color: #2563eb;
+            font-weight: 600;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #dee2e6;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .icon {
+            display: inline-block;
+            width: 20px;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .pages-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>👨‍🏫 Portal Giảng Viên</h1>
+        <p class="subtitle">Anh Ngữ ABC - Hệ thống quản lý giảng dạy</p>
+        <span class="badge">DEMO UI - Static Data</span>
+    </div>
+
+    <div class="pages-grid">
+        <a href="dashboard.html" class="page-card">
+            <div class="page-icon">🏠</div>
+            <div class="page-title">Dashboard</div>
+            <div class="page-desc">Tổng quan, lịch dạy, thống kê và thông báo</div>
+        </a>
+
+        <a href="classes.html" class="page-card">
+            <div class="page-icon">📚</div>
+            <div class="page-title">Lớp Giảng Dạy</div>
+            <div class="page-desc">Quản lý lớp học, xem danh sách học viên và tài liệu</div>
+        </a>
+
+        <a href="attendance.html" class="page-card">
+            <div class="page-icon">✅</div>
+            <div class="page-title">Điểm Danh</div>
+            <div class="page-desc">Điểm danh buổi học, ghi chú học viên</div>
+        </a>
+
+        <a href="lesson-log.html" class="page-card">
+            <div class="page-icon">📖</div>
+            <div class="page-title">Sổ Đầu Bài</div>
+            <div class="page-desc">Nhập nội dung đã dạy, giao bài tập, upload tài liệu</div>
+        </a>
+
+        <a href="grades.html" class="page-card">
+            <div class="page-icon">⭐</div>
+            <div class="page-title">Nhập Điểm</div>
+            <div class="page-desc">Nhập điểm theo kỹ năng và nhận xét học viên</div>
+        </a>
+    </div>
+
+    <div class="info-section">
+        <div class="info-title">
+            <i class="fas fa-info-circle"></i>
+            Thông tin hệ thống
+        </div>
+        <ul class="info-list">
+            <li>
+                <i class="icon fas fa-palette"></i>
+                <strong>Thiết kế:</strong> Tham khảo màu sắc và bố cục từ các portal khác (Admin, Student)
+            </li>
+            <li>
+                <i class="icon fas fa-database"></i>
+                <strong>Dữ liệu:</strong> Fake data để demo UI, cần tích hợp API backend
+            </li>
+            <li>
+                <i class="icon fas fa-mobile-alt"></i>
+                <strong>Responsive:</strong> Tương thích với mobile và tablet
+            </li>
+            <li>
+                <i class="icon fas fa-check-circle"></i>
+                <strong>Chức năng:</strong> Đầy đủ theo yêu cầu trong ChucNang.md (4.1 → 4.5)
+            </li>
+            <li>
+                <i class="icon fas fa-code"></i>
+                <strong>Công nghệ:</strong> HTML5 + CSS3 + Vanilla JavaScript
+            </li>
+        </ul>
+    </div>
+
+    <div class="info-section">
+        <div class="info-title">
+            <i class="fas fa-list-check"></i>
+            Tính năng đã hoàn thành
+        </div>
+        <ul class="info-list">
+            <li><strong>✅ 4.1</strong> Dashboard - Lịch dạy, thống kê, thông báo</li>
+            <li><strong>✅ 4.2</strong> Quản lý lớp - Xem chi tiết, danh sách học viên, lịch học, tài liệu</li>
+            <li><strong>✅ 4.3</strong> Điểm danh - 3 trạng thái (Có mặt/Vắng có phép/Vắng không phép)</li>
+            <li><strong>✅ 4.4</strong> Sổ đầu bài - Nội dung đã dạy, bài tập, upload tài liệu</li>
+            <li><strong>✅ 4.5</strong> Nhập điểm - Theo kỹ năng hoặc điểm tổng, nhận xét</li>
+        </ul>
+    </div>
+
+    <div class="footer">
+        <p>
+            <i class="fas fa-code"></i> Developed for <strong>Anh Ngữ ABC</strong> - BTL Lập Trình Web
+        </p>
+        <p style="margin-top: 10px;">
+            <i class="fas fa-folder"></i> Đọc <strong>README.md</strong> để biết thêm chi tiết
+        </p>
+    </div>
+</div>
+
+</body>
+</html>

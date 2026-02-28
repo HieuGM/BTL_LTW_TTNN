@@ -1,0 +1,352 @@
+/* ===== CLASSES PAGE STYLES ===== */
+
+/* Filter Tabs */
+.filter-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    border: 2px solid #e9ecef;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: #6c757d;
+    transition: all 0.3s;
+}
+
+.tab-btn:hover {
+    border-color: #2563eb;
+    color: #2563eb;
+}
+
+.tab-btn.active {
+    background: #2563eb;
+    color: white;
+    border-color: #2563eb;
+}
+
+/* Classes Container */
+.classes-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 25px;
+}
+
+.class-item {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: all 0.3s;
+    border-left: 5px solid #2563eb;
+}
+
+.class-item:hover {
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    transform: translateY(-3px);
+}
+
+.class-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.class-title-group h3 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.class-code-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    background: #f8f9fa;
+    color: #6c757d;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.class-item-body {
+    margin: 15px 0;
+}
+
+.class-detail-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #495057;
+}
+
+.class-detail-row i {
+    width: 20px;
+    color: #6c757d;
+}
+
+.class-detail-row strong {
+    font-weight: 600;
+    color: #333;
+}
+
+.class-item-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #e9ecef;
+}
+
+.student-count {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #6c757d;
+}
+
+.student-count .count {
+    font-weight: 700;
+    font-size: 18px;
+    color: #2563eb;
+}
+
+.class-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* Class Detail Modal */
+.detail-tabs {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.detail-tab {
+    padding: 12px 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: #6c757d;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s;
+}
+
+.detail-tab:hover {
+    color: #2563eb;
+}
+
+.detail-tab.active {
+    color: #2563eb;
+    border-bottom-color: #2563eb;
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Info Grid */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.info-item {
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.info-item label {
+    display: block;
+    font-size: 13px;
+    color: #6c757d;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.info-item label i {
+    margin-right: 5px;
+}
+
+.info-item span {
+    display: block;
+    font-size: 15px;
+    color: #333;
+    font-weight: 600;
+}
+
+/* Schedule Calendar */
+.schedule-calendar {
+    display: grid;
+    gap: 15px;
+}
+
+.schedule-day {
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #2563eb;
+}
+
+.schedule-day-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.day-name {
+    font-weight: 700;
+    font-size: 16px;
+    color: #333;
+}
+
+.day-date {
+    font-size: 13px;
+    color: #6c757d;
+}
+
+.schedule-time-slot {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #495057;
+}
+
+.schedule-time-slot i {
+    color: #2563eb;
+}
+
+/* Materials List */
+.materials-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.material-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.material-item:hover {
+    background: #e9ecef;
+}
+
+.material-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: #2563eb;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.material-info {
+    flex: 1;
+}
+
+.material-name {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 3px;
+}
+
+.material-meta {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+.material-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6c757d;
+}
+
+.empty-state i {
+    font-size: 64px;
+    color: #dee2e6;
+    margin-bottom: 20px;
+}
+
+.empty-state h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.empty-state p {
+    font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .classes-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .class-item-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .class-actions {
+        width: 100%;
+    }
+    
+    .class-actions button {
+        flex: 1;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .detail-tabs {
+        overflow-x: auto;
+    }
+}

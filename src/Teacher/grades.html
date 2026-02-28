@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>Nhập Điểm & Nhận Xét</title>
+    <link rel="stylesheet" href="teacher.css">
+    <link rel="stylesheet" href="grades.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .grade-form { max-width: 1000px; }
+        .skill-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .skill-input { padding: 15px; background: #f8f9fa; border-radius: 8px; }
+        .skill-input label { display: block; font-weight: 600; margin-bottom: 8px; color: #333; }
+        .skill-input input { width: 100%; padding: 10px; border: 2px solid #e9ecef; border-radius: 6px; font-size: 16px; font-weight: 600; }
+        .skill-input input:focus { border-color: #2563eb; outline: none; }
+        .student-item { padding: 20px; background: white; border: 1px solid #e9ecef; border-radius: 8px; margin-bottom: 15px; }
+        .student-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #e9ecef; }
+        .student-name { font-size: 18px; font-weight: 600; color: #333; }
+        .grade-summary { display: inline-block; padding: 8px 15px; background: #e7f3ff; color: #2563eb; border-radius: 20px; font-weight: 700; font-size: 18px; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #e9ecef; }
+        .tab { padding: 12px 24px; background: none; border: none; cursor: pointer; font-weight: 600; color: #6c757d; border-bottom: 3px solid transparent; transition: all 0.3s; }
+        .tab.active { color: #2563eb; border-bottom-color: #2563eb; }
+        .tab:hover { color: #2563eb; }
+    </style>
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Anh Ngữ ABC</h2>
+            <p>Cổng giảng viên</p>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="classes.html" class="nav-item"><i class="fas fa-chalkboard-teacher"></i> Lớp giảng dạy</a>
+            <a href="attendance.html" class="nav-item"><i class="fas fa-clipboard-check"></i> Điểm danh</a>
+            <a href="lesson-log.html" class="nav-item"><i class="fas fa-book"></i> Sổ đầu bài</a>
+            <a href="grades.html" class="nav-item active"><i class="fas fa-star"></i> Nhập điểm</a>
+            <a href="#" class="nav-item"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="content">
+
+        <h1><i class="fas fa-star"></i> Nhập Điểm & Nhận Xét</h1>
+
+        <!-- Selection -->
+        <div class="card">
+            <div class="form-group">
+                <label>Chọn lớp học <span style="color: red;">*</span></label>
+                <select class="form-control" id="classSelect" onchange="loadStudents()">
+                    <option value="">-- Chọn lớp học --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Loại bài kiểm tra <span style="color: red;">*</span></label>
+                <select class="form-control" id="testTypeSelect">
+                    <option value="">-- Chọn loại bài kiểm tra --</option>
+                    <option value="skills">Điểm theo kỹ năng (Listening/Speaking/Reading/Writing)</option>
+                    <option value="total">Điểm tổng</option>
+                    <option value="midterm">Kiểm tra giữa kỳ</option>
+                    <option value="final">Kiểm tra cuối kỳ</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('input')">Nhập điểm</button>
+            <button class="tab" onclick="switchTab('history')">Lịch sử điểm</button>
+        </div>
+
+        <!-- Input Tab -->
+        <div id="inputTab" class="tab-content">
+            <div class="card grade-form">
+                <div class="card-header">
+                    <h2 class="card-title">Nhập điểm học viên</h2>
+                    <button class="btn btn-primary" onclick="saveAllGrades()">
+                        <i class="fas fa-save"></i> Lưu tất cả
+                    </button>
+                </div>
+                <div id="studentsContainer">
+                    <p style="text-align: center; color: #6c757d; padding: 40px;">
+                        <i class="fas fa-arrow-up" style="font-size: 48px; display: block; margin-bottom: 15px;"></i>
+                        Vui lòng chọn lớp học và loại bài kiểm tra
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Tab -->
+        <div id="historyTab" class="tab-content" style="display: none;">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Lịch sử điểm</h2>
+                    <button class="btn btn-success" onclick="exportGrades()">
+                        <i class="fas fa-file-excel"></i> Xuất Excel
+                    </button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Mã HV</th>
+                                <th>Họ và tên</th>
+                                <th>Loại bài</th>
+                                <th>Listening</th>
+                                <th>Speaking</th>
+                                <th>Reading</th>
+                                <th>Writing</th>
+                                <th>Trung bình</th>
+                                <th>Ngày nhập</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody">
+                            <tr><td colspan="9" style="text-align: center; padding: 40px; color: #6c757d;">Chưa có dữ liệu</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+</div>
+
+<script>
+const classes = [
+    { id: 1, name: "IELTS 6.5 Sáng", code: "IELTS-65-S01" },
+    { id: 2, name: "Giao tiếp Cơ bản Tối", code: "GT-CB-T03" },
+    { id: 3, name: "TOEIC 650 Chiều", code: "TOEIC-650-C02" }
+];
+
+const students = {
+    1: [
+        { id: 1, code: "HV001", name: "Nguyễn Văn A" },
+        { id: 2, code: "HV002", name: "Trần Thị B" },
+        { id: 3, code: "HV003", name: "Lê Văn C" }
+    ],
+    2: [
+        { id: 4, code: "HV006", name: "Vũ Thị F" },
+        { id: 5, code: "HV007", name: "Đỗ Văn G" }
+    ]
+};
+
+const gradeHistory = [
+    { code: "HV001", name: "Nguyễn Văn A", type: "Giữa kỳ", listening: 7.5, speaking: 6.5, reading: 8.0, writing: 7.0, date: "15/02/2024" },
+    { code: "HV002", name: "Trần Thị B", type: "Giữa kỳ", listening: 8.0, speaking: 7.5, reading: 8.5, writing: 7.5, date: "15/02/2024" }
+];
+
+document.addEventListener('DOMContentLoaded', function() {
+    const select = document.getElementById('classSelect');
+    select.innerHTML = '<option value="">-- Chọn lớp học --</option>' +
+        classes.map(c => `<option value="${c.id}">${c.name} (${c.code})</option>`).join('');
+    
+    loadGradeHistory();
+});
+
+function loadStudents() {
+    const classId = parseInt(document.getElementById('classSelect').value);
+    const testType = document.getElementById('testTypeSelect').value;
+    const container = document.getElementById('studentsContainer');
+    
+    if (!classId || !testType) {
+        container.innerHTML = '<p style="text-align: center; color: #6c757d; padding: 40px;">Vui lòng chọn đầy đủ thông tin</p>';
+        return;
+    }
+    
+    const classStudents = students[classId] || [];
+    const isSkills = testType === 'skills';
+    
+    container.innerHTML = classStudents.map(student => `
+        <div class="student-item">
+            <div class="student-header">
+                <div>
+                    <div class="student-name">${student.name}</div>
+                    <small style="color: #6c757d;">${student.code}</small>
+                </div>
+                <div class="grade-summary" id="avg-${student.id}">-</div>
+            </div>
+            
+            ${isSkills ? `
+            <div class="skill-grid">
+                <div class="skill-input">
+                    <label><i class="fas fa-headphones"></i> Listening</label>
+                    <input type="number" class="grade-input" data-student="${student.id}" data-skill="listening" 
+                           min="0" max="10" step="0.5" placeholder="0.0" onchange="calculateAverage(${student.id})">
+                </div>
+                <div class="skill-input">
+                    <label><i class="fas fa-comments"></i> Speaking</label>
+                    <input type="number" class="grade-input" data-student="${student.id}" data-skill="speaking" 
+                           min="0" max="10" step="0.5" placeholder="0.0" onchange="calculateAverage(${student.id})">
+                </div>
+                <div class="skill-input">
+                    <label><i class="fas fa-book-open"></i> Reading</label>
+                    <input type="number" class="grade-input" data-student="${student.id}" data-skill="reading" 
+                           min="0" max="10" step="0.5" placeholder="0.0" onchange="calculateAverage(${student.id})">
+                </div>
+                <div class="skill-input">
+                    <label><i class="fas fa-pencil-alt"></i> Writing</label>
+                    <input type="number" class="grade-input" data-student="${student.id}" data-skill="writing" 
+                           min="0" max="10" step="0.5" placeholder="0.0" onchange="calculateAverage(${student.id})">
+                </div>
+            </div>
+            ` : `
+            <div class="form-group">
+                <label>Điểm tổng</label>
+                <input type="number" class="form-control grade-input" data-student="${student.id}" data-skill="total"
+                       min="0" max="10" step="0.5" placeholder="0.0">
+            </div>
+            `}
+            
+            <div class="form-group">
+                <label><i class="fas fa-comment-alt"></i> Nhận xét</label>
+                <textarea class="form-control" data-student="${student.id}" rows="3" 
+                          placeholder="Nhận xét về tiến bộ, điểm mạnh, điểm cần cải thiện của học viên..."></textarea>
+            </div>
+        </div>
+    `).join('');
+}
+
+function calculateAverage(studentId) {
+    const inputs = document.querySelectorAll(`input[data-student="${studentId}"]`);
+    let sum = 0, count = 0;
+    
+    inputs.forEach(input => {
+        const val = parseFloat(input.value);
+        if (!isNaN(val)) {
+            sum += val;
+            count++;
+        }
+    });
+    
+    const avg = count > 0 ? (sum / count).toFixed(1) : '-';
+    document.getElementById(`avg-${studentId}`).textContent = avg;
+}
+
+function switchTab(tab) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    document.getElementById('inputTab').style.display = tab === 'input' ? 'block' : 'none';
+    document.getElementById('historyTab').style.display = tab === 'history' ? 'block' : 'none';
+}
+
+function loadGradeHistory() {
+    const tbody = document.getElementById('historyTableBody');
+    
+    if (gradeHistory.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; padding: 40px; color: #6c757d;">Chưa có dữ liệu</td></tr>';
+        return;
+    }
+    
+    tbody.innerHTML = gradeHistory.map(record => {
+        const avg = ((record.listening + record.speaking + record.reading + record.writing) / 4).toFixed(1);
+        return `
+            <tr>
+                <td>${record.code}</td>
+                <td><strong>${record.name}</strong></td>
+                <td>${record.type}</td>
+                <td>${record.listening}</td>
+                <td>${record.speaking}</td>
+                <td>${record.reading}</td>
+                <td>${record.writing}</td>
+                <td><strong>${avg}</strong></td>
+                <td>${record.date}</td>
+            </tr>
+        `;
+    }).join('');
+}
+
+function saveAllGrades() {
+    const classId = document.getElementById('classSelect').value;
+    const testType = document.getElementById('testTypeSelect').value;
+    
+    if (!classId || !testType) {
+        alert('Vui lòng chọn lớp học và loại bài kiểm tra!');
+        return;
+    }
+    
+    // Collect all grades
+    const grades = [];
+    document.querySelectorAll('.student-item').forEach(item => {
+        const inputs = item.querySelectorAll('.grade-input');
+        const textarea = item.querySelector('textarea');
+        // ... collect data
+    });
+    
+    alert('✓ Đã lưu điểm thành công!\n\nDữ liệu sẽ được gửi đến backend khi tích hợp API.');
+}
+
+function exportGrades() {
+    alert('Xuất dữ liệu ra Excel...\n\nChức năng sẽ được implement với backend.');
+}
+</script>
+</body>
+</html>

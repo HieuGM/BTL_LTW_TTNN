@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Giảng Viên</title>
+    <link rel="stylesheet" href="teacher.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Anh Ngữ ABC</h2>
+            <p>Cổng giảng viên</p>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item active"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="classes.html" class="nav-item"><i class="fas fa-chalkboard-teacher"></i> Lớp giảng dạy</a>
+            <a href="attendance.html" class="nav-item"><i class="fas fa-clipboard-check"></i> Điểm danh</a>
+            <a href="lesson-log.html" class="nav-item"><i class="fas fa-book"></i> Sổ đầu bài</a>
+            <a href="grades.html" class="nav-item"><i class="fas fa-star"></i> Nhập điểm</a>
+            <a href="#" class="nav-item"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="content">
+
+        <h1>👋 Xin chào, <span id="teacherName">Thầy/Cô</span></h1>
+
+        <!-- ===== QUICK STATS ===== -->
+        <div class="stats-grid">
+            <div class="stat-card blue">
+                <div class="stat-icon"><i class="fas fa-chalkboard"></i></div>
+                <div class="stat-info">
+                    <div class="stat-number" id="totalClasses">0</div>
+                    <div class="stat-label">Lớp đang dạy</div>
+                </div>
+            </div>
+
+            <div class="stat-card green">
+                <div class="stat-icon"><i class="fas fa-user-graduate"></i></div>
+                <div class="stat-info">
+                    <div class="stat-number" id="totalStudents">0</div>
+                    <div class="stat-label">Tổng học viên</div>
+                </div>
+            </div>
+
+            <div class="stat-card orange">
+                <div class="stat-icon"><i class="fas fa-calendar-day"></i></div>
+                <div class="stat-info">
+                    <div class="stat-number" id="todayLessons">0</div>
+                    <div class="stat-label">Buổi học hôm nay</div>
+                </div>
+            </div>
+
+            <div class="stat-card purple">
+                <div class="stat-icon"><i class="fas fa-bell"></i></div>
+                <div class="stat-info">
+                    <div class="stat-number" id="notifications">0</div>
+                    <div class="stat-label">Thông báo mới</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== LỊCH DẠY HÔM NAY ===== -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title"><i class="fas fa-calendar-alt"></i> Lịch dạy hôm nay</h2>
+                <span class="date-today" id="dateToday"></span>
+            </div>
+            <div id="todaySchedule" class="schedule-list">
+                <!-- Sẽ được load bởi JS -->
+            </div>
+        </div>
+
+        <!-- ===== LỊCH DẠY TUẦN NÀY ===== -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title"><i class="fas fa-calendar-week"></i> Lịch dạy tuần này</h2>
+                <div class="week-nav">
+                    <button class="btn btn-sm btn-primary" id="prevWeek"><i class="fas fa-chevron-left"></i></button>
+                    <span id="weekRange"></span>
+                    <button class="btn btn-sm btn-primary" id="nextWeek"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+            <div class="table-container">
+                <table id="weekScheduleTable">
+                    <thead>
+                        <tr>
+                            <th>Thứ</th>
+                            <th>Thời gian</th>
+                            <th>Lớp</th>
+                            <th>Phòng</th>
+                            <th>Học viên</th>
+                            <th>Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody id="weekScheduleBody">
+                        <!-- Sẽ được load bởi JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== DANH SÁCH LỚP ĐANG PHỤ TRÁCH ===== -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title"><i class="fas fa-users-class"></i> Lớp đang phụ trách</h2>
+            </div>
+            <div class="class-grid" id="classList">
+                <!-- Sẽ được load bởi JS -->
+            </div>
+        </div>
+
+        <!-- ===== THÔNG BÁO TỪ GIÁO VỤ ===== -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title"><i class="fas fa-bullhorn"></i> Thông báo từ giáo vụ</h2>
+            </div>
+            <div id="notificationsList" class="notifications-list">
+                <!-- Sẽ được load bởi JS -->
+            </div>
+        </div>
+
+    </main>
+
+</div>
+
+<script src="dashboard.js"></script>
+</body>
+</html>

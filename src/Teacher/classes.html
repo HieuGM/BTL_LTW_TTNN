@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Lớp Giảng Dạy</title>
+    <link rel="stylesheet" href="teacher.css">
+    <link rel="stylesheet" href="classes.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Anh Ngữ ABC</h2>
+            <p>Cổng giảng viên</p>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="classes.html" class="nav-item active"><i class="fas fa-chalkboard-teacher"></i> Lớp giảng dạy</a>
+            <a href="attendance.html" class="nav-item"><i class="fas fa-clipboard-check"></i> Điểm danh</a>
+            <a href="lesson-log.html" class="nav-item"><i class="fas fa-book"></i> Sổ đầu bài</a>
+            <a href="grades.html" class="nav-item"><i class="fas fa-star"></i> Nhập điểm</a>
+            <a href="#" class="nav-item"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="content">
+
+        <h1><i class="fas fa-chalkboard-teacher"></i> Lớp Giảng Dạy</h1>
+
+        <!-- Filter tabs -->
+        <div class="filter-tabs">
+            <button class="tab-btn active" data-status="all">Tất cả (<span id="countAll">0</span>)</button>
+            <button class="tab-btn" data-status="active">Đang học (<span id="countActive">0</span>)</button>
+            <button class="tab-btn" data-status="upcoming">Sắp khai giảng (<span id="countUpcoming">0</span>)</button>
+        </div>
+
+        <!-- Classes List -->
+        <div class="classes-container" id="classesContainer">
+            <!-- Sẽ được load bởi JS -->
+        </div>
+
+    </main>
+
+</div>
+
+<!-- MODAL: Class Detail -->
+<div id="classDetailModal" class="modal">
+    <div class="modal-content" style="max-width: 900px;">
+        <div class="modal-header">
+            <h2 class="modal-title"><i class="fas fa-info-circle"></i> Chi tiết lớp học</h2>
+            <span class="close" onclick="closeClassDetail()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <!-- Tabs -->
+            <div class="detail-tabs">
+                <button class="detail-tab active" data-tab="info">Thông tin</button>
+                <button class="detail-tab" data-tab="students">Học viên</button>
+                <button class="detail-tab" data-tab="schedule">Lịch học</button>
+                <button class="detail-tab" data-tab="materials">Tài liệu</button>
+            </div>
+
+            <!-- Tab Content: Info -->
+            <div class="tab-content active" id="tabInfo">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <label><i class="fas fa-tag"></i> Mã lớp:</label>
+                        <span id="detailClassCode"></span>
+                    </div>
+                    <div class="info-item">
+                        <label><i class="fas fa-book"></i> Khóa học:</label>
+                        <span id="detailCourse"></span>
+                    </div>
+                    <div class="info-item">
+                        <label><i class="fas fa-calendar"></i> Lịch học:</label>
+                        <span id="detailSchedule"></span>
+                    </div>
+                    <div class="info-item">
+                        <label><i class="fas fa-door-open"></i> Phòng học:</label>
+                        <span id="detailRoom"></span>
+                    </div>
+                    <div class="info-item">
+                        <label><i class="fas fa-users"></i> Sĩ số:</label>
+                        <span id="detailStudents"></span>
+                    </div>
+                    <div class="info-item">
+                        <label><i class="fas fa-calendar-check"></i> Ngày khai giảng:</label>
+                        <span id="detailStartDate"></span>
+                    </div>
+                    <div class="info-item">
+                        <label><i class="fas fa-calendar-times"></i> Ngày kết thúc:</label>
+                        <span id="detailEndDate"></span>
+                    </div>
+                    <div class="info-item">
+                        <label><i class="fas fa-signal"></i> Trạng thái:</label>
+                        <span id="detailStatus"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content: Students -->
+            <div class="tab-content" id="tabStudents">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã HV</th>
+                                <th>Họ và tên</th>
+                                <th>Email</th>
+                                <th>Số điện thoại</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentsList">
+                            <!-- Sẽ được load bởi JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tab Content: Schedule -->
+            <div class="tab-content" id="tabSchedule">
+                <div class="schedule-calendar" id="scheduleCalendar">
+                    <!-- Sẽ được load bởi JS -->
+                </div>
+            </div>
+
+            <!-- Tab Content: Materials -->
+            <div class="tab-content" id="tabMaterials">
+                <div class="materials-list" id="materialsList">
+                    <!-- Sẽ được load bởi JS -->
+                </div>
+                <button class="btn btn-primary" onclick="uploadMaterial()">
+                    <i class="fas fa-upload"></i> Upload tài liệu mới
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="classes.js"></script>
+</body>
+</html>

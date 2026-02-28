@@ -1,0 +1,158 @@
+/* ===== LESSON LOG PAGE STYLES ===== */
+
+.lesson-form {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.lesson-history {
+    margin-top: 30px;
+}
+
+.history-item {
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border-left: 4px solid #2563eb;
+    transition: all 0.3s;
+}
+
+.history-item:hover {
+    background: #e9ecef;
+    transform: translateX(3px);
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.history-title {
+    font-weight: 600;
+    font-size: 16px;
+    color: #333;
+}
+
+.history-date {
+    color: #6c757d;
+    font-size: 14px;
+}
+
+.history-content {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #dee2e6;
+}
+
+.content-section {
+    margin-bottom: 15px;
+}
+
+.content-label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.content-text {
+    color: #495057;
+    line-height: 1.6;
+    margin-left: 24px;
+}
+
+.file-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+    margin-left: 24px;
+}
+
+.file-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    background: white;
+    border-radius: 6px;
+    transition: background 0.3s;
+}
+
+.file-item:hover {
+    background: #e9ecef;
+}
+
+.file-icon {
+    color: #2563eb;
+    font-size: 18px;
+}
+
+.file-name {
+    flex: 1;
+    font-size: 14px;
+    color: #495057;
+}
+
+.file-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* Upload Area */
+.upload-area {
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+    padding: 30px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.upload-area:hover {
+    border-color: #2563eb;
+    background: #f8f9fa;
+}
+
+.upload-area.dragover {
+    border-color: #2563eb;
+    background: #e7f3ff;
+}
+
+.upload-icon {
+    font-size: 48px;
+    color: #dee2e6;
+    margin-bottom: 15px;
+}
+
+.upload-text {
+    color: #6c757d;
+    margin-bottom: 10px;
+}
+
+.upload-hint {
+    font-size: 12px;
+    color: #adb5bd;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .history-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .content-text {
+        margin-left: 0;
+    }
+    
+    .file-list {
+        margin-left: 0;
+    }
+}

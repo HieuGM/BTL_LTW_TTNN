@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>Sổ Đầu Bài</title>
+    <link rel="stylesheet" href="teacher.css">
+    <link rel="stylesheet" href="lesson-log.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .lesson-form { max-width: 900px; margin: 0 auto; }
+        .lesson-history { margin-top: 30px; }
+        .history-item { padding: 20px; background: #f8f9fa; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #2563eb; }
+        .history-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .history-title { font-weight: 600; font-size: 16px; }
+        .history-date { color: #6c757d; font-size: 14px; }
+        .history-content { margin-top: 10px; padding-top: 10px; border-top: 1px solid #dee2e6; }
+        .content-section { margin-bottom: 15px; }
+        .content-label { font-weight: 600; color: #333; margin-bottom: 5px; }
+        .content-text { color: #495057; line-height: 1.6; }
+        .file-list { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+        .file-item { display: flex; align-items: center; gap: 10px; padding: 8px; background: white; border-radius: 6px; }
+        .file-icon { color: #2563eb; }
+    </style>
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Anh Ngữ ABC</h2>
+            <p>Cổng giảng viên</p>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="classes.html" class="nav-item"><i class="fas fa-chalkboard-teacher"></i> Lớp giảng dạy</a>
+            <a href="attendance.html" class="nav-item"><i class="fas fa-clipboard-check"></i> Điểm danh</a>
+            <a href="lesson-log.html" class="nav-item active"><i class="fas fa-book"></i> Sổ đầu bài</a>
+            <a href="grades.html" class="nav-item"><i class="fas fa-star"></i> Nhập điểm</a>
+            <a href="#" class="nav-item"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="content">
+
+        <h1><i class="fas fa-book"></i> Sổ Đầu Bài / Nội Dung Buổi Học</h1>
+
+        <!-- Lesson Form -->
+        <div class="card lesson-form">
+            <div class="card-header">
+                <h2 class="card-title">Nhập nội dung buổi học</h2>
+            </div>
+            <div class="form-group">
+                <label>Lớp học <span style="color: red;">*</span></label>
+                <select class="form-control" id="classSelect" onchange="loadLessonSessions()">
+                    <option value="">-- Chọn lớp học --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Buổi học <span style="color: red;">*</span></label>
+                <select class="form-control" id="sessionSelect">
+                    <option value="">-- Chọn buổi học --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Nội dung đã dạy <span style="color: red;">*</span></label>
+                <textarea class="form-control" id="lessonContent" rows="6" 
+                          placeholder="Mô tả chi tiết nội dung bài học: kiến thức đã truyền đạt, kỹ năng đã luyện tập, hoạt động trong lớp..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Bài tập về nhà</label>
+                <textarea class="form-control" id="homework" rows="4" 
+                          placeholder="Mô tả bài tập giao cho học viên: nội dung, yêu cầu, hạn nộp..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Ghi chú thêm</label>
+                <textarea class="form-control" id="notes" rows="3" 
+                          placeholder="Ghi chú về tình hình lớp học, học viên cần chú ý đặc biệt..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Tài liệu đính kèm</label>
+                <input type="file" class="form-control" id="fileUpload" multiple>
+                <small style="color: #6c757d; display: block; margin-top: 5px;">
+                    <i class="fas fa-info-circle"></i> Hỗ trợ: PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX (tối đa 10MB/file)
+                </small>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-success" onclick="saveLessonLog()">
+                    <i class="fas fa-save"></i> Lưu sổ đầu bài
+                </button>
+                <button class="btn btn-secondary" onclick="clearForm()" style="margin-left: 10px;">
+                    <i class="fas fa-redo"></i> Làm mới
+                </button>
+            </div>
+        </div>
+
+        <!-- Lesson History -->
+        <div class="card lesson-history">
+            <div class="card-header">
+                <h2 class="card-title">Lịch sử sổ đầu bài</h2>
+                <select class="form-control" style="width: 250px;" id="historyClassFilter" onchange="filterHistory()">
+                    <option value="">Tất cả lớp</option>
+                </select>
+            </div>
+            <div id="historyContainer">
+                <!-- Will be loaded by JS -->
+            </div>
+        </div>
+
+    </main>
+
+</div>
+
+<script>
+// Fake data
+const classes = [
+    { id: 1, name: "IELTS 6.5 Sáng", code: "IELTS-65-S01" },
+    { id: 2, name: "Giao tiếp Cơ bản Tối", code: "GT-CB-T03" },
+    { id: 3, name: "TOEIC 650 Chiều", code: "TOEIC-650-C02" }
+];
+
+const sessions = {
+    1: [{ id: 1, number: 1, date: "04/03/2024" }, { id: 2, number: 2, date: "06/03/2024" }],
+    2: [{ id: 3, number: 1, date: "05/03/2024" }],
+    3: [{ id: 4, number: 1, date: "04/03/2024" }]
+};
+
+const lessonHistory = [
+    {
+        id: 1, classId: 1, className: "IELTS 6.5 Sáng", session: 2, date: "06/03/2024",
+        content: "Học Unit 5: Speaking Part 2 - Describing a person. Luyện tập cấu trúc câu mô tả ngoại hình, tính cách. Role-play với các tình huống thực tế.",
+        homework: "Chuẩn bị bài nói về \"Describe your best friend\" (2 phút). Học 20 từ vựng về tính cách con người.",
+        notes: "Học viên Nguyễn Văn A cần hỗ trợ thêm về phát âm."
+    },
+    {
+        id: 2, classId: 1, className: "IELTS 6.5 Sáng", session: 1, date: "04/03/2024",
+        content: "Học Unit 4: Listening Part 3 - Academic discussion. Luyện nghe đoạn hội thoại giữa giảng viên và sinh viên. Phân tích cấu trúc bài nghe.",
+        homework: "Làm bài tập Listening Part 3 trong sách. Nghe và ghi chú các ý chính.",
+        notes: "Cả lớp tham gia tích cực."
+    }
+];
+
+document.addEventListener('DOMContentLoaded', function() {
+    loadClassOptions();
+    loadHistoryClassFilter();
+    loadHistory();
+});
+
+function loadClassOptions() {
+    const select = document.getElementById('classSelect');
+    select.innerHTML = '<option value="">-- Chọn lớp học --</option>' +
+        classes.map(c => `<option value="${c.id}">${c.name} (${c.code})</option>`).join('');
+}
+
+function loadLessonSessions() {
+    const classId = parseInt(document.getElementById('classSelect').value);
+    const select = document.getElementById('sessionSelect');
+    
+    if (!classId) {
+        select.innerHTML = '<option value="">-- Chọn buổi học --</option>';
+        return;
+    }
+    
+    const classSessions = sessions[classId] || [];
+    select.innerHTML = '<option value="">-- Chọn buổi học --</option>' +
+        classSessions.map(s => `<option value="${s.id}">Buổi ${s.number} - ${s.date}</option>`).join('');
+}
+
+function loadHistoryClassFilter() {
+    const select = document.getElementById('historyClassFilter');
+    select.innerHTML = '<option value="">Tất cả lớp</option>' +
+        classes.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+}
+
+function loadHistory() {
+    const container = document.getElementById('historyContainer');
+    
+    if (lessonHistory.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: #6c757d; padding: 40px;">Chưa có sổ đầu bài nào.</p>';
+        return;
+    }
+    
+    container.innerHTML = lessonHistory.map(log => `
+        <div class="history-item">
+            <div class="history-header">
+                <div class="history-title">
+                    <i class="fas fa-book"></i> ${log.className} - Buổi ${log.session}
+                </div>
+                <div class="history-date">
+                    <i class="fas fa-calendar"></i> ${log.date}
+                </div>
+            </div>
+            <div class="history-content">
+                <div class="content-section">
+                    <div class="content-label"><i class="fas fa-chalkboard-teacher"></i> Nội dung đã dạy:</div>
+                    <div class="content-text">${log.content}</div>
+                </div>
+                <div class="content-section">
+                    <div class="content-label"><i class="fas fa-tasks"></i> Bài tập về nhà:</div>
+                    <div class="content-text">${log.homework}</div>
+                </div>
+                ${log.notes ? `
+                <div class="content-section">
+                    <div class="content-label"><i class="fas fa-sticky-note"></i> Ghi chú:</div>
+                    <div class="content-text">${log.notes}</div>
+                </div>
+                ` : ''}
+            </div>
+        </div>
+    `).join('');
+}
+
+function filterHistory() {
+    const classId = document.getElementById('historyClassFilter').value;
+    // TODO: Filter logic with backend
+    alert('Lọc theo lớp: ' + (classId || 'Tất cả'));
+}
+
+function saveLessonLog() {
+    const classId = document.getElementById('classSelect').value;
+    const sessionId = document.getElementById('sessionSelect').value;
+    const content = document.getElementById('lessonContent').value;
+    
+    if (!classId || !sessionId || !content.trim()) {
+        alert('Vui lòng điền đầy đủ thông tin bắt buộc!');
+        return;
+    }
+    
+    alert('✓ Đã lưu sổ đầu bài thành công!\n\nDữ liệu sẽ được gửi đến backend khi tích hợp API.');
+    clearForm();
+}
+
+function clearForm() {
+    document.getElementById('classSelect').value = '';
+    document.getElementById('sessionSelect').innerHTML = '<option value="">-- Chọn buổi học --</option>';
+    document.getElementById('lessonContent').value = '';
+    document.getElementById('homework').value = '';
+    document.getElementById('notes').value = '';
+    document.getElementById('fileUpload').value = '';
+}
+</script>
+</body>
+</html>

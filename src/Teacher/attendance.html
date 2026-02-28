@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Điểm Danh Buổi Học</title>
+    <link rel="stylesheet" href="teacher.css">
+    <link rel="stylesheet" href="attendance.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Anh Ngữ ABC</h2>
+            <p>Cổng giảng viên</p>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="classes.html" class="nav-item"><i class="fas fa-chalkboard-teacher"></i> Lớp giảng dạy</a>
+            <a href="attendance.html" class="nav-item active"><i class="fas fa-clipboard-check"></i> Điểm danh</a>
+            <a href="lesson-log.html" class="nav-item"><i class="fas fa-book"></i> Sổ đầu bài</a>
+            <a href="grades.html" class="nav-item"><i class="fas fa-star"></i> Nhập điểm</a>
+            <a href="#" class="nav-item"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="content">
+
+        <h1><i class="fas fa-clipboard-check"></i> Điểm Danh Buổi Học</h1>
+
+        <!-- Class Selection -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Chọn lớp và buổi học</h2>
+            </div>
+            <div class="class-selection">
+                <div class="form-group">
+                    <label>Lớp học</label>
+                    <select class="form-control" id="classSelect" onchange="loadSessions()">
+                        <option value="">-- Chọn lớp học --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Buổi học</label>
+                    <select class="form-control" id="sessionSelect" onchange="loadAttendance()">
+                        <option value="">-- Chọn buổi học --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>&nbsp;</label>
+                    <button class="btn btn-primary" onclick="startNewSession()">
+                        <i class="fas fa-plus"></i> Tạo buổi học mới
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Attendance Table -->
+        <div class="card" id="attendanceCard" style="display: none;">
+            <div class="card-header">
+                <div>
+                    <h2 class="card-title" id="sessionTitle">Buổi 1 - 04/03/2024</h2>
+                    <p style="color: #6c757d; margin-top: 5px;" id="sessionInfo"></p>
+                </div>
+                <div class="attendance-actions">
+                    <button class="btn btn-success" onclick="saveAttendance()">
+                        <i class="fas fa-save"></i> Lưu điểm danh
+                    </button>
+                    <button class="btn btn-info" onclick="printAttendance()">
+                        <i class="fas fa-print"></i> In
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <button class="btn btn-sm btn-success" onclick="markAllPresent()">
+                    <i class="fas fa-check-double"></i> Tất cả có mặt
+                </button>
+                <button class="btn btn-sm btn-warning" onclick="markAllAbsent()">
+                    <i class="fas fa-times"></i> Tất cả vắng
+                </button>
+            </div>
+
+            <!-- Attendance Table -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 50px;">STT</th>
+                            <th style="width: 100px;">Mã HV</th>
+                            <th>Họ và tên</th>
+                            <th style="width: 150px;">Trạng thái</th>
+                            <th>Ghi chú</th>
+                            <th style="width: 80px;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attendanceTableBody">
+                        <!-- Sẽ được load bởi JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Summary -->
+            <div class="attendance-summary">
+                <div class="summary-item present">
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <div class="summary-label">Có mặt</div>
+                        <div class="summary-count" id="countPresent">0</div>
+                    </div>
+                </div>
+                <div class="summary-item excused">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <div>
+                        <div class="summary-label">Vắng có phép</div>
+                        <div class="summary-count" id="countExcused">0</div>
+                    </div>
+                </div>
+                <div class="summary-item absent">
+                    <i class="fas fa-times-circle"></i>
+                    <div>
+                        <div class="summary-label">Vắng không phép</div>
+                        <div class="summary-count" id="countAbsent">0</div>
+                    </div>
+                </div>
+                <div class="summary-item total">
+                    <i class="fas fa-users"></i>
+                    <div>
+                        <div class="summary-label">Tổng số</div>
+                        <div class="summary-count" id="countTotal">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+</div>
+
+<script src="attendance.js"></script>
+</body>
+</html>
