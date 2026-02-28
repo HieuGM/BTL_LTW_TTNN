@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Điểm danh – Giáo vụ</title>
+    <link rel="stylesheet" href="staff.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-graduation-cap"></i> Trung tâm Anh ngữ</h2>
+            <p>Hệ thống quản lý</p>
+            <span class="sidebar-role-badge"><i class="fas fa-user-tie"></i> Nhân viên Giáo vụ</span>
+        </div>
+        <nav class="sidebar-nav">
+            <span class="nav-section-title">Tổng quan</span>
+            <a href="dashboard.html" class="nav-item"><i class="fas fa-home"></i> Dashboard</a>
+            <span class="nav-section-title">Vận hành</span>
+            <a href="ClassManagement.html" class="nav-item"><i class="fas fa-chalkboard"></i> Quản lý lớp</a>
+            <a href="AttendanceManagement.html" class="nav-item active"><i class="fas fa-clipboard-check"></i> Điểm danh</a>
+            <a href="StudentManagement.html" class="nav-item"><i class="fas fa-user-graduate"></i> Học viên</a>
+            <a href="ScheduleRoom.html" class="nav-item"><i class="fas fa-calendar-alt"></i> Lịch &amp; Phòng</a>
+            <span class="nav-section-title">Truyền thông</span>
+            <a href="Notifications.html" class="nav-item"><i class="fas fa-bell"></i> Thông báo</a>
+            <span class="nav-section-title">Tài khoản</span>
+            <a href="../Auth/Login.html" class="nav-item"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="content">
+        <header class="page-header">
+            <h1>Quản lý điểm danh</h1>
+            <div class="page-header-actions">
+                <button class="btn-secondary" onclick="exportAbsenceReport()">
+                    <i class="fas fa-file-export"></i> Xuất báo cáo vắng
+                </button>
+                <button class="btn-primary" onclick="openCreateAttModal()">
+                    <i class="fas fa-plus"></i> Tạo điểm danh
+                </button>
+            </div>
+        </header>
+
+        <!-- STATS -->
+        <div class="stats-grid" id="attStats"></div>
+
+        <!-- TABS -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('sessions')"><i class="fas fa-list"></i> Danh sách buổi</button>
+            <button class="tab-btn" onclick="showTab('sheet')"><i class="fas fa-table"></i> Bảng điểm danh</button>
+            <button class="tab-btn" onclick="showTab('report')"><i class="fas fa-chart-bar"></i> Báo cáo vắng</button>
+        </div>
+
+        <!-- TAB: SESSIONS LIST -->
+        <div id="sessionsTab" class="tab-content active">
+            <div class="filter-bar card">
+                <div class="filter-group">
+                    <label>Chọn lớp</label>
+                    <select id="attClassFilter">
+                        <option value="">Tất cả lớp</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Từ ngày</label>
+                    <input type="date" id="attFromDate">
+                </div>
+                <div class="filter-group">
+                    <label>Đến ngày</label>
+                    <input type="date" id="attToDate">
+                </div>
+                <button class="btn-primary" onclick="renderSessionsTable()"><i class="fas fa-search"></i> Tìm</button>
+            </div>
+
+            <div class="card">
+                <div class="table-wrap">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Mã buổi</th>
+                                <th>Lớp</th>
+                                <th>Buổi số</th>
+                                <th>Ngày</th>
+                                <th>Giờ</th>
+                                <th>Giảng viên</th>
+                                <th>Có mặt</th>
+                                <th>Vắng</th>
+                                <th>Muộn</th>
+                                <th>Tổng</th>
+                                <th>Tạo bởi</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sessionsTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: SHEET -->
+        <div id="sheetTab" class="tab-content">
+            <div class="filter-bar card" style="margin-bottom:1rem;">
+                <div class="filter-group">
+                    <label>Chọn buổi điểm danh</label>
+                    <select id="sheetSessionFilter">
+                        <option value="">-- Chọn buổi --</option>
+                    </select>
+                </div>
+                <button class="btn-primary" onclick="loadSheet()"><i class="fas fa-eye"></i> Xem</button>
+            </div>
+            <div id="sheetContent">
+                <div class="empty-state"><i class="fas fa-table"></i><p>Chọn buổi điểm danh để xem bảng</p></div>
+            </div>
+        </div>
+
+        <!-- TAB: REPORT -->
+        <div id="reportTab" class="tab-content">
+            <div class="filter-bar card">
+                <div class="filter-group">
+                    <label>Lớp</label>
+                    <select id="reportClassFilter">
+                        <option value="">Tất cả</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Ngưỡng vắng (%)</label>
+                    <input type="number" id="reportThreshold" value="20" min="1" max="100" style="width:80px">
+                </div>
+                <button class="btn-primary" onclick="renderAbsenceReport()"><i class="fas fa-chart-bar"></i> Báo cáo</button>
+            </div>
+            <div id="reportContent"></div>
+        </div>
+
+    </main>
+</div>
+
+<!-- MODAL: CREATE ATTENDANCE -->
+<div id="createAttModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Tạo danh sách điểm danh</h2>
+            <button class="modal-close" onclick="closeModal('createAttModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Lớp <span class="required">*</span></label>
+                    <select id="caClass" onchange="loadAttStudents()">
+                        <option value="">Chọn lớp...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Buổi số <span class="required">*</span></label>
+                    <input type="number" id="caSession" min="1" value="1">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Ngày <span class="required">*</span></label>
+                    <input type="date" id="caDate">
+                </div>
+                <div class="form-group">
+                    <label>Giờ học</label>
+                    <input type="text" id="caTime" placeholder="VD: 08:00-10:00">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Danh sách điểm danh</label>
+                <div id="caStudentList" style="margin-top:8px">
+                    <p style="color:var(--text-secondary);font-size:.85rem">Chọn lớp trước</p>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closeModal('createAttModal')">Hủy</button>
+            <button class="btn-primary" onclick="saveAttendance()"><i class="fas fa-save"></i> Lưu điểm danh</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL: EDIT ATTENDANCE DETAIL -->
+<div id="editAttModal" class="modal">
+    <div class="modal-content wide">
+        <div class="modal-header">
+            <h2 id="editAttModalTitle">Chỉnh sửa điểm danh</h2>
+            <button class="modal-close" onclick="closeModal('editAttModal')">&times;</button>
+        </div>
+        <div class="modal-body" id="editAttModalBody"></div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closeModal('editAttModal')">Đóng</button>
+            <button class="btn-primary" onclick="saveAttendanceEdits()"><i class="fas fa-save"></i> Lưu thay đổi</button>
+        </div>
+    </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+<script src="staff-data.js"></script>
+<script src="AttendanceManagement.js"></script>
+</body>
+</html>

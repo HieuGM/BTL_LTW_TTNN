@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Học phí & Phiếu thu – Kế toán</title>
+    <link rel="stylesheet" href="accountant.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .status-chip {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: .78rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all .2s;
+        }
+        .status-chip.active  { background: var(--primary-color); color: white; border-color: var(--primary-color); }
+        .status-chip:not(.active) { background: white; color: var(--text-secondary); border-color: var(--border-color); }
+        .receipt-print { display: none; }
+        @media print { .layout { display: block; } .sidebar,.page-header,.filter-bar,.tabs,.btn-primary,.btn-secondary,.btn-danger,.btn-icon,.pagination { display:none!important; } .receipt-print { display: block!important; } .content { margin:0; padding:1rem; } }
+    </style>
+</head>
+<body>
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-graduation-cap"></i> Trung tâm Anh ngữ</h2>
+            <p>Hệ thống quản lý</p>
+            <span class="sidebar-role-badge"><i class="fas fa-coins"></i> Nhân viên Kế toán</span>
+        </div>
+        <nav class="sidebar-nav">
+            <span class="nav-section-title">Tổng quan</span>
+            <a href="dashboard.html" class="nav-item"><i class="fas fa-home"></i> Dashboard</a>
+
+            <span class="nav-section-title">Tài chính</span>
+            <a href="TuitionManagement.html" class="nav-item active"><i class="fas fa-file-invoice-dollar"></i> Học phí &amp; Phiếu thu</a>
+            <a href="DebtManagement.html" class="nav-item"><i class="fas fa-exclamation-triangle"></i> Quản lý công nợ</a>
+
+            <span class="nav-section-title">Báo cáo</span>
+            <a href="FinancialReport.html" class="nav-item"><i class="fas fa-chart-line"></i> Báo cáo tài chính</a>
+
+            <span class="nav-section-title">Tài khoản</span>
+            <a href="../Auth/Login.html" class="nav-item"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="content">
+        <header class="page-header">
+            <div>
+                <h1>Học phí &amp; Phiếu thu</h1>
+                <p style="color:var(--text-secondary);font-size:.85rem;">Tạo và quản lý phiếu thu học phí</p>
+            </div>
+            <div class="page-header-actions">
+                <button class="btn-secondary" onclick="exportAll()"><i class="fas fa-file-export"></i> Xuất danh sách</button>
+                <button class="btn-primary" onclick="openCreateModal()"><i class="fas fa-plus"></i> Tạo phiếu thu</button>
+            </div>
+        </header>
+
+        <!-- SUMMARY -->
+        <div class="summary-row" id="summaryRow"></div>
+
+        <!-- TABS -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('all',this)"><i class="fas fa-list"></i> Tất cả phiếu</button>
+            <button class="tab-btn" onclick="switchTab('unpaid',this)"><i class="fas fa-times-circle"></i> Chưa đóng</button>
+            <button class="tab-btn" onclick="switchTab('partial',this)"><i class="fas fa-adjust"></i> Đóng một phần</button>
+            <button class="tab-btn" onclick="switchTab('paid',this)"><i class="fas fa-check-circle"></i> Đã đóng đủ</button>
+            <button class="tab-btn" onclick="switchTab('pending',this)"><i class="fas fa-clock"></i> Chờ xác nhận</button>
+        </div>
+
+        <!-- FILTER -->
+        <div class="filter-bar">
+            <input type="search" id="searchInput" placeholder="🔍 Tìm học viên..." oninput="applyFilters()">
+            <select id="classFilter" onchange="applyFilters()">
+                <option value="">Tất cả lớp</option>
+            </select>
+            <select id="methodFilter" onchange="applyFilters()">
+                <option value="">Tất cả hình thức</option>
+                <option value="Tiền mặt">Tiền mặt</option>
+                <option value="Chuyển khoản">Chuyển khoản</option>
+            </select>
+            <button class="btn-secondary" onclick="clearFilters()"><i class="fas fa-undo"></i> Xóa lọc</button>
+        </div>
+
+        <!-- TUITION TABLE -->
+        <div class="card" style="padding:0">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mã phiếu</th>
+                            <th>Học viên</th>
+                            <th>Lớp / Khóa học</th>
+                            <th>Học phí</th>
+                            <th>Đã đóng</th>
+                            <th>Còn nợ</th>
+                            <th>Hạn đóng</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tuitionTableBody"></tbody>
+                </table>
+            </div>
+            <div class="pagination" id="pagination"></div>
+        </div>
+
+    </main>
+</div>
+
+<!-- CREATE / EDIT TUITION MODAL -->
+<div class="modal-overlay" id="tuitionModal">
+    <div class="modal modal-lg">
+        <div class="modal-header">
+            <h3 id="tuitionModalTitle"><i class="fas fa-file-invoice-dollar"></i> Tạo phiếu thu</h3>
+            <button class="modal-close" onclick="closeTuitionModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="tuitionId">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Học viên *</label>
+                    <select id="tuitionStudentId" onchange="onStudentChange()">
+                        <option value="">-- Chọn học viên --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Lớp / Khóa học *</label>
+                    <select id="tuitionClassId" onchange="autoFillAmount()">
+                        <option value="">-- Chọn lớp --</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Học phí (đ) *</label>
+                    <input type="number" id="tuitionAmount" placeholder="VD: 4500000" min="0">
+                </div>
+                <div class="form-group">
+                    <label>Hạn đóng *</label>
+                    <input type="date" id="tuitionDueDate">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Trạng thái thanh toán</label>
+                    <select id="tuitionStatus">
+                        <option value="unpaid">Chưa đóng</option>
+                        <option value="partial">Đóng một phần</option>
+                        <option value="paid">Đã đóng đủ</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Hình thức (nếu đã đóng)</label>
+                    <select id="tuitionMethod">
+                        <option value="">-- Chọn --</option>
+                        <option value="Tiền mặt">Tiền mặt</option>
+                        <option value="Chuyển khoản">Chuyển khoản</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group" id="paidAmountGroup" style="display:none">
+                <label>Số tiền đã đóng (đ)</label>
+                <input type="number" id="tuitionPaid" placeholder="Nhập số tiền đã đóng" min="0">
+            </div>
+            <div class="form-group">
+                <label>Ghi chú</label>
+                <textarea id="tuitionNote" placeholder="Ghi chú thêm (tuỳ chọn)"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closeTuitionModal()">Hủy</button>
+            <button class="btn-primary" onclick="saveTuition()"><i class="fas fa-save"></i> Lưu phiếu thu</button>
+        </div>
+    </div>
+</div>
+
+<!-- VIEW / PRINT RECEIPT MODAL -->
+<div class="modal-overlay" id="viewModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3><i class="fas fa-receipt"></i> Xem phiếu thu</h3>
+            <button class="modal-close" onclick="closeViewModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body" id="receiptViewBody"></div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closeViewModal()">Đóng</button>
+            <button class="btn-primary" onclick="printReceipt()"><i class="fas fa-print"></i> In phiếu</button>
+        </div>
+    </div>
+</div>
+
+<!-- UPDATE PAYMENT STATUS MODAL -->
+<div class="modal-overlay" id="payModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3><i class="fas fa-money-bill-wave"></i> Cập nhật thanh toán</h3>
+            <button class="modal-close" onclick="closePayModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <div id="payModalInfo"></div>
+            <div class="form-row" style="margin-top:1rem">
+                <div class="form-group">
+                    <label>Số tiền nộp lần này (đ) *</label>
+                    <input type="number" id="payAmountInput" placeholder="VD: 2250000" min="0">
+                </div>
+                <div class="form-group">
+                    <label>Hình thức *</label>
+                    <select id="payMethodInput">
+                        <option value="Tiền mặt">Tiền mặt</option>
+                        <option value="Chuyển khoản">Chuyển khoản</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Ghi chú</label>
+                <textarea id="payNoteInput" placeholder="Ghi chú thanh toán..."></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closePayModal()">Hủy</button>
+            <button class="btn-success" onclick="confirmPayment()"><i class="fas fa-check"></i> Xác nhận thu tiền</button>
+        </div>
+    </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="accountant-data.js"></script>
+<script src="TuitionManagement.js"></script>
+</body>
+</html>

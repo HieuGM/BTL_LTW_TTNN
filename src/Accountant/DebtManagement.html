@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Công nợ – Kế toán</title>
+    <link rel="stylesheet" href="accountant.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-graduation-cap"></i> Trung tâm Anh ngữ</h2>
+            <p>Hệ thống quản lý</p>
+            <span class="sidebar-role-badge"><i class="fas fa-coins"></i> Nhân viên Kế toán</span>
+        </div>
+        <nav class="sidebar-nav">
+            <span class="nav-section-title">Tổng quan</span>
+            <a href="dashboard.html" class="nav-item"><i class="fas fa-home"></i> Dashboard</a>
+
+            <span class="nav-section-title">Tài chính</span>
+            <a href="TuitionManagement.html" class="nav-item"><i class="fas fa-file-invoice-dollar"></i> Học phí &amp; Phiếu thu</a>
+            <a href="DebtManagement.html" class="nav-item active"><i class="fas fa-exclamation-triangle"></i> Quản lý công nợ</a>
+
+            <span class="nav-section-title">Báo cáo</span>
+            <a href="FinancialReport.html" class="nav-item"><i class="fas fa-chart-line"></i> Báo cáo tài chính</a>
+
+            <span class="nav-section-title">Tài khoản</span>
+            <a href="../Auth/Login.html" class="nav-item"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="content">
+        <header class="page-header">
+            <div>
+                <h1>Quản lý Công nợ</h1>
+                <p style="color:var(--text-secondary);font-size:.85rem;">Theo dõi và xử lý công nợ học viên</p>
+            </div>
+            <div class="page-header-actions">
+                <button class="btn-secondary" onclick="exportDebt()"><i class="fas fa-file-export"></i> Xuất công nợ</button>
+                <button class="btn-warning" onclick="sendAllReminders()"><i class="fas fa-bell"></i> Nhắc nợ hàng loạt</button>
+            </div>
+        </header>
+
+        <!-- SUMMARY -->
+        <div class="summary-row" id="summaryRow"></div>
+
+        <!-- FILTER -->
+        <div class="card" style="padding:1rem 1.5rem">
+            <div class="filter-bar" style="margin-bottom:0">
+                <input type="search" id="searchInput" placeholder="🔍 Tìm học viên..." oninput="applyFilters()">
+                <select id="classFilter" onchange="applyFilters()">
+                    <option value="">Tất cả lớp</option>
+                </select>
+                <select id="dueDateFilter" onchange="applyFilters()">
+                    <option value="">Tất cả hạn</option>
+                    <option value="overdue">Quá hạn</option>
+                    <option value="due7">Sắp hạn (7 ngày)</option>
+                    <option value="due30">Trong 30 ngày</option>
+                </select>
+                <select id="statusFilter" onchange="applyFilters()">
+                    <option value="">Tất cả trạng thái</option>
+                    <option value="unpaid">Chưa đóng</option>
+                    <option value="partial">Đóng một phần</option>
+                </select>
+                <button class="btn-secondary" onclick="clearFilters()"><i class="fas fa-undo"></i> Xóa lọc</button>
+            </div>
+        </div>
+
+        <!-- DEBT TABLE -->
+        <div class="card" style="padding:0">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Học viên</th>
+                            <th>Lớp</th>
+                            <th>Học phí</th>
+                            <th>Đã đóng</th>
+                            <th>Còn nợ</th>
+                            <th>Hạn đóng</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="debtTableBody"></tbody>
+                </table>
+            </div>
+            <div class="pagination" id="pagination"></div>
+        </div>
+
+        <!-- DEBT BY STUDENT SECTION -->
+        <div class="card" id="studentDebtCard" style="display:none">
+            <div class="card-header">
+                <h3 id="studentDebtTitle"><i class="fas fa-user" style="color:var(--primary-color)"></i> Công nợ theo học viên</h3>
+                <button class="btn-secondary" onclick="document.getElementById('studentDebtCard').style.display='none'">
+                    <i class="fas fa-times"></i> Đóng
+                </button>
+            </div>
+            <div id="studentDebtBody"></div>
+        </div>
+
+    </main>
+</div>
+
+<!-- REMINDER MODAL -->
+<div class="modal-overlay" id="reminderModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3><i class="fas fa-bell" style="color:var(--warning)"></i> Gửi nhắc nợ</h3>
+            <button class="modal-close" onclick="closeReminderModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <div id="reminderTargetInfo" class="alert-box alert-warning"></div>
+            <div class="form-group" style="margin-top:1rem">
+                <label>Kênh gửi</label>
+                <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:.4rem">
+                    <label style="display:flex;align-items:center;gap:.4rem;font-size:.875rem;font-weight:400">
+                        <input type="checkbox" id="chkSMS" checked> Tin nhắn SMS/Zalo
+                    </label>
+                    <label style="display:flex;align-items:center;gap:.4rem;font-size:.875rem;font-weight:400">
+                        <input type="checkbox" id="chkEmail"> Email
+                    </label>
+                    <label style="display:flex;align-items:center;gap:.4rem;font-size:.875rem;font-weight:400">
+                        <input type="checkbox" id="chkInternal" checked> Thông báo nội bộ
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Nội dung tin nhắn</label>
+                <textarea id="reminderMsg" rows="5"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closeReminderModal()">Hủy</button>
+            <button class="btn-warning" onclick="sendReminder()"><i class="fas fa-paper-plane"></i> Gửi nhắc nợ</button>
+        </div>
+    </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="accountant-data.js"></script>
+<script src="DebtManagement.js"></script>
+</body>
+</html>

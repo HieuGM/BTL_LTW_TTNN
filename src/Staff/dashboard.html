@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard – Nhân viên Giáo vụ</title>
+    <link rel="stylesheet" href="staff.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-graduation-cap"></i> Trung tâm Anh ngữ</h2>
+            <p>Hệ thống quản lý</p>
+            <span class="sidebar-role-badge"><i class="fas fa-user-tie"></i> Nhân viên Giáo vụ</span>
+        </div>
+        <nav class="sidebar-nav">
+            <span class="nav-section-title">Tổng quan</span>
+            <a href="dashboard.html" class="nav-item active"><i class="fas fa-home"></i> Dashboard</a>
+
+            <span class="nav-section-title">Vận hành</span>
+            <a href="ClassManagement.html" class="nav-item"><i class="fas fa-chalkboard"></i> Quản lý lớp</a>
+            <a href="AttendanceManagement.html" class="nav-item"><i class="fas fa-clipboard-check"></i> Điểm danh</a>
+            <a href="StudentManagement.html" class="nav-item"><i class="fas fa-user-graduate"></i> Học viên</a>
+            <a href="ScheduleRoom.html" class="nav-item"><i class="fas fa-calendar-alt"></i> Lịch &amp; Phòng</a>
+
+            <span class="nav-section-title">Truyền thông</span>
+            <a href="Notifications.html" class="nav-item"><i class="fas fa-bell"></i> Thông báo <span class="nav-badge" id="notifBadge">3</span></a>
+
+            <span class="nav-section-title">Tài khoản</span>
+            <a href="../Auth/Login.html" class="nav-item"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="content">
+        <header class="page-header">
+            <div>
+                <h1>Dashboard Giáo vụ</h1>
+                <p style="color:var(--text-secondary);font-size:.85rem;" id="todayLabel"></p>
+            </div>
+            <div class="page-header-actions">
+                <button class="btn-secondary" onclick="window.location='ClassManagement.html'">
+                    <i class="fas fa-plus"></i> Tạo lớp mới
+                </button>
+                <button class="btn-primary" onclick="window.location='Notifications.html'">
+                    <i class="fas fa-paper-plane"></i> Gửi thông báo
+                </button>
+            </div>
+        </header>
+
+        <!-- STATS -->
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <!-- ROW 1 -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+
+            <!-- TODAY SESSIONS -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-calendar-day" style="color:var(--primary-color)"></i> Buổi học hôm nay</h3>
+                    <a href="AttendanceManagement.html" style="font-size:.8rem;color:var(--primary-color)">Xem tất cả →</a>
+                </div>
+                <div class="session-cards" id="todaySessionCards"></div>
+            </div>
+
+            <!-- PENDING REQUESTS -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-inbox" style="color:var(--warning)"></i> Yêu cầu chờ xử lý</h3>
+                    <span class="badge badge-pending" id="reqCount">0 yêu cầu</span>
+                </div>
+                <div class="requests-list" id="requestsList"></div>
+            </div>
+        </div>
+
+        <!-- ROW 2 -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.25rem;margin-top:0;">
+
+            <!-- OPENING SOON -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-rocket" style="color:var(--info)"></i> Sắp khai giảng</h3>
+                </div>
+                <div id="upcomingList"></div>
+            </div>
+
+            <!-- LOW ENROLLMENT -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-user-minus" style="color:var(--warning)"></i> Thiếu học viên</h3>
+                </div>
+                <div id="lowEnrollList"></div>
+            </div>
+
+            <!-- MISSING TEACHER -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-chalkboard-teacher" style="color:var(--danger)"></i> Thiếu giảng viên</h3>
+                </div>
+                <div id="missingTeacherList"></div>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<!-- MODALS: Quick process request -->
+<div id="processModal" class="modal">
+    <div class="modal-content narrow">
+        <div class="modal-header">
+            <h2 id="processModalTitle">Xử lý yêu cầu</h2>
+            <button class="modal-close" onclick="closeModal('processModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p id="processModalDesc" style="margin-bottom:1rem;color:var(--text-secondary);font-size:.9rem;"></p>
+            <div class="form-group">
+                <label>Ghi chú phản hồi</label>
+                <textarea placeholder="Nhập ghi chú..."></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-danger" onclick="processRequest('reject')"><i class="fas fa-times"></i> Từ chối</button>
+            <button class="btn-success" onclick="processRequest('approve')"><i class="fas fa-check"></i> Duyệt</button>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="staff-data.js"></script>
+<script src="dashboard.js"></script>
+</body>
+</html>

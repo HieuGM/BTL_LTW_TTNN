@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông báo – Giáo vụ</title>
+    <link rel="stylesheet" href="staff.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-graduation-cap"></i> Trung tâm Anh ngữ</h2>
+            <p>Hệ thống quản lý</p>
+            <span class="sidebar-role-badge"><i class="fas fa-user-tie"></i> Nhân viên Giáo vụ</span>
+        </div>
+        <nav class="sidebar-nav">
+            <span class="nav-section-title">Tổng quan</span>
+            <a href="dashboard.html" class="nav-item"><i class="fas fa-home"></i> Dashboard</a>
+            <span class="nav-section-title">Vận hành</span>
+            <a href="ClassManagement.html" class="nav-item"><i class="fas fa-chalkboard"></i> Quản lý lớp</a>
+            <a href="AttendanceManagement.html" class="nav-item"><i class="fas fa-clipboard-check"></i> Điểm danh</a>
+            <a href="StudentManagement.html" class="nav-item"><i class="fas fa-user-graduate"></i> Học viên</a>
+            <a href="ScheduleRoom.html" class="nav-item"><i class="fas fa-calendar-alt"></i> Lịch &amp; Phòng</a>
+            <span class="nav-section-title">Truyền thông</span>
+            <a href="Notifications.html" class="nav-item active"><i class="fas fa-bell"></i> Thông báo</a>
+            <span class="nav-section-title">Tài khoản</span>
+            <a href="../Auth/Login.html" class="nav-item"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="content">
+        <header class="page-header">
+            <h1>Quản lý thông báo</h1>
+            <button class="btn-primary" onclick="openCreateModal()">
+                <i class="fas fa-paper-plane"></i> Gửi thông báo mới
+            </button>
+        </header>
+
+        <!-- STATS -->
+        <div class="stats-grid" id="notifStats"></div>
+
+        <!-- TABS -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('list')"><i class="fas fa-list"></i> Danh sách thông báo</button>
+            <button class="tab-btn" onclick="showTab('templates')"><i class="fas fa-file-alt"></i> Mẫu thông báo</button>
+        </div>
+
+        <!-- TAB: LIST -->
+        <div id="listTab" class="tab-content active">
+            <!-- FILTER -->
+            <div class="filter-bar card">
+                <div class="filter-group">
+                    <label>Loại</label>
+                    <select id="ntfTypeFilter">
+                        <option value="">Tất cả</option>
+                        <option value="schedule">Đổi lịch / nghỉ học</option>
+                        <option value="exam">Kiểm tra</option>
+                        <option value="tuition">Học phí</option>
+                        <option value="general">Thông báo chung</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Trạng thái</label>
+                    <select id="ntfStatusFilter">
+                        <option value="">Tất cả</option>
+                        <option value="sent">Đã gửi</option>
+                        <option value="pending">Chờ gửi</option>
+                        <option value="draft">Nháp</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Tìm kiếm</label>
+                    <input type="text" id="ntfSearch" placeholder="Tiêu đề...">
+                </div>
+                <button class="btn-primary" onclick="renderNotifTable()"><i class="fas fa-search"></i> Tìm</button>
+            </div>
+
+            <div class="card">
+                <div class="table-wrap">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Tiêu đề</th>
+                                <th>Loại</th>
+                                <th>Đối tượng</th>
+                                <th>Người gửi</th>
+                                <th>Ngày gửi</th>
+                                <th>Tỷ lệ đọc</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="notifTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: TEMPLATES -->
+        <div id="templatesTab" class="tab-content">
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;" id="templatesGrid"></div>
+        </div>
+
+    </main>
+</div>
+
+<!-- MODAL: CREATE NOTIFICATION -->
+<div id="createNotifModal" class="modal">
+    <div class="modal-content wide">
+        <div class="modal-header">
+            <h2>Gửi thông báo mới</h2>
+            <button class="modal-close" onclick="closeModal('createNotifModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+
+            <!-- STEP 1: Target -->
+            <div style="margin-bottom:1rem">
+                <label style="font-weight:600;font-size:.875rem;display:block;margin-bottom:8px">
+                    Gửi đến: <span class="required">*</span>
+                </label>
+                <div class="notification-targets">
+                    <label class="target-chip" id="tchip-class">
+                        <input type="radio" name="ntfTarget" value="class" onchange="onTargetChange(this)">
+                        <i class="fas fa-chalkboard"></i> Cả lớp
+                    </label>
+                    <label class="target-chip" id="tchip-student">
+                        <input type="radio" name="ntfTarget" value="student" onchange="onTargetChange(this)">
+                        <i class="fas fa-user-graduate"></i> 1 học viên
+                    </label>
+                    <label class="target-chip" id="tchip-multi">
+                        <input type="radio" name="ntfTarget" value="multi" onchange="onTargetChange(this)">
+                        <i class="fas fa-users"></i> Nhiều HV trong lớp
+                    </label>
+                </div>
+            </div>
+
+            <!-- Target selectors -->
+            <div id="targetClassField" style="display:none" class="form-row">
+                <div class="form-group">
+                    <label>Chọn lớp <span class="required">*</span></label>
+                    <select id="ntfClass"><option value="">Chọn lớp...</option></select>
+                </div>
+            </div>
+
+            <div id="targetStudentField" style="display:none" class="form-row">
+                <div class="form-group">
+                    <label>Chọn học viên <span class="required">*</span></label>
+                    <select id="ntfStudent"><option value="">Chọn học viên...</option></select>
+                </div>
+            </div>
+
+            <div id="targetMultiField" style="display:none">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Lớp học <span class="required">*</span></label>
+                        <select id="ntfMultiClass" onchange="loadMultiStudents()"><option value="">Chọn lớp...</option></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Chọn học viên</label>
+                    <div id="multiStudentList" style="max-height:180px;overflow-y:auto;border:1.5px solid var(--border-color);border-radius:8px;padding:8px"></div>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="form-row" style="margin-top:.5rem">
+                <div class="form-group">
+                    <label>Loại thông báo <span class="required">*</span></label>
+                    <select id="ntfType">
+                        <option value="schedule">Đổi lịch / Nghỉ học</option>
+                        <option value="exam">Kiểm tra</option>
+                        <option value="tuition">Học phí</option>
+                        <option value="general">Thông báo chung</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Gửi lúc</label>
+                    <select id="ntfSendTime">
+                        <option value="now">Gửi ngay</option>
+                        <option value="scheduled">Hẹn giờ</option>
+                    </select>
+                </div>
+            </div>
+            <div id="scheduledTimeField" style="display:none" class="form-row">
+                <div class="form-group">
+                    <label>Ngày gửi</label>
+                    <input type="date" id="ntfScheduledDate">
+                </div>
+                <div class="form-group">
+                    <label>Giờ gửi</label>
+                    <input type="time" id="ntfScheduledTime">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Tiêu đề <span class="required">*</span></label>
+                <input type="text" id="ntfTitle" placeholder="VD: Hoãn buổi học thứ 6 (28/02)">
+            </div>
+            <div class="form-group">
+                <label>Nội dung <span class="required">*</span></label>
+                <textarea id="ntfContent" style="min-height:120px" placeholder="Nhập nội dung thông báo..."></textarea>
+            </div>
+
+            <!-- Quick templates -->
+            <div style="margin-top:.5rem">
+                <span style="font-size:.8rem;color:var(--text-secondary);font-weight:600">Mẫu nhanh: </span>
+                <button class="btn-secondary" style="padding:4px 10px;font-size:.78rem;margin:0 3px" onclick="applyTemplate('schedule')">Hoãn buổi học</button>
+                <button class="btn-secondary" style="padding:4px 10px;font-size:.78rem;margin:0 3px" onclick="applyTemplate('exam')">Kiểm tra</button>
+                <button class="btn-secondary" style="padding:4px 10px;font-size:.78rem;margin:0 3px" onclick="applyTemplate('makeup')">Học bù</button>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="saveNotifDraft()"><i class="fas fa-save"></i> Lưu nháp</button>
+            <button class="btn-secondary" onclick="closeModal('createNotifModal')">Hủy</button>
+            <button class="btn-primary" onclick="sendNotification()"><i class="fas fa-paper-plane"></i> Gửi ngay</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL: VIEW NOTIFICATION -->
+<div id="viewNotifModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="viewNotifTitle">Chi tiết thông báo</h2>
+            <button class="modal-close" onclick="closeModal('viewNotifModal')">&times;</button>
+        </div>
+        <div class="modal-body" id="viewNotifBody"></div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closeModal('viewNotifModal')">Đóng</button>
+            <button class="btn-danger" id="viewNotifDeleteBtn"><i class="fas fa-trash"></i> Xóa</button>
+        </div>
+    </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+<script src="staff-data.js"></script>
+<script src="Notifications.js"></script>
+</body>
+</html>

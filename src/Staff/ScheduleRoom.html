@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch &amp; Phòng – Giáo vụ</title>
+    <link rel="stylesheet" href="staff.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-graduation-cap"></i> Trung tâm Anh ngữ</h2>
+            <p>Hệ thống quản lý</p>
+            <span class="sidebar-role-badge"><i class="fas fa-user-tie"></i> Nhân viên Giáo vụ</span>
+        </div>
+        <nav class="sidebar-nav">
+            <span class="nav-section-title">Tổng quan</span>
+            <a href="dashboard.html" class="nav-item"><i class="fas fa-home"></i> Dashboard</a>
+            <span class="nav-section-title">Vận hành</span>
+            <a href="ClassManagement.html" class="nav-item"><i class="fas fa-chalkboard"></i> Quản lý lớp</a>
+            <a href="AttendanceManagement.html" class="nav-item"><i class="fas fa-clipboard-check"></i> Điểm danh</a>
+            <a href="StudentManagement.html" class="nav-item"><i class="fas fa-user-graduate"></i> Học viên</a>
+            <a href="ScheduleRoom.html" class="nav-item active"><i class="fas fa-calendar-alt"></i> Lịch &amp; Phòng</a>
+            <span class="nav-section-title">Truyền thông</span>
+            <a href="Notifications.html" class="nav-item"><i class="fas fa-bell"></i> Thông báo</a>
+            <span class="nav-section-title">Tài khoản</span>
+            <a href="../Auth/Login.html" class="nav-item"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="content">
+        <header class="page-header">
+            <h1>Quản lý lịch &amp; phòng học</h1>
+            <div class="page-header-actions">
+                <button class="btn-secondary" onclick="printSchedule()"><i class="fas fa-print"></i> In lịch tuần</button>
+                <button class="btn-primary" onclick="openAssignRoomModal()"><i class="fas fa-door-open"></i> Xếp phòng cho lớp</button>
+            </div>
+        </header>
+
+        <!-- TABS -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('weekly')"><i class="fas fa-calendar-week"></i> Lịch học tuần</button>
+            <button class="tab-btn" onclick="showTab('rooms')"><i class="fas fa-door-open"></i> Danh sách phòng</button>
+            <button class="tab-btn" onclick="showTab('conflict')"><i class="fas fa-exclamation-triangle"></i> Kiểm tra xung đột</button>
+        </div>
+
+        <!-- TAB: WEEKLY SCHEDULE -->
+        <div id="weeklyTab" class="tab-content active">
+            <!-- Week navigation -->
+            <div class="card" style="display:flex;align-items:center;gap:1rem;padding:12px 20px;">
+                <button class="btn-secondary" style="padding:7px 12px" onclick="changeWeek(-1)"><i class="fas fa-chevron-left"></i> Tuần trước</button>
+                <span id="weekLabel" style="font-size:1rem;font-weight:600;flex:1;text-align:center"></span>
+                <button class="btn-secondary" style="padding:7px 12px" onclick="changeWeek(1)">Tuần sau <i class="fas fa-chevron-right"></i></button>
+            </div>
+
+            <!-- Filter -->
+            <div class="filter-bar card">
+                <div class="filter-group">
+                    <label>Lọc theo lớp</label>
+                    <select id="scheduleClassFilter">
+                        <option value="">Tất cả lớp</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Lọc theo phòng</label>
+                    <select id="scheduleRoomFilter">
+                        <option value="">Tất cả phòng</option>
+                    </select>
+                </div>
+                <button class="btn-primary" onclick="renderWeekCalendar()"><i class="fas fa-search"></i> Áp dụng</button>
+            </div>
+
+            <!-- Calendar -->
+            <div class="card">
+                <div class="week-calendar" id="weekCalendar"></div>
+            </div>
+        </div>
+
+        <!-- TAB: ROOMS -->
+        <div id="roomsTab" class="tab-content">
+            <div class="page-header" style="margin-bottom:1rem">
+                <span></span>
+                <button class="btn-primary" onclick="openRoomModal(null)"><i class="fas fa-plus"></i> Thêm phòng</button>
+            </div>
+            <div class="rooms-grid" id="roomsGrid"></div>
+        </div>
+
+        <!-- TAB: CONFLICT CHECKER -->
+        <div id="conflictTab" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-search" style="color:var(--warning)"></i> Kiểm tra xung đột phòng / lịch</h3>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Phòng cần kiểm tra <span class="required">*</span></label>
+                        <select id="conflictRoom">
+                            <option value="">Chọn phòng...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày</label>
+                        <input type="date" id="conflictDate">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Giờ bắt đầu</label>
+                        <input type="time" id="conflictStart">
+                    </div>
+                    <div class="form-group">
+                        <label>Giờ kết thúc</label>
+                        <input type="time" id="conflictEnd">
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="checkConflict()"><i class="fas fa-search"></i> Kiểm tra xung đột</button>
+                <div id="conflictResult"></div>
+            </div>
+
+            <!-- Room usage overview -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-chart-bar" style="color:var(--info)"></i> Tình trạng sử dụng phòng</h3>
+                </div>
+                <div id="roomUsageChart"></div>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<!-- MODAL: ASSIGN ROOM FOR CLASS -->
+<div id="assignRoomModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Xếp phòng cho lớp</h2>
+            <button class="modal-close" onclick="closeModal('assignRoomModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Chọn lớp <span class="required">*</span></label>
+                <select id="arClass" onchange="autoFillClassInfo()">
+                    <option value="">Chọn lớp...</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Lịch học</label>
+                    <input type="text" id="arSchedule" readonly placeholder="Tự động điền">
+                </div>
+                <div class="form-group">
+                    <label>Giờ học</label>
+                    <input type="text" id="arTime" readonly placeholder="Tự động điền">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Phòng học <span class="required">*</span></label>
+                <select id="arRoom">
+                    <option value="">Chọn phòng...</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Từ ngày</label>
+                <input type="date" id="arFrom">
+            </div>
+            <div id="arConflictCheck"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closeModal('assignRoomModal')">Hủy</button>
+            <button class="btn-primary" onclick="confirmAssignRoom()"><i class="fas fa-check"></i> Xác nhận xếp phòng</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL: ADD/EDIT ROOM -->
+<div id="roomModal" class="modal">
+    <div class="modal-content narrow">
+        <div class="modal-header">
+            <h2 id="roomModalTitle">Thêm phòng học</h2>
+            <button class="modal-close" onclick="closeModal('roomModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Tên phòng <span class="required">*</span></label>
+                <input type="text" id="rmName" placeholder="VD: Phòng 101">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Tầng</label>
+                    <input type="number" id="rmFloor" min="1" value="1">
+                </div>
+                <div class="form-group">
+                    <label>Sức chứa</label>
+                    <input type="number" id="rmCapacity" min="1" value="20">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Trang thiết bị</label>
+                <input type="text" id="rmEquipment" placeholder="Máy chiếu, điều hòa...">
+            </div>
+            <div class="form-group">
+                <label>Trạng thái</label>
+                <select id="rmStatus">
+                    <option value="available">Còn trống</option>
+                    <option value="busy">Đang sử dụng</option>
+                    <option value="maintenance">Bảo trì</option>
+                </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closeModal('roomModal')">Hủy</button>
+            <button class="btn-primary" onclick="saveRoom()"><i class="fas fa-save"></i> Lưu</button>
+        </div>
+    </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+<script src="staff-data.js"></script>
+<script src="ScheduleRoom.js"></script>
+</body>
+</html>

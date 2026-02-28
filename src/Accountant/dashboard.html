@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard – Nhân viên Kế toán</title>
+    <link rel="stylesheet" href="accountant.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-graduation-cap"></i> Trung tâm Anh ngữ</h2>
+            <p>Hệ thống quản lý</p>
+            <span class="sidebar-role-badge"><i class="fas fa-coins"></i> Nhân viên Kế toán</span>
+        </div>
+        <nav class="sidebar-nav">
+            <span class="nav-section-title">Tổng quan</span>
+            <a href="dashboard.html" class="nav-item active"><i class="fas fa-home"></i> Dashboard</a>
+
+            <span class="nav-section-title">Tài chính</span>
+            <a href="TuitionManagement.html" class="nav-item"><i class="fas fa-file-invoice-dollar"></i> Học phí &amp; Phiếu thu</a>
+            <a href="DebtManagement.html" class="nav-item"><i class="fas fa-exclamation-triangle"></i> Quản lý công nợ <span class="nav-badge" id="debtBadge"></span></a>
+
+            <span class="nav-section-title">Báo cáo</span>
+            <a href="FinancialReport.html" class="nav-item"><i class="fas fa-chart-line"></i> Báo cáo tài chính</a>
+
+            <span class="nav-section-title">Tài khoản</span>
+            <a href="../Auth/Login.html" class="nav-item"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="content">
+        <header class="page-header">
+            <div>
+                <h1>Dashboard Kế toán</h1>
+                <p style="color:var(--text-secondary);font-size:.85rem;" id="todayLabel"></p>
+            </div>
+            <div class="page-header-actions">
+                <button class="btn-secondary" onclick="window.location='FinancialReport.html'">
+                    <i class="fas fa-chart-bar"></i> Xem báo cáo
+                </button>
+                <button class="btn-primary" onclick="window.location='TuitionManagement.html'">
+                    <i class="fas fa-plus"></i> Tạo phiếu thu
+                </button>
+            </div>
+        </header>
+
+        <!-- STATS -->
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <!-- ROW 1: Revenue summary + Pending receipts -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+
+            <!-- PENDING RECEIPTS -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-clock" style="color:var(--warning)"></i> Phiếu thu chờ xác nhận</h3>
+                    <span class="badge badge-pending" id="pendingCount">0 phiếu</span>
+                </div>
+                <div id="pendingReceiptsList"></div>
+            </div>
+
+            <!-- TODAY DEBT ALERTS -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-exclamation-circle" style="color:var(--danger)"></i> Công nợ cần xử lý</h3>
+                    <a href="DebtManagement.html" style="font-size:.8rem;color:var(--primary-color)">Xem tất cả →</a>
+                </div>
+                <div id="urgentDebtList"></div>
+            </div>
+        </div>
+
+        <!-- ROW 2: Revenue chart + Class revenue -->
+        <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:1.25rem;">
+
+            <!-- MONTHLY REVENUE CHART -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-chart-bar" style="color:var(--primary-color)"></i> Doanh thu theo tháng</h3>
+                    <a href="FinancialReport.html" style="font-size:.8rem;color:var(--primary-color)">Chi tiết →</a>
+                </div>
+                <div id="monthlyChart"></div>
+            </div>
+
+            <!-- CLASS REVENUE -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-layer-group" style="color:var(--info)"></i> Doanh thu theo lớp</h3>
+                </div>
+                <div id="classRevenueList"></div>
+            </div>
+        </div>
+
+        <!-- ROW 3: Top debtors table -->
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-user-times" style="color:var(--danger)"></i> Danh sách học viên còn nợ (top)</h3>
+                <a href="DebtManagement.html" style="font-size:.8rem;color:var(--primary-color)">Xem tất cả →</a>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Học viên</th>
+                            <th>Lớp</th>
+                            <th>Số tiền nợ</th>
+                            <th>Hạn nộp</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="debtorTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<!-- CONFIRM RECEIPT MODAL -->
+<div class="modal-overlay" id="confirmModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3><i class="fas fa-check-circle" style="color:var(--success)"></i> Xác nhận phiếu thu</h3>
+            <button class="modal-close" onclick="closeConfirmModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <div id="confirmModalBody"></div>
+            <div class="form-group" style="margin-top:1rem">
+                <label>Ghi chú xác nhận</label>
+                <textarea id="confirmNote" placeholder="Thêm ghi chú nếu cần..."></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-danger" onclick="rejectReceipt()"><i class="fas fa-times"></i> Từ chối</button>
+            <button class="btn-secondary" onclick="closeConfirmModal()">Đóng</button>
+            <button class="btn-success" onclick="approveReceipt()"><i class="fas fa-check"></i> Xác nhận thanh toán</button>
+        </div>
+    </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="accountant-data.js"></script>
+<script src="dashboard.js"></script>
+</body>
+</html>

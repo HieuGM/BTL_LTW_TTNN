@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý học viên – Giáo vụ</title>
+    <link rel="stylesheet" href="staff.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-graduation-cap"></i> Trung tâm Anh ngữ</h2>
+            <p>Hệ thống quản lý</p>
+            <span class="sidebar-role-badge"><i class="fas fa-user-tie"></i> Nhân viên Giáo vụ</span>
+        </div>
+        <nav class="sidebar-nav">
+            <span class="nav-section-title">Tổng quan</span>
+            <a href="dashboard.html" class="nav-item"><i class="fas fa-home"></i> Dashboard</a>
+            <span class="nav-section-title">Vận hành</span>
+            <a href="ClassManagement.html" class="nav-item"><i class="fas fa-chalkboard"></i> Quản lý lớp</a>
+            <a href="AttendanceManagement.html" class="nav-item"><i class="fas fa-clipboard-check"></i> Điểm danh</a>
+            <a href="StudentManagement.html" class="nav-item active"><i class="fas fa-user-graduate"></i> Học viên</a>
+            <a href="ScheduleRoom.html" class="nav-item"><i class="fas fa-calendar-alt"></i> Lịch &amp; Phòng</a>
+            <span class="nav-section-title">Truyền thông</span>
+            <a href="Notifications.html" class="nav-item"><i class="fas fa-bell"></i> Thông báo</a>
+            <span class="nav-section-title">Tài khoản</span>
+            <a href="../Auth/Login.html" class="nav-item"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="content">
+        <header class="page-header">
+            <h1>Quản lý học viên</h1>
+            <div class="page-header-actions">
+                <button class="btn-secondary" onclick="exportStudents()"><i class="fas fa-file-export"></i> Xuất danh sách</button>
+                <button class="btn-primary" onclick="openStudentModal(null)"><i class="fas fa-user-plus"></i> Tạo hồ sơ mới</button>
+            </div>
+        </header>
+
+        <!-- TABS -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('list')"><i class="fas fa-list"></i> Danh sách</button>
+            <button class="tab-btn" onclick="showTab('profile')"><i class="fas fa-id-card"></i> Hồ sơ học viên</button>
+        </div>
+
+        <!-- TAB: LIST -->
+        <div id="listTab" class="tab-content active">
+            <!-- FILTER -->
+            <div class="filter-bar card">
+                <div class="filter-group">
+                    <label>Trạng thái</label>
+                    <select id="stdStatusFilter">
+                        <option value="">Tất cả</option>
+                        <option value="active">Đang học</option>
+                        <option value="reserved">Bảo lưu</option>
+                        <option value="quit">Thôi học</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Lớp đang học</label>
+                    <select id="stdClassFilter">
+                        <option value="">Tất cả lớp</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Tìm kiếm</label>
+                    <input type="text" id="stdSearch" placeholder="Tên, SĐT, email...">
+                </div>
+                <button class="btn-primary" onclick="renderStudentTable()"><i class="fas fa-search"></i> Tìm</button>
+            </div>
+
+            <div class="card">
+                <div class="table-wrap">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Mã HV</th>
+                                <th>Họ và tên</th>
+                                <th>Điện thoại</th>
+                                <th>Email</th>
+                                <th>Lớp đang học</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentTableBody"></tbody>
+                    </table>
+                </div>
+                <div class="pagination" id="studentPagination"></div>
+            </div>
+        </div>
+
+        <!-- TAB: PROFILE -->
+        <div id="profileTab" class="tab-content">
+            <div id="profileContent">
+                <div class="empty-state"><i class="fas fa-mouse-pointer"></i><p>Chọn học viên từ danh sách để xem hồ sơ</p></div>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<!-- MODAL: CREATE / EDIT STUDENT -->
+<div id="studentModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="studentModalTitle">Tạo hồ sơ học viên</h2>
+            <button class="modal-close" onclick="closeModal('studentModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Họ và tên <span class="required">*</span></label>
+                    <input type="text" id="svName" placeholder="Nguyễn Văn A">
+                </div>
+                <div class="form-group">
+                    <label>Ngày sinh</label>
+                    <input type="date" id="svDob">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Số điện thoại <span class="required">*</span></label>
+                    <input type="tel" id="svPhone" placeholder="0901234567">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="svEmail" placeholder="example@email.com">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Đăng ký vào lớp</label>
+                    <select id="svClass">
+                        <option value="">Chọn lớp (tuỳ chọn)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Trạng thái</label>
+                    <select id="svStatus">
+                        <option value="active">Đang học</option>
+                        <option value="reserved">Bảo lưu</option>
+                        <option value="quit">Thôi học</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Ghi chú</label>
+                <textarea id="svNote" placeholder="Ghi chú thêm về học viên..."></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closeModal('studentModal')">Hủy</button>
+            <button class="btn-primary" onclick="saveStudent()"><i class="fas fa-save"></i> Lưu</button>
+        </div>
+    </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+<script src="staff-data.js"></script>
+<script src="StudentManagement.js"></script>
+</body>
+</html>
