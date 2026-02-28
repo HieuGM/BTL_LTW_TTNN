@@ -1,58 +1,4 @@
-﻿/* ===== RESET & GLOBAL ===== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f9fafb;
-    color: #111827;
-    line-height: 1.6;
-}
-
-/* HEADER */
-.header {
-    background: #1f2937;
-    padding: 20px 0;
-}
-
-/* Holder 2 bên */
-.container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-/* Logo */
-.logo {
-    font-size: 32px;
-    font-weight: bold;
-    color: white;
-}
-
-/* Menu */
-.nav-menu {
-    display: flex;
-    gap: 30px;
-}
-
-.nav-menu a {
-    color: white;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.nav-menu a:hover {
-    opacity: 0.8;
-}
-
-
-/* ===== HERO ===== */
+﻿/* ===== HERO ===== */
 .hero {
     text-align: center;
     padding: 80px 20px;
@@ -64,24 +10,16 @@ body {
     margin-top: 20px;
 }
 
-.btn-primary,
-.btn-secondary {
-    display: inline-block;
-    padding: 10px 20px;
-    margin: 10px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: bold;
-}
-
 .btn-primary {
     background: white;
     color: #2563eb;
+    margin: 10px;
 }
 
 .btn-secondary {
     background: #1e40af;
     color: white;
+    margin: 10px;
 }
 
 /* ===== SECTIONS ===== */
@@ -116,15 +54,6 @@ body {
     color: white;
 }
 
-/* ===== FOOTER ===== */
-.footer {
-    text-align: center;
-    padding: 20px;
-    background: #1f2937;
-    color: rgba(255,255,255,0.7);
-    font-size: 14px;
-}
-
 /* ===== CONTACT SECTION ===== */
 .contact-section {
     padding: 60px 0;
@@ -153,17 +82,12 @@ body {
 }
 
 .btn-contact {
-    display: inline-block;
     margin-top: 15px;
-    padding: 10px 20px;
     background: #1cc88a;
     color: white;
-    text-decoration: none;
-    border-radius: 6px;
-    font-weight: bold;
 }
 
-/* Responsive */
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
     .contact-container {
         flex-direction: column;

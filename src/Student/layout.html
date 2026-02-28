@@ -1,0 +1,71 @@
+<!-- SIDEBAR -->
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <h2>Anh Ngữ ABC</h2>
+        <p>Cổng học viên</p>
+    </div>
+
+    <nav class="sidebar-nav">
+        <a href="dashboard.html" class="nav-item">
+            <i class="fas fa-home"></i> Dashboard
+        </a>
+        <a href="Schedule.html" class="nav-item">
+            <i class="fas fa-calendar-alt"></i> Lịch học
+        </a>
+        <a href="Results.html" class="nav-item">
+            <i class="fas fa-chart-bar"></i> Kết quả
+        </a>
+        <a href="Tuition.html" class="nav-item">
+            <i class="fas fa-wallet"></i> Học phí
+        </a>
+        <a href="Notification.html" class="nav-item">
+            <i class="fas fa-bell"></i> Thông báo
+        </a>
+        <a href="Profile.html" class="nav-item">
+            <i class="fas fa-user"></i> Hồ sơ cá nhân
+        </a>
+    </nav>
+</aside>
+
+<!-- TOPBAR -->
+<header class="topbar">
+    <div class="topbar-right">
+
+        <a href="Notification.html" class="notification" id="notificationBell">
+            <i class="fas fa-bell"></i>
+            <span class="badge" id="notificationBadge"></span>
+        </a>
+
+        <div class="user-menu">
+            <img src="../images/avatar.jpg" class="avatar">
+            <span class="username" id="topUsername"></span>
+
+            <div class="dropdown">
+                <a href="Profile.html">
+                    <i class="fas fa-user"></i> Hồ sơ cá nhân
+                </a>
+                <a href="#" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                </a>
+            </div>
+        </div>
+
+    </div>
+</header>
+
+<!-- LOGOUT MODAL -->
+<div id="logoutModal" class="modal-overlay">
+    <div class="modal-box">
+        <h3>Xác nhận đăng xuất</h3>
+        <p>Bạn có chắc chắn muốn đăng xuất?</p>
+
+        <div class="modal-actions">
+            <button id="cancelLogout" class="btn-cancel">
+                Huỷ
+            </button>
+            <button id="confirmLogout" class="btn-confirm">
+                Đăng xuất
+            </button>
+        </div>
+    </div>
+</div>

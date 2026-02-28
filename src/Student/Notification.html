@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông báo</title>
+
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="Notification.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<div class="layout">
+
+    <div id="layout-container"></div>
+
+    <div class="main-wrapper">
+        <main class="content">
+
+            <section class="notification-header">
+                <h1>Thông báo</h1>
+                <div class="notification-stats">
+                    <span id="totalCount" class="stat-badge stat-total"></span>
+                    <span id="unreadCount" class="stat-badge stat-unread"></span>
+                </div>
+            </section>
+
+            <!-- Bộ lọc -->
+            <div class="filter-bar">
+                <button data-filter="all" class="active">Tất cả</button>
+                <button data-filter="teacher">Giảng viên</button>
+                <button data-filter="center">Trung tâm</button>
+                <button data-filter="unread">Chưa đọc</button>
+            </div>
+
+            <div id="notificationList" class="notification-list"></div>
+
+        </main>
+    </div>
+</div>
+
+<!-- TEMPLATE -->
+<template id="notificationTemplate">
+    <div class="notification-item">
+        <div class="icon"></div>
+        <div class="notification-content">
+            <div class="notification-top">
+                <h3 class="title"></h3>
+                <span class="time"></span>
+            </div>
+            <p class="message"></p>
+        </div>
+    </div>
+</template>
+
+<script src="../FakeData/student-data.js"></script>
+<script src="../FakeData/Notification-data.js"></script>
+<script src="layout.js"></script>
+<script>
+    let currentFilter = "all";
+    document.addEventListener("DOMContentLoaded", function () {
+
+        loadLayout(function () {
+            initFilter();
+            refreshUI();
+        });
+
+    });
+
+    function refreshUI() {
+        const filtered = getFilteredNotifications();
+        renderNotifications(filtered);
+        updateStats(notifications);
+
+        if (typeof updateNotificationBadge === "function") {
+            updateNotificationBadge();
+        }
+    }
+    // RENDER NOTIFICATIONS
+    function renderNotifications(data) {
+
+        const container = document.getElementById("notificationList");
+        const template = document.getElementById("notificationTemplate");
+
+        container.innerHTML = "";
+
+        data.forEach(item => {
+
+            const clone = template.content.cloneNode(true);
+
+            const root = clone.querySelector(".notification-item");
+            const icon = clone.querySelector(".icon");
+
+            clone.querySelector(".title").innerText = item.title;
+            clone.querySelector(".message").innerText = item.message;
+            clone.querySelector(".time").innerText = item.time;
+
+            // Unread style
+            if (!item.read) {
+                root.classList.add("unread");
+            }
+
+            // Icon
+            icon.innerHTML =
+                item.type === "teacher"
+                    ? `<i class="fas fa-user"></i>`
+                    : `<i class="fas fa-building"></i>`;
+
+            // Click event
+            root.addEventListener("click", function () {
+
+                if (!item.read) {
+                    item.read = true;
+                    refreshUI();
+                }
+
+            });
+
+            container.appendChild(clone);
+        });
+    }
+
+    // UPDATE STATS
+
+    function updateStats(data) {
+
+        const total = data.length;
+        const unread = data.filter(n => !n.read).length;
+
+        document.getElementById("totalCount").innerText =
+            `Tổng: ${total}`;
+
+        document.getElementById("unreadCount").innerText =
+            `Chưa đọc: ${unread}`;
+    }
+
+    // FILTER SYSTEM
+
+    function initFilter() {
+
+        const buttons = document.querySelectorAll(".filter-bar button");
+
+        buttons.forEach(btn => {
+
+            btn.addEventListener("click", function () {
+
+                document.querySelector(".filter-bar .active")
+                    .classList.remove("active");
+
+                btn.classList.add("active");
+
+                currentFilter = btn.dataset.filter;
+
+                refreshUI();
+            });
+
+        });
+    }
+
+    // GET FILTERED DATA
+
+    function getFilteredNotifications() {
+
+        switch (currentFilter) {
+
+            case "teacher":
+                return notifications.filter(n => n.type === "teacher");
+
+            case "center":
+                return notifications.filter(n => n.type === "center");
+
+            case "unread":
+                return notifications.filter(n => !n.read);
+
+            default:
+                return notifications;
+        }
+    }
+</script>
+
+</body>
+</html>

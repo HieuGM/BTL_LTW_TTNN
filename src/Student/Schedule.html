@@ -12,57 +12,105 @@
 
 <div class="layout">
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <h2>Anh Ngữ ABC</h2>
-            <p>Cổng học viên</p>
-        </div>
-        <nav class="sidebar-nav">
-            <a href="dashboard.html" class="nav-item"><i class="fas fa-home"></i> Dashboard</a>
-            <a href="Schedule.html" class="nav-item active"><i class="fas fa-calendar-alt"></i> Lịch học</a>
-            <a href="Results.html" class="nav-item"><i class="fas fa-chart-bar"></i> Kết quả</a>
-            <a href="Tuition.html" class="nav-item"><i class="fas fa-wallet"></i> Học phí</a>
-            <a href="Profile.html" class="nav-item"><i class="fas fa-user"></i> Hồ sơ cá nhân</a>
-        </nav>
-    </aside>
+    <div id="layout-container"></div>
 
-    <!-- CONTENT -->
-    <main class="content">
+    <div class="main-wrapper">
+        <main class="content">
+            <div class="content-container">
 
-        <!-- ===== TỔNG QUAN LỚP ===== -->
-        <section>
-            <h1>Lớp đang học</h1>
-            <div id="classGrid" class="class-grid"></div>
-        </section>
+                <!-- ===== LỚP ĐANG HỌC ===== -->
+                <section>
+                    <h1>Lớp đang học</h1>
+                    <div id="classGrid" class="class-grid"></div>
+                </section>
 
-        <!-- ===== TIẾT HỌC SẮP TỚI ===== -->
-        <section style="margin-top:40px;">
-            <h1>Tiết học sắp tới</h1>
-            <div id="upcomingList" class="upcoming-list"></div>
-        </section>
+                <!-- ===== TIẾT HỌC SẮP TỚI ===== -->
+                <section style="margin-top:40px;">
+                    <h1>Tiết học sắp tới</h1>
+                    <div id="upcomingList" class="upcoming-list"></div>
+                </section>
 
-    </main>
-
+            </div>
+        </main>
+    </div>
 </div>
 
-<!-- Data trước -->
-<script src="../FakeData/student-data.js"></script>
+<!-- ===== TEMPLATE: CLASS CARD ===== -->
+<template id="classCardTemplate">
+    <div class="class-card">
+        <div class="class-header">
+            <span class="class-code"></span>
+            <span class="next-session"></span>
+        </div>
 
-<!-- Logic render -->
+        <h3 class="class-name"></h3>
+        <p class="class-teacher"></p>
+        <p class="class-progress-text"></p>
+
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+    </div>
+</template>
+
+<!-- ===== TEMPLATE: UPCOMING ITEM ===== -->
+<template id="upcomingTemplate">
+    <div class="upcoming-item">
+        <div class="time"></div>
+        <div class="info">
+            <h4 class="upcoming-name"></h4>
+            <p class="upcoming-meta"></p>
+            <button class="detail-btn">Xem chi tiết</button>
+        </div>
+    </div>
+</template>
+
+<script src="../FakeData/student-data.js"></script>
+<script src="../FakeData/Notification-data.js"></script>
+<script src="layout.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
 
-        const grid = document.getElementById("classGrid");
+        loadLayout(function () {
 
-        // Render class cards
-        student.classes.forEach(cls => {
+            renderClasses(student.classes);
+            renderUpcoming(student.classes);
+
+        });
+
+    });
+
+    // ==========================
+    // RENDER CLASS CARDS
+    // ==========================
+
+    function renderClasses(classes) {
+
+        const grid = document.getElementById("classGrid");
+        const template = document.getElementById("classCardTemplate");
+
+        classes.forEach(cls => {
+
+            const clone = template.content.cloneNode(true);
 
             const percent =
                 (cls.completedLessons / cls.totalLessons) * 100;
 
-            const card = document.createElement("div");
-            card.classList.add("class-card");
+            clone.querySelector(".class-code").innerText = cls.code;
+            clone.querySelector(".next-session").innerText =
+                `Sắp tới: ${cls.nextSession}`;
+
+            clone.querySelector(".class-name").innerText = cls.name;
+            clone.querySelector(".class-teacher").innerText =
+                `Giảng viên: ${cls.teacher}`;
+
+            clone.querySelector(".class-progress-text").innerText =
+                `Tiến trình: ${cls.completedLessons}/${cls.totalLessons}`;
+
+            clone.querySelector(".progress").style.width =
+                percent + "%";
+
+            const card = clone.querySelector(".class-card");
 
             card.style.cursor = "pointer";
             card.addEventListener("click", function () {
@@ -70,61 +118,50 @@
                     `Class_Detail.html?id=${cls.code}`;
             });
 
-            card.innerHTML = `
-            <div class="class-header">
-                <span class="class-code">${cls.code}</span>
-                <span class="next-session">
-                    Sắp tới: ${cls.nextSession}
-                </span>
-            </div>
+            grid.appendChild(clone);
 
-            <h3>${cls.name}</h3>
-
-            <p>Giảng viên: ${cls.teacher}</p>
-            <p>Tiến trình: ${cls.completedLessons}/${cls.totalLessons}</p>
-
-            <div class="progress-bar">
-                <div class="progress"
-                     style="width:${percent}%"></div>
-            </div>
-        `;
-
-            grid.appendChild(card);
         });
+    }
 
+    // ==========================
+    // RENDER UPCOMING
+    // ==========================
 
-        // ===== Upcoming sessions (tính từ sessions thật) =====
+    function renderUpcoming(classes) {
 
-        const upcomingContainer =
-            document.getElementById("upcomingList");
+        const container = document.getElementById("upcomingList");
+        const template = document.getElementById("upcomingTemplate");
 
-        student.classes.forEach(cls => {
+        classes.forEach(cls => {
 
             cls.sessions.forEach(session => {
 
-                const item = document.createElement("div");
-                item.classList.add("upcoming-item");
+                const clone = template.content.cloneNode(true);
 
-                item.innerHTML = `
-                <div class="time">
-                    ${session.time.split(" - ")[0]}
-                </div>
-                <div class="info">
-                    <h4>${cls.name}</h4>
-                    <p>${session.date} - ${session.room}</p>
-                    <button class="detail-btn">
-                        Xem chi tiết
-                    </button>
-                </div>
-            `;
+                clone.querySelector(".time").innerText =
+                    session.time.split(" - ")[0];
 
-                upcomingContainer.appendChild(item);
+                clone.querySelector(".upcoming-name").innerText =
+                    cls.name;
+
+                clone.querySelector(".upcoming-meta").innerText =
+                    `${session.date} - ${session.room}`;
+
+                const btn =
+                    clone.querySelector(".detail-btn");
+
+                btn.addEventListener("click", function () {
+                    window.location.href =
+                        `Class_Detail.html?id=${cls.code}`;
+                });
+
+                container.appendChild(clone);
 
             });
 
         });
-
-    });
+    }
 </script>
+
 </body>
 </html>

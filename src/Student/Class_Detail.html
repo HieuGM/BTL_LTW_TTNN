@@ -12,147 +12,311 @@
 
 <div class="layout">
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <h2>Anh Ngữ ABC</h2>
-            <p>Cổng học viên</p>
-        </div>
-        <nav class="sidebar-nav">
-            <a href="dashboard.html" class="nav-item"><i class="fas fa-home"></i> Dashboard</a>
-            <a href="Schedule.html" class="nav-item"><i class="fas fa-calendar-alt"></i> Lịch học</a>
-            <a href="Results.html" class="nav-item"><i class="fas fa-chart-bar"></i> Kết quả</a>
-            <a href="Tuition.html" class="nav-item"><i class="fas fa-wallet"></i> Học phí</a>
-            <a href="Profile.html" class="nav-item"><i class="fas fa-user"></i> Hồ sơ cá nhân</a>
-        </nav>
-    </aside>
+    <!-- Layout dùng chung -->
+    <div id="layout-container"></div>
 
     <!-- CONTENT -->
-    <main class="content">
+    <div class="main-wrapper">
+        <main class="content">
 
-        <!-- ===== HEADER CLASS ===== -->
-        <section class="class-header">
-            <h1 id="className"></h1>
-            <div class="class-meta" id="classMeta"></div>
-        </section>
+            <!-- ===== HEADER CLASS ===== -->
+            <section class="class-header">
+                <h1 id="className"></h1>
+                <div class="class-meta" id="classMeta"></div>
+            </section>
 
-        <!-- ===== ATTENDANCE STATS ===== -->
-        <section class="attendance-stats" id="attendanceStats"></section>
 
-        <!-- ===== SESSION TABLE ===== -->
-        <section class="session-section">
-            <h2>Danh sách buổi học</h2>
-            <table class="session-table">
-                <thead>
+            <!-- ===== ATTENDANCE INFO BAR ===== -->
+            <div class="info-bar attendance-bar">
+
+                <div class="info-item red">
+                    <div class="info-left">
+                        <i class="fas fa-calendar-days"></i>
+                        <span>Tổng buổi học</span>
+                    </div>
+                    <div class="info-value" id="totalSessions"></div>
+                </div>
+
+                <div class="info-item green">
+                    <div class="info-left">
+                        <i class="fas fa-circle-check"></i>
+                        <span>Có mặt</span>
+                    </div>
+                    <div class="info-value" id="totalPresent"></div>
+                </div>
+
+                <div class="info-item blue">
+                    <div class="info-left">
+                        <i class="fas fa-clock"></i>
+                        <span>Muộn/Về sớm</span>
+                    </div>
+                    <div class="info-value" id="totalLate"></div>
+                </div>
+
+                <div class="info-item yellow">
+                    <div class="info-left">
+                        <i class="fas fa-circle-exclamation"></i>
+                        <span>Vắng có phép</span>
+                    </div>
+                    <div class="info-value" id="totalExcused"></div>
+                </div>
+
+                <div class="info-item orange">
+                    <div class="info-left">
+                        <i class="fas fa-circle-xmark"></i>
+                        <span>Vắng không phép</span>
+                    </div>
+                    <div class="info-value" id="totalUnexcused"></div>
+                </div>
+
+                <div class="info-item gray">
+                    <div class="info-left">
+                        <i class="fas fa-hourglass-half"></i>
+                        <span>Chưa điểm danh</span>
+                    </div>
+                    <div class="info-value" id="totalPending"></div>
+                </div>
+
+            </div>
+
+            <!-- ===== SESSION TABLE ===== -->
+            <section class="session-section">
+                <h2>Danh sách buổi học</h2>
+                <table class="session-table">
+                    <thead>
+                    <tr>
+                        <th>TT</th>
+                        <th>Ngày học</th>
+                        <th>Tiết</th>
+                        <th>Phòng</th>
+                        <th>Hình thức</th>
+                        <th>Điểm danh</th>
+                        <th>Giảng viên</th>
+                        <th>Thao tác</th>
+                    </tr>
+                    </thead>
+                    <tbody id="sessionTableBody"></tbody>
+                </table>
+            </section>
+
+            <!-- Template cho 1 dòng session -->
+            <template id="sessionRowTemplate">
                 <tr>
-                    <th>TT</th>
-                    <th>Ngày học</th>
-                    <th>Tiết</th>
-                    <th>Phòng</th>
-                    <th>Hình thức</th>
-                    <th>Điểm danh</th>
-                    <th>Giảng viên</th>
-                    <th>Thao tác</th>
+                    <td class="col-index"></td>
+                    <td class="col-date"></td>
+                    <td class="col-time"></td>
+                    <td class="col-room"></td>
+                    <td class="col-mode"></td>
+                    <td class="col-attendance">
+                        <span class="badge"></span>
+                    </td>
+                    <td class="col-teacher"></td>
+                    <td>
+                        <span class="mail-icon" title="Xin nghỉ học">✉</span>
+                    </td>
                 </tr>
-                </thead>
-                <tbody id="sessionTableBody"></tbody>
-            </table>
-        </section>
+            </template>
 
-    </main>
+        </main>
+    </div>
 
+</div>
+<!-- ===== MODAL XIN NGHỈ ===== -->
+<div id="leaveModal" class="modal-overlay">
+    <div class="modal-box">
+
+        <div class="modal-header">
+            <h3>Đăng ký xin nghỉ</h3>
+            <span id="closeLeaveModal" class="close-btn">&times;</span>
+        </div>
+
+        <div class="modal-content">
+
+            <div class="leave-class-info">
+                <p><strong>Lớp tín chỉ</strong></p>
+                <p id="leaveClassName"></p>
+
+                <p style="margin-top:10px;"><strong>Buổi học</strong></p>
+                <p id="leaveSessionInfo"></p>
+            </div>
+
+            <label>Lý do</label>
+            <textarea id="leaveReason" placeholder="Nhập lý do xin nghỉ..."></textarea>
+
+            <label>Minh chứng</label>
+            <input type="file" id="leaveProof">
+            <div class="file-note">
+                Tối đa 1 mục, dung lượng mỗi file không được quá 5Mb
+            </div>
+
+            <div class="leave-note">
+                Sau khi gửi đơn, vui lòng chờ phê duyệt trước khi nghỉ học.
+            </div>
+
+            <div class="modal-actions">
+                <button id="submitLeave" class="btn-submit">Gửi đơn</button>
+                <button id="cancelLeave" class="btn-cancel">Huỷ</button>
+            </div>
+
+        </div>
+
+    </div>
 </div>
 
 <script src="../FakeData/student-data.js"></script>
+<script src="../FakeData/Notification-data.js"></script>
+<script src="layout.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
 
-        const params = new URLSearchParams(window.location.search);
-        const classCode = params.get("id");
+        loadLayout(function () {
 
-        // ✅ Tìm lớp theo code trong student.classes
-        const selectedClass =
-            student.classes.find(c => c.code === classCode);
+            // ===== LẤY PARAM ID =====
+            const params = new URLSearchParams(window.location.search);
+            const classCode = params.get("id");
 
-        if (!selectedClass) {
-            document.querySelector(".content").innerHTML =
-                "<h2>Không tìm thấy lớp học</h2>";
-            return;
-        }
+            const selectedClass = student.classes.find(c => c.code === classCode);
 
-        // ===== HEADER =====
-        document.getElementById("className").innerText =
-            selectedClass.name;
+            if (!selectedClass) {
+                document.querySelector(".content").innerHTML =
+                    "<h2>Không tìm thấy lớp học</h2>";
+                return;
+            }
 
-        document.getElementById("classMeta").innerText =
-            `Mã lớp: ${selectedClass.code} | Giảng viên: ${selectedClass.teacher}`;
+            // ===== HEADER =====
+            document.getElementById("className").innerText =
+                selectedClass.name;
+
+            document.getElementById("classMeta").innerText =
+                `Mã lớp: ${selectedClass.code} | Giảng viên: ${selectedClass.teacher}`;
+
+            // ===== TÍNH THỐNG KÊ =====
+            let present = 0;
+            let late = 0;
+            let absentExcused = 0;
+            let absentUnexcused = 0;
+            let notMarked = 0;
+
+            selectedClass.sessions.forEach(s => {
+                switch (s.attendance) {
+                    case "Có mặt":
+                        present++;
+                        break;
+                    case "Muộn/Về sớm":
+                        late++;
+                        break;
+                    case "Vắng có phép":
+                        absentExcused++;
+                        break;
+                    case "Vắng không phép":
+                        absentUnexcused++;
+                        break;
+                    case "Chưa điểm danh":
+                        notMarked++;
+                        break;
+                }
+            });
+
+            // ===== GÁN THỐNG KÊ =====
+            document.getElementById("totalSessions").innerText =
+                selectedClass.sessions.length;
+
+            document.getElementById("totalPresent").innerText = present;
+            document.getElementById("totalLate").innerText = late;
+            document.getElementById("totalExcused").innerText = absentExcused;
+            document.getElementById("totalUnexcused").innerText = absentUnexcused;
+            document.getElementById("totalPending").innerText = notMarked;
+
+            // ===== RENDER BẢNG BẰNG TEMPLATE =====
+            const tbody = document.getElementById("sessionTableBody");
+            const template = document.getElementById("sessionRowTemplate");
+
+            selectedClass.sessions.forEach((session, index) => {
+
+                const clone = template.content.cloneNode(true);
+
+                clone.querySelector(".col-index").innerText = index + 1;
+                clone.querySelector(".col-date").innerText = session.date;
+                clone.querySelector(".col-time").innerText = session.time;
+                clone.querySelector(".col-room").innerText = session.room;
+                clone.querySelector(".col-mode").innerText = session.mode;
+                clone.querySelector(".col-teacher").innerText = selectedClass.teacher;
+
+                const badge = clone.querySelector(".badge");
+                badge.innerText = session.attendance;
+
+                switch (session.attendance) {
+                    case "Có mặt":
+                        badge.classList.add("badge-present");
+                        break;
+                    case "Muộn/Về sớm":
+                        badge.classList.add("badge-late");
+                        break;
+                    case "Vắng có phép":
+                        badge.classList.add("badge-excused");
+                        break;
+                    case "Vắng không phép":
+                        badge.classList.add("badge-unexcused");
+                        break;
+                    case "Chưa điểm danh":
+                        badge.classList.add("badge-pending");
+                        break;
+                    default:
+                        badge.classList.add("badge-absent");
+                }
+
+                tbody.appendChild(clone);
+            });
+
+            // ===== XIN NGHỈ HỌC =====
 
 
-        // ===== ATTENDANCE STATS =====
+            let selectedSessionData = null;
 
-        const statsContainer =
-            document.getElementById("attendanceStats");
+            document.getElementById("sessionTableBody")
+                .addEventListener("click", function (e) {
 
-        let present = 0;
-        let absent = 0;
-        let notMarked = 0;
+                    const icon = e.target.closest(".mail-icon");
+                    if (!icon) return;   // không click vào icon thì thoát
 
-        selectedClass.sessions.forEach(s => {
-            if (s.attendance === "Có mặt") present++;
-            else if (s.attendance === "Chưa điểm danh") notMarked++;
-            else absent++;
-        });
+                    const row = icon.closest("tr");
+                    const index = parseInt(row.querySelector(".col-index").innerText) - 1;
 
-        statsContainer.innerHTML = `
-        <div class="stat-box">
-            <strong>Tổng buổi:</strong> ${selectedClass.sessions.length}
-        </div>
-        <div class="stat-box">
-            <strong>Có mặt:</strong> ${present}
-        </div>
-        <div class="stat-box">
-            <strong>Vắng:</strong> ${absent}
-        </div>
-        <div class="stat-box">
-            <strong>Chưa điểm danh:</strong> ${notMarked}
-        </div>
-    `;
+                    const session = selectedClass.sessions[index];
+                    selectedSessionData = session;
 
+                    document.getElementById("leaveClassName").innerText = selectedClass.name;
+                    document.getElementById("leaveSessionInfo").innerText =
+                        `${session.date}, ${session.time}`;
 
-        // ===== SESSION TABLE =====
+                    document.getElementById("leaveModal").classList.add("active");
+                });
+// Đóng modal
+            document.getElementById("closeLeaveModal").addEventListener("click", function(){
 
-        const tbody =
-            document.getElementById("sessionTableBody");
+                document.getElementById("leaveModal").classList.remove("active");
+            });
 
-        selectedClass.sessions.forEach((session, index) => {
+            document.getElementById("cancelLeave").addEventListener("click", function(){
+                document.getElementById("leaveModal").classList.remove("active");
+            });
 
-            const tr = document.createElement("tr");
+// Gửi đơn (demo)
+            document.getElementById("submitLeave").addEventListener("click", function(){
 
-            const attendanceClass =
-                session.attendance === "Có mặt"
-                    ? "badge-present"
-                    : session.attendance === "Chưa điểm danh"
-                        ? "badge-pending"
-                        : "badge-absent";
+                const reason = document.getElementById("leaveReason").value;
 
-            tr.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${session.date}</td>
-            <td>${session.time}</td>
-            <td>${session.room}</td>
-            <td>${session.mode}</td>
-            <td>
-                <span class="${attendanceClass}">
-                    ${session.attendance}
-                </span>
-            </td>
-            <td>${selectedClass.teacher}</td>
-            <td>
-                <span class="mail-icon" title="Xin nghỉ học">✉</span>
-            </td>
-        `;
+                if(!reason){
+                    alert("Vui lòng nhập lý do.");
+                    return;
+                }
 
-            tbody.appendChild(tr);
+                alert("Đơn xin nghỉ đã được gửi (demo).");
+
+                document.getElementById("leaveModal").classList.remove("active");
+                document.getElementById("leaveReason").value = "";
+            });
+
         });
 
     });

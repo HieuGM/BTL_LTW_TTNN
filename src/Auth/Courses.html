@@ -4,124 +4,244 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Danh Sách Khóa Học</title>
+
+    <link rel="stylesheet" href="layout.css">
     <link rel="stylesheet" href="courses.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-<header class="header">
-    <div class="container">
-        <div class="logo">Anh Ngữ ABC</div>
-        <nav class="nav-menu">
-            <a href="Home.html">Trang chủ</a>
-            <a href="Courses.html">Khóa học</a>
-            <a href="Home.html#giangvien">Giảng viên</a>
-            <a href="Home.html#gioithieu">Giới thiệu</a>
-            <a href="Home.html#lienhe">Liên hệ</a>
-        </nav>
-    </div>
-</header>
+<div id="layout-container"></div>
 
-<section class="courses-page">
-    <div class="container courses-layout">
+<main class="main-content">
+    <section class="courses-page">
+        <div class="container courses-layout">
 
-        <!-- SIDEBAR FILTER -->
-        <aside class="sidebar">
-            <h3>Bộ Lọc</h3>
+            <!-- ===== SIDEBAR FILTER ===== -->
+            <aside class="sidebar">
+                <h3>Bộ Lọc</h3>
 
-            <div class="filter-group">
-                <h4>Mục tiêu</h4>
-                <label><input type="checkbox"> IELTS</label>
-                <label><input type="checkbox"> TOEIC</label>
-                <label><input type="checkbox"> Giao tiếp</label>
+                <!-- CATEGORY -->
+                <div class="filter-group">
+                    <h4>Mục tiêu</h4>
+                    <label><input type="checkbox" class="filter-category" value="ielts"> IELTS</label>
+                    <label><input type="checkbox" class="filter-category" value="toeic"> TOEIC</label>
+                    <label><input type="checkbox" class="filter-category" value="giaotiep"> Giao tiếp</label>
+                </div>
+
+                <!-- LEVEL -->
+                <div class="filter-group">
+                    <h4>Trình độ</h4>
+                    <label><input type="checkbox" class="filter-level" value="beginner"> Beginner</label>
+                    <label><input type="checkbox" class="filter-level" value="intermediate"> Intermediate</label>
+                    <label><input type="checkbox" class="filter-level" value="advanced"> Advanced</label>
+                </div>
+
+                <!-- AGE GROUP -->
+                <div class="filter-group">
+                    <h4>Độ tuổi</h4>
+                    <label><input type="checkbox" class="filter-age" value="kid"> Thiếu nhi</label>
+                    <label><input type="checkbox" class="filter-age" value="student"> Sinh viên</label>
+                    <label><input type="checkbox" class="filter-age" value="working"> Người đi làm</label>
+                </div>
+            </aside>
+
+            <!-- ===== MAIN CONTENT ===== -->
+            <div class="courses-content">
+
+                <!-- SEARCH + SORT -->
+                <div class="courses-topbar">
+                    <div class="search-box">
+                        <input type="text"
+                               id="searchInput"
+                               placeholder="Tìm kiếm khóa học...">
+
+                        <button id="searchBtn">
+                            🔍
+                        </button>
+                    </div>
+
+                    <select id="sortSelect">
+                        <option value="">Sắp xếp theo</option>
+                        <option value="popular">Phổ biến</option>
+                        <option value="fee-asc">Học phí tăng dần</option>
+                        <option value="fee-desc">Học phí giảm dần</option>
+                        <option value="date">Khai giảng sớm</option>
+                    </select>
+                </div>
+
+                <!-- GRID -->
+                <div class="courses-grid" id="coursesContainer"></div>
+
             </div>
-
-            <div class="filter-group">
-                <h4>Trình độ</h4>
-                <label><input type="checkbox"> Mất gốc</label>
-                <label><input type="checkbox"> Cơ bản</label>
-                <label><input type="checkbox"> Nâng cao</label>
-            </div>
-
-            <div class="filter-group">
-                <h4>Độ tuổi</h4>
-                <label><input type="checkbox"> Thiếu nhi</label>
-                <label><input type="checkbox"> Học sinh</label>
-                <label><input type="checkbox"> Sinh viên</label>
-                <label><input type="checkbox"> Người đi làm</label>
-            </div>
-        </aside>
-
-        <!-- MAIN CONTENT -->
-        <div class="courses-content">
-
-            <!-- Search + Sort -->
-            <div class="courses-topbar">
-                <input type="text" placeholder="Tìm kiếm khóa học...">
-
-                <select>
-                    <option>Sắp xếp theo</option>
-                    <option>Phổ biến</option>
-                    <option>Học phí tăng dần</option>
-                    <option>Học phí giảm dần</option>
-                    <option>Khai giảng sớm</option>
-                </select>
-            </div>
-
-            <!-- Course Cards -->
-            <div class="courses-grid" id="coursesContainer">
-
-            </div>
-
         </div>
-    </div>
-</section>
-
-<footer class="footer">
-    © 2026 Trung Tâm Anh Ngữ ABC | Hotline: 0909 123 456
-</footer>
-
-<!--loc theo url-->
-<script>
-    const params = new URLSearchParams(window.location.search);
-    const category = params.get("category");
-
-    if (category) {
-        const courses = document.querySelectorAll(".course-card");
-
-        courses.forEach(course => {
-            if (course.dataset.category !== category) {
-                course.style.display = "none";
-            }
-        });
-    }
-</script>
+    </section>
+</main>
 
 <script src="../FakeData/courses-data.js"></script>
+<script src="layout.js"></script>
+
 <script>
-    const container = document.getElementById("coursesContainer");
+        document.addEventListener("DOMContentLoaded", function () {
 
-    function renderCourses(list) {
-        container.innerHTML = "";
+        loadLayout();
 
-        list.forEach(course => {
-            const card = `
-            <div class="course-card">
-                <h3>${course.title}</h3>
-                <p><strong>Mục tiêu:</strong> ${course.goal}</p>
-                <p><strong>Học phí:</strong> ${course.fee}</p>
-                <p><strong>Thời lượng:</strong> ${course.duration}</p>
-                <p><strong>Đối tượng:</strong> ${course.target}</p>
-                <a href="Courses_Details.html?id=${course.id}"
-                   class="detail-btn">
-                   Xem chi tiết
-                </a>
-            </div>
-        `;
-            container.innerHTML += card;
-        });
+        const container = document.getElementById("coursesContainer");
+        const searchInput = document.getElementById("searchInput");
+        const searchBtn = document.getElementById("searchBtn");
+        const sortSelect = document.getElementById("sortSelect");
+           // STATE
+
+        let currentList = [...courses];
+        /*
+           FORMAT HELPERS
+         */
+        function formatCurrency(amount) {
+        return amount.toLocaleString("vi-VN") + "đ";
     }
 
-    renderCourses(courses);
+        function formatDate(dateString) {
+        return new Date(dateString).toLocaleDateString("vi-VN");
+    }
+           //RENDER
+        function renderCourses(list) {
+
+        container.innerHTML = "";
+
+        if (list.length === 0) {
+        container.innerHTML = "<p>Không tìm thấy khóa học phù hợp.</p>";
+        return;
+    }
+
+        list.forEach(course => {
+        container.innerHTML += `
+                <div class="course-card">
+                    <h3>${course.title}</h3>
+                    <p><strong>Mục tiêu:</strong> ${course.goal}</p>
+                    <p><strong>Học phí:</strong> ${formatCurrency(course.fee)}</p>
+                    <p><strong>Thời lượng:</strong> ${course.totalLessons} buổi (${course.durationWeeks} tuần)</p>
+                    <p><strong>Khai giảng:</strong> ${formatDate(course.startDate)}</p>
+                    <p><strong>Đối tượng:</strong> ${course.ageGroup}</p>
+                    <a href="Courses_Details.html?id=${course.id}" class="detail-btn">
+                        Xem chi tiết
+                    </a>
+                </div>
+            `;
+    });
+    }
+           //FILTER
+
+        function applyFilters() {
+
+        const searchText = searchInput.value.trim().toLowerCase();
+
+        const selectedCategories = [...document.querySelectorAll(".filter-category:checked")]
+        .map(cb => cb.value);
+
+        const selectedLevels = [...document.querySelectorAll(".filter-level:checked")]
+        .map(cb => cb.value);
+
+        const selectedAges = [...document.querySelectorAll(".filter-age:checked")]
+        .map(cb => cb.value);
+
+        currentList = courses.filter(course => {
+
+        const matchSearch =
+        !searchText ||
+        course.title.toLowerCase().includes(searchText);
+
+        const matchCategory =
+        selectedCategories.length === 0 ||
+        selectedCategories.includes(course.category);
+
+        const matchLevel =
+        selectedLevels.length === 0 ||
+        selectedLevels.includes(course.level);
+
+        const matchAge =
+        selectedAges.length === 0 ||
+        selectedAges.includes(course.ageGroup);
+
+        return matchSearch && matchCategory && matchLevel && matchAge;
+    });
+
+        applySort();
+    }
+           //SORT
+        function applySort() {
+
+        const sortValue = sortSelect.value;
+
+        const sortedList = [...currentList];
+
+        switch (sortValue) {
+
+        case "popular":
+        sortedList.sort((a, b) =>
+        b.enrollmentCount - a.enrollmentCount
+        );
+        break;
+
+        case "fee-asc":
+        sortedList.sort((a, b) =>
+        a.fee - b.fee
+        );
+        break;
+
+        case "fee-desc":
+        sortedList.sort((a, b) =>
+        b.fee - a.fee
+        );
+        break;
+
+        case "date":
+        sortedList.sort((a, b) =>
+        new Date(a.startDate) - new Date(b.startDate)
+        );
+        break;
+    }
+
+        renderCourses(sortedList);
+    }
+
+
+           //SEARCH EVENTS
+
+        function handleSearch() {
+        applyFilters();
+    }
+
+        // Click kính lúp
+        searchBtn.addEventListener("click", handleSearch);
+
+        // Nhấn Enter
+        searchInput.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+        handleSearch();
+    }
+    });
+
+          // FILTER EVENTS
+        document.querySelectorAll(".filter-category, .filter-level, .filter-age")
+        .forEach(cb =>
+        cb.addEventListener("change", applyFilters)
+        );
+
+        sortSelect.addEventListener("change", applySort);
+
+
+        const params = new URLSearchParams(window.location.search);
+        const categoryFromURL = params.get("category");
+
+        if (categoryFromURL) {
+        currentList = courses.filter(c =>
+        c.category === categoryFromURL
+        );
+    }
+
+        renderCourses(currentList);
+
+    });
 </script>
 
 </body>

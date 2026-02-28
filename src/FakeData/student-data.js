@@ -111,6 +111,26 @@ const student = {
                     attendance: "Có mặt"
                 }
             ]
+        },
+        {
+            id: "class-3",
+            code: "CT03",
+            name: "Giao tiếp cơ bản",
+            teacher: "GV Lê Minh Anh",
+            totalLessons: 20,
+            completedLessons: 5,
+            nextSession: "18:00 29/02",
+
+            sessions: [
+                {
+                    id: "S1",
+                    date: "15/01/2026",
+                    time: "18:00 - 20:00",
+                    room: "Phòng 107",
+                    mode: "Offline",
+                    attendance: "Có mặt"
+                }
+            ]
         }
     ],
     profile: {
